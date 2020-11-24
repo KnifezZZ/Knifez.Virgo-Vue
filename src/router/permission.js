@@ -1,12 +1,12 @@
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import { Route } from "vue-router";
 import { UserModule } from "@/store/modules/user";
 import { RoutesModule } from "@/store/modules/routes";
 import i18n from "@/lang"; // Internationalization
 import settings from "../settings";
 import router from "./index";
 import pageList from "@/pages/index";
+import { notification } from "ant-design-vue";
 
 NProgress.configure({ showSpinner: false });
 
@@ -29,7 +29,7 @@ const bindLang = ({ zh, en }) => {
     }
 }
 
-router.beforeEach(async (to, _: Route, next) => {
+router.beforeEach(async (to, next) => {
 
     // 路由
     const loadI18n = (isFirst = false) => {
@@ -53,7 +53,7 @@ router.beforeEach(async (to, _: Route, next) => {
                 router.addRoutes(RoutesModule.dynamicRoutes);
                 loadI18n(UserModule.roles.length > 0);
             } catch (err) {
-                Message.error(err || "Has Error");
+                notification.error(err || "Has Error");
                 location.href = `/login.html?redirect=${to.path}`;
                 // next(`/login.html?redirect=${to.path}`);
                 NProgress.done();
@@ -80,7 +80,7 @@ router.beforeEach(async (to, _: Route, next) => {
 
 });
 
-router.afterEach((to) => {
+router.afterEach(() => {
     // Finish progress bar
     NProgress.done();
 });

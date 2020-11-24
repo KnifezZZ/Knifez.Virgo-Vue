@@ -1,4 +1,4 @@
-import { RouteConfig } from "vue-router";
+// import { RouteConfig } from "vue-router";
 import config from "@/config/index";
 import Layout from "@/components/layout/index.vue";
 import { VueRouter } from "@/components/layout/components/index";
@@ -44,7 +44,7 @@ class Menu {
             } else {
                 const languagePage = AppModule.language === 'en' ? '.en' : '';
                 routerItem.component = () =>
-                    import(`@/pages${menuItem.Url}/index${languagePage}.vue`).catch(err => {
+                    import(`@/pages${menuItem.Url}/index${languagePage}.vue`).catch(() => {
                         return import(`@/pages${menuItem.Url}/index.vue`);
                     });
             }
@@ -63,7 +63,7 @@ class Menu {
         if (development) {
             menu = require("@/subMenu.json");
         }
-        return _.map(menu, menuItem => {
+        return menu.map(menuItem => {
             return this.getRouterItem(menuItem);
         });
     }
