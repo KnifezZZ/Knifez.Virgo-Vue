@@ -1,4 +1,6 @@
-# antd-demo
+# KnifeZ.Vergo Vue
+
+This is a vue project template for KnifeZ.Virgo
 
 ## Project setup
 ```
