@@ -142,7 +142,7 @@ export default {
       overflow: hidden;
 
       &-oops {
-        margin-bottom: @vab-margin;
+        margin-bottom: 20px;
         font-size: 32px;
         font-weight: bold;
         line-height: 40px;
@@ -186,7 +186,7 @@ export default {
         color: #fff;
         text-align: center;
         cursor: pointer;
-        background: @vab-color-blue;
+        background: #aaaaaa;
         border-radius: 100px;
         opacity: 0;
         animation-name: slideUp;

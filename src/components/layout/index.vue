@@ -1,8 +1,8 @@
   <template>
-  <a-layout id="components-layout-demo-custom-trigger">
+  <a-layout id="layout-virgo-custom-trigger">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo" />
-      <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
+      <a-menu theme="light" mode="inline" v-model:selectedKeys="selectedKeys">
         <a-menu-item key="1">
           <user-outlined />
           <span>nav 1</span>
@@ -24,12 +24,27 @@
           class="trigger"
           @click="() => (collapsed = !collapsed)"
         />
-        <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+        <menu-fold-outlined
+          v-else
+          class="trigger"
+          @click="() => (collapsed = !collapsed)"
+        />
       </a-layout-header>
       <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
+        :style="{
+          margin: '24px 16px',
+          padding: '24px',
+          background: '#fff',
+          minHeight: '280px',
+        }"
       >
-        Content
+        <keep-alive :include="cachedViews">
+          <router-view v-slot="{ Component }">
+            <transition mode="out-in" name="fade-transform">
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </keep-alive>
       </a-layout-content>
     </a-layout>
   </a-layout>
@@ -53,7 +68,7 @@ export default {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
   },
-  data() {
+  data () {
     return {
       selectedKeys: ['1'],
       collapsed: false,
@@ -61,22 +76,26 @@ export default {
   },
 };
 </script>
-<style>
-#components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-#components-layout-demo-custom-trigger .trigger:hover {
-  color: #1890ff;
-}
-
-#components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+<style lang='less'>
+#layout-virgo-custom-trigger {
+  height: 100vh;
+  .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    :hover {
+      color: #1890ff;
+    }
+  }
+  .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+  }
+  .ant-layout-sider {
+    background: #fff;
+  }
 }
 </style>
