@@ -1,3 +1,7 @@
+const path = require('path')
+const resolve = (dir) => {
+    return path.join(__dirname, dir)
+}
 // gzip压缩
 const CompressionPlugin = require("compression-webpack-plugin")
 module.exports = {
@@ -19,6 +23,12 @@ module.exports = {
     configureWebpack: () => {
         if (process.env.NODE_ENV === 'production') {
             return {
+                resolve: {
+                    alias: {
+                        '@': resolve('src'),
+                        '*': resolve(''),
+                    },
+                },
                 plugins: [
                     new CompressionPlugin({
                         test: /\.js$|\.html$|\.css$|\.jpg$|\.jpeg$|\.png/, // 需要压缩的文件类型
@@ -29,5 +39,18 @@ module.exports = {
                 ]
             }
         }
+    },
+    chainWebpack (config) {
+        config.resolve.symlinks(true)
+        config.module.rule('svg').exclude.add(resolve('src/icon/remixIcon')).end()
+        config.module
+            .rule('remixIcon')
+            .test(/\.svg$/)
+            .include.add(resolve('src/icon/remixIcon'))
+            .end()
+            .use('svg-sprite-loader')
+            .loader('svg-sprite-loader')
+            .options({ symbolId: 'remix-icon-[name]' })
+            .end()
     }
 };

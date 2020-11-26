@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'ant-design-vue/dist/antd.less';
-
+import './plugins/permission'
 createApp(App)
     .use(Antd)
     .use(store)

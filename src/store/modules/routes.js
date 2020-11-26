@@ -34,7 +34,6 @@ const actions = {
      * @returns
      */
     async setAllRoutes ({ commit }) {
-        console.log('setAllRoutes')
         let data = [];
         // let { data } = await getRouterList()
         if (data[data.length - 1].path !== '*')

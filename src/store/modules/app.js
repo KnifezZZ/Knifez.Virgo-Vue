@@ -1,4 +1,6 @@
-const state = { language: [], partialRoutes: [] }
+const state = {
+    language: '',
+}
 const getters = {
     language: (state) => state.language,
 }

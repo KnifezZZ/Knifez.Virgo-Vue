@@ -1,7 +1,7 @@
 import router from '@/router'
 import path from 'path'
 import { isExternal } from '@/utils/validate'
-import { hasRole } from '@/utils/permission'
+import { hasRole } from '@/utils/hasRole'
 
 /**
  * @description all模式渲染后端返回路由

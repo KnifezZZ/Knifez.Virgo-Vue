@@ -1,5 +1,4 @@
 import store from '@/store'
-
 export function hasRole (value) {
     if (store.getters['acl/admin']) return true
     if (value instanceof Array && value.length > 0)
