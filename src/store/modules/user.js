@@ -50,6 +50,12 @@ const actions = {
         commit('setMenus', Attributes.Menus)
         commit('setInfo', { Id, ITCode, Name, PhotoId })
     },
+    resetAll ({ commit, dispatch }) {
+        commit('settoken', '')
+        commit('setRoles', [])
+        commit('setActions', [])
+        commit('setMenus', [])
+    },
 }
 
 export default { state, getters, mutations, actions }
