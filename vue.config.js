@@ -2,6 +2,9 @@ const path = require('path')
 const resolve = (dir) => {
     return path.join(__dirname, dir)
 }
+const { version, author } = require('./package.json')
+process.env.VUE_APP_VERSION = version
+process.env.VUE_APP_AUTHOR = author || 'KnifeZ'
 // gzip压缩
 const CompressionPlugin = require("compression-webpack-plugin")
 module.exports = {

@@ -5,7 +5,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import router from '@/router'
 import store from '@/store'
-import title from '@/configs'
+import { title } from '@/configs'
 import {
     authentication,
     loginInterception,
@@ -17,6 +17,7 @@ NProgress.configure({ showSpinner: false });
  * @param {页面标题} pageTitle 
  */
 const getPageTitle = (pageTitle) => {
+    debugger
     let newTitles = []
     if (pageTitle) newTitles.push(pageTitle)
     if (title) newTitles.push(title)
@@ -24,7 +25,6 @@ const getPageTitle = (pageTitle) => {
 }
 
 router.beforeEach(async (to, from, next) => {
-    debugger
     NProgress.start();
     let hasToken = store.getters['user/token']
     if (!loginInterception) hasToken = true

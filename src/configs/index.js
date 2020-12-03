@@ -31,7 +31,7 @@ const configs = {
     /**
      * 是否开启登录拦截
      */
-    loginInterception: false,
+    loginInterception: true,
     /**
      * cookie前缀
      */
