@@ -17,7 +17,6 @@ NProgress.configure({ showSpinner: false });
  * @param {页面标题} pageTitle 
  */
 const getPageTitle = (pageTitle) => {
-    debugger
     let newTitles = []
     if (pageTitle) newTitles.push(pageTitle)
     if (title) newTitles.push(title)

@@ -57,24 +57,15 @@ module.exports = {
             .end()
     },
     devServer: {
-        // hot: true,
-        // port: 44379,
-        // open: true,
-        // noInfo: false,
-        // overlay: {
-        //     warnings: true,
-        //     errors: true,
-        // },
-        // 注释掉的地方是前端配置代理访问后端的示例
-        // proxy: {
-        //   [baseURL]: {
-        //     target: `http://你的后端接口地址`,
-        //     ws: true,
-        //     changeOrigin: true,
-        //     pathRewrite: {
-        //       ["^/" + baseURL]: "",
-        //     },
-        //   },
-        // },
+        proxy: {
+            '/api': {
+                target: `https://localhost:44379/api`,
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
     }
 }

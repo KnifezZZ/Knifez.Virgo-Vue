@@ -17,7 +17,8 @@
 import axios from "axios";
 import contentType from '@/configs/content-type';
 import AppModule from "@/store/modules/app";
-import i18n from "vue-i18n";
+import { isArray } from "./validate";
+import { notification } from "ant-design-vue";
 
 class requestBase {
     constructor() { }
@@ -27,7 +28,7 @@ class requestBase {
      */
     requestData (originalData = {}) {
         const data = originalData;
-        if (!originalData.isArray()) {
+        if (isArray(originalData)) {
             for (const key in originalData || {}) {
                 if (
                     originalData[key] !== null &&
@@ -80,8 +81,7 @@ class requestBase {
      * @param param
      */
     paramTemplate (url, param) {
-        if (param.isObject() &&
-            typeof param === "object" &&
+        if (typeof param === "object" &&
             /{([\s\S]+?)}/g.test(url)
         ) {
             url = url.template({ interpolate: /{([\s\S]+?)}/g })(param);
@@ -95,44 +95,29 @@ class requestBase {
           msg = res.response.data.Message[0];
         }
      */
-    requestError (res) {
-        let msg = i18n.t('errorMsg.error').toString();
-        const { response, message } = res;
-        console.log('response, message', response, message)
-        // 导入文件错误信息
-        const filterError = (ID) => {
-            let notifyMsg = i18n.t('errorMsg.template').toString();
-            if (ID) {
-                notifyMsg = `导入时发生错误, 请查看<a style="text-decoration: underline;" href="/api/_file/downloadFile/${ID}"><i>错误文件</i></a>`;
+    requestError (error) {
+        let msg = '接口请求异常'
+        const { response, message } = error
+        if (response && response.data) {
+            debugger
+            //const { status, data } = response
+
+        } else {
+            if (message === 'Network Error') {
+                msg = '接口连接异常'
             }
-            Notification({
-                title: i18n.t('errorMsg.import').toString(),
-                dangerouslyUseHTMLString: true,
-                type: "error",
-                message: notifyMsg
-            });
-        };
-        // 错误类型判断
-        if (response) {
-            const { Message, Form } = response.data || response;
-            if (Message && Message.length > 0) {
-                msg = Message[0];
-            } else if (Form && Form["Entity.Import"]) {
-                filterError(Form["Entity.ErrorFileId"]);
-                return;
-            } else if (Form && Form !== {}) {
-                const cxts = Object.keys(Form).map(key => Form[key]);
-                msg = cxts.join(',');
-            } else {
-                msg = response.data;
+            if (message.includes('timeout')) {
+                msg = '接口请求超时'
             }
-        } else if (message) {
-            msg = message;
+            if (message.includes('Request failed with status code')) {
+                const code = message.substr(message.length - 3)
+                msg = '接口请求' + response.status
+            }
+            notification.error({
+                message: msg,
+                description: message
+            })
         }
-        Notification.error({
-            title: i18n.t("errorMsg.msg").toString(),
-            message: msg
-        });
     }
 }
 
