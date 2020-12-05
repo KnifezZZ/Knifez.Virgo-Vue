@@ -3,6 +3,7 @@
  */
 import { asyncRoutes, constantRoutes } from '@/router'
 import { convertRouter, filterRoutes } from '@/utils/routes'
+import Menu from '@/router/menu'
 
 const state = { routes: [], partialRoutes: [] }
 const getters = {
@@ -24,6 +25,7 @@ const actions = {
      * @returns
      */
     async setRoutes ({ commit }) {
+        debugger
         const finallyRoutes = filterRoutes([...constantRoutes, ...asyncRoutes])
         commit('setRoutes', finallyRoutes)
         return [...asyncRoutes]
@@ -34,12 +36,15 @@ const actions = {
      * @returns
      */
     async setAllRoutes ({ commit }) {
+        debugger
         let data = [];
         // let { data } = await getRouterList()
         if (data[data.length - 1].path !== '*')
             data.push({ path: '*', redirect: '/404', hidden: true })
         const asyncRoutes = convertRouter(data)
         const finallyRoutes = filterRoutes([...constantRoutes, ...asyncRoutes])
+
+        const treeMenus = Menu.getTreeMenu(asyncRoutes);
         commit('setRoutes', finallyRoutes)
         return [...asyncRoutes]
     },

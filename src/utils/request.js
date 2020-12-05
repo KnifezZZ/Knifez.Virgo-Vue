@@ -1,17 +1,5 @@
 /**
- * server封装，所有请求都走这里
- * option = {
- *      url:请求地址
- *      method: 'post' // 请求方式，post\get\put\delete
- *      data: {}, // 参数
- * }
- * _request(option)
-            .then(data => {
-                console.log('then', data);
-            })
-            .catch(data => {
-                console.log('catch', data);
-            });
+ * axios封装
  */
 
 import axios from "axios";
@@ -19,7 +7,7 @@ import contentType from '@/configs/content-type';
 import AppModule from "@/store/modules/app";
 import { isArray } from "./validate";
 import { notification } from "ant-design-vue";
-
+import Cookies from 'js-cookie'
 class requestBase {
     constructor() { }
     /**
@@ -99,9 +87,10 @@ class requestBase {
         let msg = '接口请求异常'
         const { response, message } = error
         if (response && response.data) {
-            debugger
-            //const { status, data } = response
-
+            notification.error({
+                message: 'HTTP Code ' + response.data.status,
+                description: response.data.title
+            })
         } else {
             if (message === 'Network Error') {
                 msg = '接口连接异常'
@@ -133,7 +122,8 @@ const _request = (option, serverHost) => {
         params: {},
         headers: {
             "Content-Type": option.contentType || contentType.json,
-            "Accept-Language": AppModule.language
+            "Accept-Language": AppModule.language,
+            "Authorization": Cookies.get("Authorization")
         }
     };
     const data = rBase.requestData(option.data);

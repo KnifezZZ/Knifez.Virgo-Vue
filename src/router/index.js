@@ -1,5 +1,5 @@
 import Layout from '@/components/layout/index'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 export const constantRoutes = [{
     path: '/',
     component: Layout,
@@ -38,7 +38,14 @@ export const asyncRoutes = [{
 }]
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
+    scrollBehavior: (to, from, savedPosition) => {
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return { x: 0, y: 0 };
+        }
+    },
     routes: constantRoutes,
 })
 

@@ -17,10 +17,6 @@ const configs = {
      */
     development: process.env.NODE_ENV !== "production",
     /**
-     *  cookies 过期时间
-     */
-    cookiesExpires: 365,
-    /**
      * iframe 嵌入页面标示
      */
     staticPage: "@StaticPage",
@@ -33,9 +29,13 @@ const configs = {
      */
     loginInterception: true,
     /**
-     * cookie前缀
+     * token
      */
-    cookiePre: 'KV',
+    tokenKey: 'token',
+    /**
+     * token失效时间
+     */
+    tokenExpires: 86400,
     /**
      * token失效回退到登录页时是否记录本次的路由
      */

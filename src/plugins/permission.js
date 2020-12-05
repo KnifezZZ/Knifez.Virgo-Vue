@@ -5,8 +5,8 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import router from '@/router'
 import store from '@/store'
-import { title } from '@/configs'
 import {
+    title,
     authentication,
     loginInterception,
     recordRoute,
@@ -26,53 +26,53 @@ const getPageTitle = (pageTitle) => {
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
     let hasToken = store.getters['user/token']
-    if (!loginInterception) hasToken = true
-
-    if (hasToken) {
-        if (to.path === '/login') {
-            next({ path: '/' })
-        } else {
-            if (store.getters['user/token'].length > 0) {
-
-            }
-            const hasRoles = store.getters['user/admin']
-            if (hasRoles) {
-                next()
+    //不开启登录拦截或白名单
+    if (!loginInterception || routesWhiteList.indexOf(to.path) !== -1) {
+        next()
+    } else {
+        debugger
+        //cookie验证存在
+        if (hasToken) {
+            if (to.path === '/login') {
+                next({ path: '/' })
             } else {
-                try {
-                    if (loginInterception) {
+                debugger
+                const hasRoles = store.getters['user/roles'].length > 0
+                if (hasRoles) {
+                    //无匹配路由跳转404
+                    if (to.matched.length !== 0) {
+                        next()
+                    } else {
+                        next("/404");
+                    }
+                } else {
+                    try {
                         await store.dispatch('user/getUserInfo')
-                    }
-
-                    let accessRoutes = []
-                    if (authentication === 'intelligence') {
-                        accessRoutes = await store.dispatch('routes/setRoutes')
-                    } else if (authentication === 'all') {
-                        accessRoutes = await store.dispatch('routes/setAllRoutes')
-                    }
-                    accessRoutes.forEach((item) => {
-                        router.addRoute(item)
-                    })
-
-                    next({ ...to, replace: true })
-                } catch {
-                    await store.dispatch('user/resetAll')
-                    NProgress.done();
-                    if (recordRoute)
-                        next({
-                            path: '/login',
-                            query: { redirect: to.path },
-                            replace: true,
+                        let accessRoutes = []
+                        if (authentication === 'intelligence') {
+                            accessRoutes = await store.dispatch('routes/setRoutes')
+                        } else if (authentication === 'all') {
+                            accessRoutes = await store.dispatch('routes/setAllRoutes')
+                        }
+                        accessRoutes.forEach((item) => {
+                            router.addRoute(item)
                         })
-                    else next({ path: '/login', replace: true })
+
+                        next({ ...to, replace: true })
+                    } catch {
+                        await store.dispatch('user/resetAll')
+                        if (recordRoute)
+                            next({
+                                path: '/login',
+                                query: { redirect: to.path },
+                                replace: true,
+                            })
+                        else next({ path: '/login', replace: true })
+                    }
                 }
             }
-        }
-    } else {
-        if (routesWhiteList.indexOf(to.path) !== -1) {
-            next()
         } else {
-            NProgress.done();
+            //跳转登录是否记录当前路由
             if (recordRoute)
                 next({ path: '/login', query: { redirect: to.path }, replace: true })
             else next({ path: '/login', replace: true })

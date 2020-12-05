@@ -1,10 +1,12 @@
 
-import { cookiePre } from '@/configs'
+import Cookies from 'js-cookie'
 import { message, notification } from 'ant-design-vue'
 import { checkLogin, login } from '@/api/user'
+import config from '@/configs/index'
 const state = {
     token: '',
     username: '',
+    info: {},
     roles: [],
     menus: [],
     userinfo: {},
@@ -12,11 +14,19 @@ const state = {
 }
 const getters = {
     token: (state) => state.token,
+    username: (state) => state.username,
+    info: (state) => state.info,
+    roles: (state) => state.roles,
+    menus: (state) => state.menus,
+    userinfo: (state) => state.userinfo,
+    actionlist: (state) => state.actionlist,
 }
 const mutations = {
     settoken (state, token) {
         state.token = token;
-        localStorage.setItem(cookiePre + 'token', token)
+    },
+    setInfo (state, info) {
+        state.info = info;
     },
     setRoles (state, roles) {
         state.roles = roles;
@@ -33,19 +43,10 @@ const mutations = {
 }
 
 const actions = {
-    settoken ({ commit }, token) {
-        commit('settoken', token)
-    },
     async login ({ commit }, userInfo) {
         const res = await login(userInfo)
-        debugger
-        const { id, itCode, name, photoId, roles, attributes } = res;
-        commit('setRoles', roles)
-        commit('setUserName', name)
-        commit('setActions', attributes.Actions)
-        commit('setMenus', attributes.Menus)
-        commit('setInfo', { id, itCode, name, photoId })
-
+        commit('settoken', res)
+        Cookies.set('Authorization', res.TokenType + ' ' + res.AccessToken, { expires: res.ExpiresIn })
         const hour = new Date().getHours()
         const thisTime =
             hour < 8
@@ -57,23 +58,23 @@ const actions = {
                         : hour < 18
                             ? '下午好'
                             : '晚上好'
-        notification.open({
+        notification.success({
             message: `欢迎登录`,
             description: `${thisTime}！`,
         })
     },
     async getUserInfo ({ commit, dispatch, state }) {
-        const { data } = await checkLogin({ ID: state.token })
-        if (!data) {
+        const res = await checkLogin()
+        if (!res.id) {
             message.error(`验证失败，请重新登录...`)
             return false
         }
-        const { Id, ITCode, Name, PhotoId, Roles, Attributes } = data;
-        commit('setRoles', Roles)
-        commit('setUserName', Name)
-        commit('setActions', Attributes.Actions)
-        commit('setMenus', Attributes.Menus)
-        commit('setInfo', { Id, ITCode, Name, PhotoId })
+        const { id, itCode, name, photoId, roles, attributes } = res;
+        commit('setRoles', roles)
+        commit('setUserName', name)
+        commit('setActions', attributes.Actions)
+        commit('setMenus', attributes.Menus)
+        commit('setInfo', { id, itCode, name, photoId })
     },
     resetAll ({ commit, dispatch }) {
         commit('settoken', '')

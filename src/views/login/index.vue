@@ -64,6 +64,7 @@ export default {
       form: {
         userid: '',
         password: '',
+        cookie: false,
       },
       redirect: undefined
     }
@@ -79,11 +80,10 @@ export default {
     },
   },
   mounted () {
-    this.form.userid = 'admin'
-    this.form.password = '000000'
-    /*  setTimeout(() => {
-      this.handleSubmit()
-    }, 5000) */
+    if (config.development) {
+      this.form.userid = 'admin'
+      this.form.password = '000000'
+    }
   },
   methods: {
     ...mapActions({
@@ -104,7 +104,7 @@ export default {
 <style lang="less">
 .login-container {
   height: 100vh;
-  background: #f0f0f0;
+  background: #e0e0e0;
   &-form {
     width: calc(100% - 40px);
     height: 380px;

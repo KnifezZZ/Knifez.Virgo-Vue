@@ -2,12 +2,11 @@
 import request from '@/utils/request'
 import config from "@/configs/index";
 import contentType from "@/configs/content-type";
-const reqPath = config.headerApi + "/_login";
-export function checkLogin (data) {
+const reqPath = config.headerApi + "/_account";
+export function checkLogin (ID) {
     return request({
-        url: reqPath + '/CheckLogin/{ID}',
+        url: reqPath + '/CheckUserInfo',
         method: 'get',
-        data: data,
     })
 }
 export function login (data) {
