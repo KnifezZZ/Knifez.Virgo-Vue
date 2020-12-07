@@ -27,15 +27,7 @@ export const constantRoutes = [{
     hidden: true,
 },
 ]
-export const asyncRoutes = [{
-    path: '/',
-    component: Layout,
-    redriect: '/index',
-    meta: {
-        title: '首页',
-        icon: 'home-4-line'
-    }
-}]
+export const asyncRoutes = []
 
 const router = createRouter({
     history: createWebHistory(),

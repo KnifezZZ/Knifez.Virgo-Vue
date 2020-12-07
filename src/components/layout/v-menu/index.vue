@@ -6,11 +6,11 @@
     :route-children="routeChildren"
   >
     <template v-if="item.children && item.children.length">
-      <vab-menu
+      <v-menu
         v-for="route in item.children"
         :key="route.path"
         :item="route"
-      ></vab-menu>
+      ></v-menu>
     </template>
   </component>
 </template>
@@ -19,7 +19,7 @@
 import MenuItem from './components/MenuItem'
 import Submenu from './components/Submenu'
 export default {
-  name: 'VirMenu',
+  name: 'VMenu',
   components: { MenuItem, Submenu },
   props: {
     item: {

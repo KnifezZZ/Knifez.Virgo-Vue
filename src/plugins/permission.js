@@ -3,6 +3,7 @@
  */
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import Cookies from 'js-cookie'
 import router from '@/router'
 import store from '@/store'
 import {
@@ -12,6 +13,7 @@ import {
     recordRoute,
     routesWhiteList,
 } from '@/configs/index'
+import { notification } from "ant-design-vue";
 NProgress.configure({ showSpinner: false });
 /**
  * @param {页面标题} pageTitle 
@@ -25,18 +27,17 @@ const getPageTitle = (pageTitle) => {
 
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
-    let hasToken = store.getters['user/token']
+    let hasToken = Cookies.get('Authorization')
+    //store.getters['user/token']
     //不开启登录拦截或白名单
     if (!loginInterception || routesWhiteList.indexOf(to.path) !== -1) {
         next()
     } else {
-        debugger
         //cookie验证存在
         if (hasToken) {
             if (to.path === '/login') {
                 next({ path: '/' })
             } else {
-                debugger
                 const hasRoles = store.getters['user/roles'].length > 0
                 if (hasRoles) {
                     //无匹配路由跳转404
@@ -57,9 +58,10 @@ router.beforeEach(async (to, from, next) => {
                         accessRoutes.forEach((item) => {
                             router.addRoute(item)
                         })
-
                         next({ ...to, replace: true })
-                    } catch {
+                    } catch (err) {
+                        debugger
+                        console.error(err);
                         await store.dispatch('user/resetAll')
                         if (recordRoute)
                             next({

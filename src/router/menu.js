@@ -18,34 +18,34 @@ class Menu {
      */
     getRouterItem (menuItem) {
         url_index++;
-        urlList.push("" + url_index);
+        urlList.push("/" + url_index);
         const routerItem = {
-            path: menuItem.Url || "" + url_index,
-            name: menuItem.Text,
+            path: menuItem.url || "/" + url_index,
+            name: menuItem.text,
             component: Layout,
             children: [],
             meta: {
-                key: menuItem.Key,
-                title: menuItem.Text,
-                icon: menuItem.Icon,
-                ParentId: menuItem.ParentId,
-                Id: menuItem.Id
+                key: menuItem.key,
+                title: menuItem.text,
+                icon: menuItem.icon,
+                parentId: menuItem.parentId,
+                id: menuItem.id
             }
         };
-        if (menuItem.Url) {
+        if (menuItem.url) {
             // 判断是否需要 external
-            if ((isExternal(menuItem.Url))) {
+            if ((isExternal(menuItem.url))) {
                 routerItem.component = () => import("@/views/external/index.vue");
                 routerItem.path = `/external_${url_index}`;
-                const url = isExternal(menuItem.Url)
-                    ? menuItem.Url
-                    : menuItem.Url.replace(config.staticPage, `${window.location.origin}`);
+                const url = isExternal(menuItem.url)
+                    ? menuItem.url
+                    : menuItem.url.replace(config.staticPage, `${window.location.origin}`);
                 routerItem.props = { default: true, url: url };
             } else {
-                routerItem.component = () => import(`@/views${menuItem.Url}/index.vue`);
+                routerItem.component = () => import(`@/views${menuItem.url}/index.vue`);
             }
         } else {
-            if (menuItem.ParentId) {
+            if (menuItem.parentId) {
                 routerItem.component = VueRouter;
             }
         }
@@ -80,31 +80,31 @@ class Menu {
     /**
      * 递归 格式化 树
      * @param datalist
-     * @param ParentId 父级id
+     * @param parentId 父级id
      * @param children
      */
     recursionTree (
         datalist,
-        ParentId = null,
+        parentId = null,
         children = []
     ) {
         datalist.filter(item => {
-            if (ParentId === null) {
-                return !item.ParentId;
+            if (parentId === null) {
+                return !item.parentId;
             } else {
-                return item.ParentId === ParentId;
+                return item.parentId === parentId;
             }
 
         }).map(menuItem => {
             const routerItem = this.getRouterItem(menuItem);
             routerItem.children = this.recursionTree(
                 datalist,
-                menuItem.Id,
+                menuItem.id,
                 menuItem.children || []
             );
             if (
-                ParentId === null &&
-                menuItem.Url &&
+                parentId === null &&
+                menuItem.url &&
                 routerItem.children.length === 0
             ) {
                 routerItem.children.push({

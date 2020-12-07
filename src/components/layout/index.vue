@@ -7,32 +7,25 @@
       </div>
       <a-menu theme="light" mode="inline" v-model:selectedKeys="selectedKeys">
         <v-menu v-for="route in routes" :key="route.path" :item="route" />
-        <a-menu-item key="1">
-          <user-outlined />
-          <span>nav 1</span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <video-camera-outlined />
-          <span>nav 2</span>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <upload-outlined />
-          <span>nav 3</span>
-        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
-        <menu-unfold-outlined
+        <v-icon
+          class="trigger"
+          icon="indent-increase"
           v-if="collapsed"
-          class="trigger"
           @click="() => (collapsed = !collapsed)"
-        />
-        <menu-fold-outlined
+        >
+        </v-icon>
+        <v-icon
+          class="trigger"
+          icon="indent-decrease"
           v-else
-          class="trigger"
           @click="() => (collapsed = !collapsed)"
-        />
+        >
+        </v-icon>
+        <v-header></v-header>
       </a-layout-header>
       <a-layout-content
         :style="{
@@ -58,20 +51,14 @@
 <script>
 import config from '@/configs/index'
 import { mapActions, mapGetters } from 'vuex'
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from '@ant-design/icons-vue';
+import VIcon from '@/components/v-icon/index'
+import VMenu from './v-menu/index'
+import VHeader from './v-header/index'
 export default {
   components: {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
+    VMenu,
+    VIcon,
+    VHeader,
   },
   data () {
     return {

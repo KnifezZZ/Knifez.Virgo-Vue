@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     handleLink () {
-      const routePath = this.routeChildren.fullPath
+      const routePath = this.routeChildren.path
       const target = this.routeChildren.meta.target
       if (target === '_blank') {
         if (isExternal(routePath)) window.open(routePath)

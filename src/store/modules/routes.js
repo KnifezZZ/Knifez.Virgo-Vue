@@ -2,17 +2,24 @@
  * @description 路由拦截状态管理，目前两种模式：all模式与intelligence模式，其中partialRoutes是菜单暂未使用
  */
 import { asyncRoutes, constantRoutes } from '@/router'
-import { convertRouter, filterRoutes } from '@/utils/routes'
 import Menu from '@/router/menu'
+import store from '@/store'
 
-const state = { routes: [], partialRoutes: [] }
+const state = {
+    // 全部
+    routes: [],
+    partialRoutes: [],
+    // 页面列表
+    pageList: []
+}
 const getters = {
     routes: (state) => state.routes,
     partialRoutes: (state) => state.partialRoutes,
+
 }
 const mutations = {
     setRoutes (state, routes) {
-        state.routes = routes
+        state.routes = constantRoutes.concat(routes);
     },
     setPartialRoutes (state, routes) {
         state.partialRoutes = routes
@@ -25,8 +32,8 @@ const actions = {
      * @returns
      */
     async setRoutes ({ commit }) {
-        debugger
-        const finallyRoutes = filterRoutes([...constantRoutes, ...asyncRoutes])
+        // TODO fix
+        const finallyRoutes = [...constantRoutes, ...asyncRoutes]
         commit('setRoutes', finallyRoutes)
         return [...asyncRoutes]
     },
@@ -36,16 +43,9 @@ const actions = {
      * @returns
      */
     async setAllRoutes ({ commit }) {
-        debugger
-        let data = [];
-        // let { data } = await getRouterList()
-        if (data[data.length - 1].path !== '*')
-            data.push({ path: '*', redirect: '/404', hidden: true })
-        const asyncRoutes = convertRouter(data)
-        const finallyRoutes = filterRoutes([...constantRoutes, ...asyncRoutes])
-
-        const treeMenus = Menu.getTreeMenu(asyncRoutes);
-        commit('setRoutes', finallyRoutes)
+        let data = store.getters['user/menus'];
+        const asyncRoutes = Menu.getTreeMenu(data);
+        commit('setRoutes', asyncRoutes)
         return [...asyncRoutes]
     },
     /**
