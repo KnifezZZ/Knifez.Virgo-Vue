@@ -19,7 +19,7 @@ const getters = {
 }
 const mutations = {
     setRoutes (state, routes) {
-        state.routes = constantRoutes.concat(routes);
+        state.routes = routes;
     },
     setPartialRoutes (state, routes) {
         state.partialRoutes = routes
@@ -33,7 +33,7 @@ const actions = {
      */
     async setRoutes ({ commit }) {
         // TODO fix
-        const finallyRoutes = [...constantRoutes, ...asyncRoutes]
+        const finallyRoutes = Menu.filterRoutes([...constantRoutes, ...asyncRoutes])
         commit('setRoutes', finallyRoutes)
         return [...asyncRoutes]
     },
@@ -45,7 +45,8 @@ const actions = {
     async setAllRoutes ({ commit }) {
         let data = store.getters['user/menus'];
         const asyncRoutes = Menu.getTreeMenu(data);
-        commit('setRoutes', asyncRoutes)
+        const finallyRoutes = Menu.filterRoutes([...constantRoutes, ...asyncRoutes])
+        commit('setRoutes', finallyRoutes)
         return [...asyncRoutes]
     },
     /**

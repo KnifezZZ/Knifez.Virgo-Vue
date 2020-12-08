@@ -50,8 +50,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      delVisitedRoute: 'tagsBar/delVisitedRoute',
-      delOthersVisitedRoutes: 'tagsBar/delOthersVisitedRoutes',
+      delVisitedRoute: 'tabsBar/delVisitedRoute',
+      delOthersVisitedRoutes: 'tabsBar/delOthersVisitedRoutes',
     }),
     timeChange () {
       this.timer = setInterval(() => {

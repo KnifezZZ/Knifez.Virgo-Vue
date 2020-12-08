@@ -3,7 +3,7 @@ import config from "@/configs/index";
 import Layout from "@/components/layout/index.vue";
 import VueRouter from "@/components/layout/vue-router/index";
 import { isExternal } from "@/utils/validate";
-import AppModule from "@/store/modules/app";
+import path from 'path'
 
 const development = config.development;
 
@@ -25,7 +25,6 @@ class Menu {
             component: Layout,
             children: [],
             meta: {
-                key: menuItem.key,
                 title: menuItem.text,
                 icon: menuItem.icon,
                 parentId: menuItem.parentId,
@@ -140,6 +139,18 @@ class Menu {
             }
         }
         return routes;
+    }
+
+    filterRoutes (routes, baseUrl = '/') {
+        return routes
+            .map((route) => {
+                if (route.path !== '*' && !isExternal(route.path))
+                    route.path = path.resolve(baseUrl, route.path)
+                route.fullPath = route.path
+                if (route.children)
+                    route.children = this.filterRoutes(route.children, route.fullPath)
+                return route
+            })
     }
 }
 export default new Menu();

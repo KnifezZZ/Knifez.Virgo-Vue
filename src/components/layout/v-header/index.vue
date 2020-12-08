@@ -7,7 +7,7 @@
       >
       </a-avatar>
       <template #overlay>
-        <a-menu @click="handleAvatarClick" class="user-drop">
+        <a-menu class="user-drop">
           <a-menu-item key="0" @click="password">
             <v-icon icon="lock-password-line"></v-icon>
             <span>密码修改</span>
@@ -31,6 +31,9 @@ export default {
     VIcon,
   },
   methods: {
+    password () {
+
+    },
     logOut () {
       this.$store.dispatch("user/doLogOut");
       this.$router.push(`/login?redirect=${this.$route.path}`);

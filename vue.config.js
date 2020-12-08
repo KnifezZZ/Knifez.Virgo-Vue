@@ -15,6 +15,7 @@ module.exports = {
                     //ant-design 默认主题色
                     modifyVars: {
                         'primary-color': '#512bd4',
+                        'primary-color-1': '#7551e0',
                         'link-color': '#1DA57A',
                         'border-radius-base': '2px',
                     },

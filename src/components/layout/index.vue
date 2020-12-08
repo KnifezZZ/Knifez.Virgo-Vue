@@ -27,21 +27,22 @@
         </v-icon>
         <v-header></v-header>
       </a-layout-header>
+      <v-tabs></v-tabs>
       <a-layout-content
         :style="{
-          margin: '24px 16px',
+          margin: '0px 16px',
           padding: '24px',
           background: '#fff',
           minHeight: '280px',
         }"
       >
         <router-view v-slot="{ Component }">
-          <transition mode="out-in" name="fade-transform">
-            <component :is="Component" />
-          </transition>
+          <keep-alive :include="cachedViews">
+            <transition mode="out-in" name="fade-transform">
+              <component :is="Component" />
+            </transition>
+          </keep-alive>
         </router-view>
-        <!-- <keep-alive :include="cachedViews">
-        </keep-alive> -->
       </a-layout-content>
     </a-layout>
   </a-layout>
@@ -54,15 +55,17 @@ import { mapActions, mapGetters } from 'vuex'
 import VIcon from '@/components/v-icon/index'
 import VMenu from './v-menu/index'
 import VHeader from './v-header/index'
+import VTabs from './v-tabs/index'
 export default {
   components: {
     VMenu,
     VIcon,
     VHeader,
+    VTabs,
   },
   data () {
     return {
-      selectedKeys: ['1'],
+      selectedKeys: [],
       collapsed: false,
       projectName: config.projectName
     };
@@ -70,6 +73,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      cachedViews: 'tabsBar/cachedViews',
       collapse: 'settings/collapse',
       routes: 'routes/routes',
       device: 'settings/device',
@@ -90,7 +94,7 @@ export default {
     cursor: pointer;
     transition: color 0.3s;
     :hover {
-      color: #1890ff;
+      color: @primary-color-1;
     }
   }
   .logo {
