@@ -9,6 +9,12 @@ export function checkLogin (ID) {
         method: 'get',
     })
 }
+export function logOut (ID) {
+    return request({
+        url: reqPath + '/Logout/' + ID,
+        method: 'get',
+    })
+}
 export function login (data) {
     return request({
         url: reqPath + '/login',

@@ -1,8 +1,7 @@
 
 import Cookies from 'js-cookie'
 import { message, notification } from 'ant-design-vue'
-import { checkLogin, login } from '@/api/user'
-import store from '@/store'
+import { checkLogin, login, logOut } from '@/api/user'
 const state = {
     token: '',
     username: '',
@@ -43,7 +42,6 @@ const mutations = {
 const actions = {
     async login ({ commit }, userInfo) {
         const res = await login(userInfo)
-        debugger
         commit('settoken', res)
         Cookies.set('Authorization', res.TokenType + ' ' + res.AccessToken, { expires: res.ExpiresIn })
         const hour = new Date().getHours()
@@ -75,8 +73,10 @@ const actions = {
         commit('setMenus', attributes.Menus)
         commit('setInfo', { id, itCode, name, photoId })
     },
-    logOut () {
-        let data = store.getters['user/info'];
+    doLogOut ({ commit, dispatch, state }) {
+        const { id } = state.info
+        logOut(id)
+        dispatch('resetAll')
     },
     resetAll ({ commit, dispatch }) {
         Cookies.remove('Authorization')

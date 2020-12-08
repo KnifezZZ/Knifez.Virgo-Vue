@@ -7,26 +7,15 @@
       >
       </a-avatar>
       <template #overlay>
-        <a-menu @click="handleAvatarClick">
-          <a-menu-item key="0">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="http://www.alipay.com/"
-              >1st menu item</a
-            >
-          </a-menu-item>
-          <a-menu-item key="1">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="http://www.taobao.com/"
-              >2nd menu item</a
-            >
+        <a-menu @click="handleAvatarClick" class="user-drop">
+          <a-menu-item key="0" @click="password">
+            <v-icon icon="lock-password-line"></v-icon>
+            <span>密码修改</span>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="LogOut" @click="logOut">
-            <v-icon icon="logout-circle-line"></v-icon> Log out
+            <v-icon icon="logout-circle-line"></v-icon>
+            <span>退出登录</span>
           </a-menu-item>
         </a-menu>
       </template>
@@ -35,7 +24,6 @@
 </template>
 
 <script>
-import UserModule from "@/store/modules/user";
 import VIcon from '@/components/v-icon'
 export default {
   name: 'VHeader',
@@ -44,18 +32,23 @@ export default {
   },
   methods: {
     logOut () {
-      UserModule.LogOut();
-      this.$router.push(`/login.html?redirect=${this.$route.fullPath}`);
+      this.$store.dispatch("user/doLogOut");
+      this.$router.push(`/login?redirect=${this.$route.path}`);
     }
   }
 }
 </script>
 
-<style>
+<style lang="less">
 .right-menu {
   float: right;
   height: 100%;
   line-height: 64px;
   padding-right: 10px;
+}
+.user-drop {
+  i {
+    margin-right: 3px;
+  }
 }
 </style>
