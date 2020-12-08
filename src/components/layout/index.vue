@@ -3,7 +3,7 @@
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo">
         <img :src="require('@/assets/logo.png')" />
-        <h1 v-show="!collapsed">{{ projectName }}</h1>
+        <h1 v-if="!collapsed">{{ projectName }}</h1>
       </div>
       <a-menu theme="light" mode="inline" v-model:selectedKeys="selectedKeys">
         <v-menu v-for="route in routes" :key="route.path" :item="route" />
@@ -98,9 +98,17 @@ export default {
     }
   }
   .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
+    margin: 16px 5px;
+    overflow: hidden;
+    overflow: hidden;
+    font-size: 15px;
+    color: #fff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     img {
       height: 32px;
       margin: 2px 6px;
@@ -108,7 +116,7 @@ export default {
     }
     h1 {
       display: inline-block;
-      font-size: 20px;
+      font-size: 18px;
     }
   }
   .ant-layout-sider {

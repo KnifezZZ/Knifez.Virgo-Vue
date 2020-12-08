@@ -16,13 +16,24 @@ const mutations = {
      * @param {*} route
      * @returns
      */
-    addVisitedRoute (state, route) {
+    addVisitedRoute (state, route, view) {
         let target = state.visitedRoutes.find((item) => item.path === route.path)
         if (target) {
             if (route.path !== target.path) Object.assign(target, route)
             return
         }
         state.visitedRoutes.push(Object.assign({}, route))
+        this.addCachedView(view)
+    },
+    addCachedView (view) {
+        let cachedPath = "";
+        if (view.path && view.path.startsWith("/")) {
+            cachedPath = view.path.substr(1);
+        }
+        if (this.cachedViews.includes(cachedPath)) return;
+        if (!view.meta.noCache) {
+            this.cachedViews.push(cachedPath);
+        }
     },
     /**
      * @description 删除当前标签页
@@ -30,10 +41,20 @@ const mutations = {
      * @param {*} route
      * @returns
      */
-    delVisitedRoute (state, route) {
+    delVisitedRoute (state, route, view) {
         state.visitedRoutes.forEach((item, index) => {
             if (item.path === route.path) state.visitedRoutes.splice(index, 1)
         })
+        this.delCachedView(view)
+    },
+    delCachedView (view) {
+        for (const [i, v] of Object.entries(this.cachedViews)) {
+            const cachedPath = view.path ? view.path.substr(1) : view.name;
+            if (v === cachedPath) {
+                this.cachedViews.splice(parseInt(i), 1);
+                break;
+            }
+        }
     },
     /**
      * @description 删除当前标签页以外其它全部多标签页
@@ -41,10 +62,22 @@ const mutations = {
      * @param {*} route
      * @returns
      */
-    delOthersVisitedRoutes (state, route) {
+    delOthersVisitedRoutes (state, route, view) {
         state.visitedRoutes = state.visitedRoutes.filter(
             (item) => item.meta.affix || item.path === route.path
         )
+        this.delOthersCachedView(view)
+    },
+    delOthersCachedView (view) {
+        for (const [i, v] of Object.entries(this.cachedViews)) {
+            if (v === view.name) {
+                this.cachedViews = this.cachedViews.slice(
+                    parseInt(i),
+                    parseInt(i) + 1
+                );
+                break;
+            }
+        }
     },
     /**
      * @description 删除当前标签页左边全部多标签页
@@ -80,7 +113,11 @@ const mutations = {
      */
     delAllVisitedRoutes (state) {
         state.visitedRoutes = state.visitedRoutes.filter((item) => item.meta.affix)
+        this.delAllCachedView()
     },
+    delAllCachedView () {
+        this.cachedViews = []
+    }
 }
 const actions = {
     /**

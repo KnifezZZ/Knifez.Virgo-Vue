@@ -1,48 +1,46 @@
 <template>
   <div class="v-tabs">
-    <div class="v-tabs-left-panel">
-      <a-tabs
-        @tab-click="handleTabClick"
-        @edit="handleTabRemove"
-        v-model:activeKey="tabActive"
-        hide-add
-        type="editable-card"
-      >
-        <a-tab-pane
-          v-for="item in visitedRoutes"
-          :key="item.fullPath"
-          :closable="!isAffix(item)"
+    <a-dropdown :trigger="['contextmenu']">
+      <div class="v-tabs-left-panel">
+        <a-tabs
+          @tab-click="handleTabClick"
+          @edit="handleTabRemove"
+          v-model:activeKey="tabActive"
+          hide-add
+          type="editable-card"
+          @contextmenu.prevent="openMenu(item, $event)"
         >
-          <template #tab>
-            <span>
-              <v-icon :icon="item.meta.icon" />
-              {{ item.meta.title }}
-            </span>
-          </template>
-        </a-tab-pane>
-      </a-tabs>
-    </div>
-    <div class="v-tabs-right-panel">
-      <a-dropdown>
-        <template v-slot:overlay>
-          <a-menu @click="handleClick">
-            <a-menu-item key="closeOthersTabs">
-              <a>关闭其他</a>
-            </a-menu-item>
-            <a-menu-item key="closeLeftTabs">
-              <a>关闭左侧</a>
-            </a-menu-item>
-            <a-menu-item key="closeRightTabs">
-              <a>关闭右侧</a>
-            </a-menu-item>
-            <a-menu-item key="closeAllTabs">
-              <a>关闭全部</a>
-            </a-menu-item>
-          </a-menu>
-        </template>
-        <a-button style="margin-left: 8px"> 更多 </a-button>
-      </a-dropdown>
-    </div>
+          <a-tab-pane
+            v-for="item in visitedRoutes"
+            :key="item.fullPath"
+            :closable="!isAffix(item)"
+          >
+            <template #tab>
+              <span>
+                <v-icon :icon="item.meta.icon" />
+                {{ item.meta.title }}
+              </span>
+            </template>
+          </a-tab-pane>
+        </a-tabs>
+      </div>
+      <template #overlay>
+        <a-menu @click="handleClick">
+          <a-menu-item key="closeOthersTabs">
+            <a>关闭其他</a>
+          </a-menu-item>
+          <a-menu-item key="closeLeftTabs">
+            <a>关闭左侧</a>
+          </a-menu-item>
+          <a-menu-item key="closeRightTabs">
+            <a>关闭右侧</a>
+          </a-menu-item>
+          <a-menu-item key="closeAllTabs">
+            <a>关闭全部</a>
+          </a-menu-item>
+        </a-menu>
+      </template>
+    </a-dropdown>
   </div>
 </template>
 
@@ -82,12 +80,12 @@ export default {
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('visitedTabs', JSON.stringify(this.$store.getters['tabsBar/visitedRoutes']))
     })
-    if (this.visitedRoutes.Length === 0) {
+    if (this.visitedRoutes.length === 0) {
       this.initAffixTabs(this.routes)
     }
   },
-  destroyed () {
-    window.removeEventListener('beforeunload')
+  unmounted () {
+    // window.removeEventListener('beforeunload')
   },
   methods: {
     ...mapActions({
