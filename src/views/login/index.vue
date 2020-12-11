@@ -98,7 +98,7 @@ export default {
       await this.login(this.form)
       await this.$router.push(this.handleRoute())
     },
-  },
+  }
 }
 </script>
 <style lang="less">

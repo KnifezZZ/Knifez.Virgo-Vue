@@ -3,7 +3,7 @@ import request from '@/utils/request'
 import config from "@/configs/index";
 import contentType from "@/configs/content-type";
 const reqPath = config.headerApi + "/_account";
-export function checkLogin (ID) {
+export function checkLogin () {
     return request({
         url: reqPath + '/CheckUserInfo',
         method: 'get',

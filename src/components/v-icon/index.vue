@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import 'remixicon/fonts/remixicon.css'
-
+import "remixicon/fonts/remixicon.css"
 export default {
-  name: 'VIcon',
+  name: "VIcon",
   props: {
     icon: {
       type: String,
