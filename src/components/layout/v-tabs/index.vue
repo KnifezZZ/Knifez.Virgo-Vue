@@ -10,11 +10,7 @@
           type="editable-card"
           @contextmenu.prevent="openMenu(item, $event)"
         >
-          <a-tab-pane
-            v-for="item in visitedRoutes"
-            :key="item.fullPath"
-            :closable="!isAffix(item)"
-          >
+          <a-tab-pane v-for="item in visitedRoutes" :key="item.fullPath" :closable="!isAffix(item)">
             <template #tab>
               <span>
                 <v-icon :icon="item.meta.icon" />
@@ -45,14 +41,14 @@
 </template>
 
 <script>
-import VIcon from '@/components/v-icon/index'
-import { mapActions, mapGetters } from 'vuex'
+import VIcon from "@/components/v-icon/index"
+import { mapActions, mapGetters } from "vuex"
 export default {
-  name: 'VTabs',
+  name: "VTabs",
   components: {
     VIcon,
   },
-  data () {
+  data() {
     return {
       affixTabs: [],
       tabActive: null,
@@ -61,48 +57,48 @@ export default {
   },
   computed: {
     ...mapGetters({
-      visitedRoutes: 'tabsBar/visitedRoutes',
-      routes: 'routes/routes',
+      visitedRoutes: "tabsBar/visitedRoutes",
+      routes: "routes/routes",
     }),
   },
   watch: {
     $route: {
-      handler (route) {
+      handler(route) {
         this.addTabs(route)
       },
     },
   },
-  created () {
-    if (sessionStorage.getItem('visitedTabs')) {
-      this.$store.commit('tabsBar/setVisitedRoute', JSON.parse(sessionStorage.getItem('visitedTabs')));
-      this.tabActive = this.$route.fullPath;
+  created() {
+    if (sessionStorage.getItem("visitedTabs")) {
+      this.$store.commit("tabsBar/setVisitedRoute", JSON.parse(sessionStorage.getItem("visitedTabs")))
+      this.tabActive = this.$route.fullPath
     }
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('visitedTabs', JSON.stringify(this.$store.getters['tabsBar/visitedRoutes']))
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem("visitedTabs", JSON.stringify(this.$store.getters["tabsBar/visitedRoutes"]))
     })
     if (this.visitedRoutes.length === 0) {
       this.initAffixTabs(this.routes)
     }
   },
-  unmounted () {
+  unmounted() {
     // window.removeEventListener('beforeunload')
   },
   methods: {
     ...mapActions({
-      addVisitedRoute: 'tabsBar/addVisitedRoute',
-      delVisitedRoute: 'tabsBar/delVisitedRoute',
-      delOthersVisitedRoutes: 'tabsBar/delOthersVisitedRoutes',
-      delLeftVisitedRoutes: 'tabsBar/delLeftVisitedRoutes',
-      delRightVisitedRoutes: 'tabsBar/delRightVisitedRoutes',
-      delAllVisitedRoutes: 'tabsBar/delAllVisitedRoutes',
+      addVisitedRoute: "tabsBar/addVisitedRoute",
+      delVisitedRoute: "tabsBar/delVisitedRoute",
+      delOthersVisitedRoutes: "tabsBar/delOthersVisitedRoutes",
+      delLeftVisitedRoutes: "tabsBar/delLeftVisitedRoutes",
+      delRightVisitedRoutes: "tabsBar/delRightVisitedRoutes",
+      delAllVisitedRoutes: "tabsBar/delAllVisitedRoutes",
     }),
-    initAffixTabs (routes) {
+    initAffixTabs(routes) {
       routes.forEach((route) => {
         if (route.meta && route.meta.affix) this.addTabs(route)
         if (route.children) this.initAffixTabs(route.children)
       })
     },
-    async addTabs (tag) {
+    async addTabs(tag) {
       if (tag.name && tag.meta && tag.meta.tagHidden !== true) {
         let matched = [tag.name]
         if (tag.matched) matched = tag.matched.map((item) => item.name)
@@ -117,69 +113,66 @@ export default {
         this.tabActive = tag.fullPath
       }
     },
-    isActive (route) {
+    isActive(route) {
       return route.path === this.$route.path
     },
-    isAffix (tag) {
+    isAffix(tag) {
       return tag.meta && tag.meta.affix
     },
-    handleTabClick (tab) {
+    handleTabClick(tab) {
       const route = this.visitedRoutes.filter((item) => item.path === tab)[0]
       if (this.$route.fullPath !== route.fullPath) this.$router.push(route)
     },
-    async handleTabRemove (fullPath) {
+    async handleTabRemove(fullPath) {
       const view = this.visitedRoutes.find((item) => {
         return fullPath === item.fullPath
       })
       await this.delVisitedRoute(view)
       if (this.isActive(view)) this.toLastTag()
     },
-    handleClick ({ key }) {
+    handleClick({ key }) {
       switch (key) {
-        case 'closeOthersTabs':
+        case "closeOthersTabs":
           this.closeOthersTabs()
           break
-        case 'closeLeftTabs':
+        case "closeLeftTabs":
           this.closeLeftTabs()
           break
-        case 'closeRightTabs':
+        case "closeRightTabs":
           this.closeRightTabs()
           break
-        case 'closeAllTabs':
+        case "closeAllTabs":
           this.closeAllTabs()
           break
       }
     },
-    async closeSelectedTag (view) {
+    async closeSelectedTag(view) {
       await this.delVisitedRoute(view)
       if (this.isActive(view)) {
         this.toLastTag()
       }
     },
-    async closeOthersTabs () {
+    async closeOthersTabs() {
       await this.delOthersVisitedRoutes(this.toThisTag())
     },
-    async closeLeftTabs () {
+    async closeLeftTabs() {
       await this.delLeftVisitedRoutes(this.toThisTag())
     },
-    async closeRightTabs () {
+    async closeRightTabs() {
       await this.delRightVisitedRoutes(this.toThisTag())
     },
-    async closeAllTabs () {
+    async closeAllTabs() {
       await this.delAllVisitedRoutes()
-      if (this.affixTabs.some((tag) => tag.path === this.toThisTag().path))
-        return
+      if (this.affixTabs.some((tag) => tag.path === this.toThisTag().path)) return
       this.toLastTag()
     },
-    toLastTag () {
+    toLastTag() {
       const latestView = this.visitedRoutes.slice(-1)[0]
       if (latestView) this.$router.push(latestView)
-      else this.$router.push('/')
+      else this.$router.push("/")
     },
-    toThisTag () {
-      const view = this.visitedRoutes.find(
-        (item) => item.fullPath === this.$route.fullPath
-      )
+    toThisTag() {
+      const view = this.visitedRoutes.find((item) => item.fullPath === this.$route.fullPath)
       if (this.$route.path !== view.path) this.$router.push(view)
       return view
     },

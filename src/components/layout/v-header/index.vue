@@ -1,11 +1,7 @@
 <template>
   <div class="right-menu">
     <a-dropdown>
-      <a-avatar
-        shape="square"
-        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-      >
-      </a-avatar>
+      <a-avatar shape="square" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"> </a-avatar>
       <template #overlay>
         <a-menu class="user-drop">
           <a-menu-item key="0" @click="password">
@@ -24,21 +20,19 @@
 </template>
 
 <script>
-import VIcon from '@/components/v-icon'
+import VIcon from "@/components/v-icon"
 export default {
-  name: 'VHeader',
+  name: "VHeader",
   components: {
     VIcon,
   },
   methods: {
-    password () {
-
+    password() {},
+    logOut() {
+      this.$store.dispatch("user/doLogOut")
+      this.$router.push(`/login?redirect=${this.$route.path}`)
     },
-    logOut () {
-      this.$store.dispatch("user/doLogOut");
-      this.$router.push(`/login?redirect=${this.$route.path}`);
-    }
-  }
+  },
 }
 </script>
 
@@ -48,6 +42,9 @@ export default {
   height: 100%;
   line-height: 64px;
   padding-right: 10px;
+  .ant-avatar {
+    cursor: pointer;
+  }
 }
 .user-drop {
   i {

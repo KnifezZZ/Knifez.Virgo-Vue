@@ -18,8 +18,8 @@
       </a-layout-header>
       <v-tabs></v-tabs>
       <a-layout-content
+        class="main-layout"
         :style="{
-          margin: '0px 16px',
           padding: '24px',
         }"
       >
@@ -38,14 +38,12 @@
 <script>
 import config from "@/configs/index"
 import { mapActions, mapGetters } from "vuex"
-import VIcon from "@/components/v-icon/index"
 import VMenu from "./v-menu/index"
 import VHeader from "./v-header/index"
 import VTabs from "./v-tabs/index"
 export default {
   components: {
     VMenu,
-    VIcon,
     VHeader,
     VTabs,
   },
@@ -107,6 +105,10 @@ export default {
   }
   .ant-layout-sider {
     background: #fff;
+  }
+  .main-layout {
+    height: 100vh;
+    overflow: auto;
   }
 }
 </style>

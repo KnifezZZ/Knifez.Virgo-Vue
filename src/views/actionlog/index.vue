@@ -1,9 +1,10 @@
 <template>
-  <a-row>
+  <a-row :gutter="[16, 16]">
+    <a-col :span="24"> <v-searcher></v-searcher></a-col>
     <a-col :span="24">
-      <v-table :columns="columns" :actions="actions" :events="events" bordered>
+      <v-table :useToolBar="true" :columns="columns" :actions="actions" :events="events" bordered>
         <template #Duration="{ text }">
-          <a-tag color="green"> {{ text }} </a-tag>
+          <a-tag :color="text > 0.15 ? 'red' : 'green'"> {{ text }} </a-tag>
         </template>
       </v-table>
     </a-col>
@@ -11,13 +12,12 @@
 </template>
 
 <script>
+import VSearcher from "@/components/page/v-searcher/index"
 import VTable from "@/components/page/v-table/index"
-import { Search } from "./api/index"
+import { Search, BatchDelete, ExportExcel } from "./api/index"
 export default {
   name: "actionlog",
-  components: {
-    VTable,
-  },
+  components: { VSearcher, VTable },
   data() {
     return {
       columns: [
@@ -43,6 +43,8 @@ export default {
       actions: ["add", "edit", "detail", "delete", "export", "import"],
       events: {
         Search,
+        BatchDelete,
+        ExportExcel,
       },
     }
   },
