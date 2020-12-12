@@ -23,15 +23,14 @@ const mutations = {
       return
     }
     state.visitedRoutes.push(Object.assign({}, route))
-    this.addCachedView(route)
   },
-  addCachedView(view) {
+  addCachedView(state, route) {
     let cachedPath = ""
-    if (view.path && view.path.startsWith("/")) {
-      cachedPath = view.path.substr(1)
+    if (route.path && route.path.startsWith("/")) {
+      cachedPath = route.path.substr(1)
     }
     if (state.cachedViews.includes(cachedPath)) return
-    if (!view.meta.noCache) {
+    if (!route.meta.noCache) {
       state.cachedViews.push(cachedPath)
     }
   },
@@ -45,11 +44,10 @@ const mutations = {
     state.visitedRoutes.forEach((item, index) => {
       if (item.path === route.path) state.visitedRoutes.splice(index, 1)
     })
-    this.delCachedView(route)
   },
-  delCachedView(view) {
+  delCachedView(state, route) {
     for (const [i, v] of Object.entries(state.cachedViews)) {
-      const cachedPath = view.path ? view.path.substr(1) : view.name
+      const cachedPath = route.path ? route.path.substr(1) : route.name
       if (v === cachedPath) {
         state.cachedViews.splice(parseInt(i), 1)
         break
@@ -64,11 +62,10 @@ const mutations = {
    */
   delOthersVisitedRoutes(state, route) {
     state.visitedRoutes = state.visitedRoutes.filter((item) => item.meta.affix || item.path === route.path)
-    this.delOthersCachedView(route)
   },
-  delOthersCachedView(view) {
+  delOthersCachedView(state, route) {
     for (const [i, v] of Object.entries(state.cachedViews)) {
-      if (v === view.name) {
+      if (v === route.name) {
         state.cachedViews = state.cachedViews.slice(parseInt(i), parseInt(i) + 1)
         break
       }
@@ -108,9 +105,8 @@ const mutations = {
    */
   delAllVisitedRoutes(state) {
     state.visitedRoutes = state.visitedRoutes.filter((item) => item.meta.affix)
-    this.delAllCachedView()
   },
-  delAllCachedView() {
+  delAllCachedView(state) {
     state.cachedViews = []
   },
 }
@@ -122,8 +118,6 @@ const actions = {
    */
   addVisitedRoute({ commit }, route) {
     commit("addVisitedRoute", route)
-  },
-  addCachedView({ commit }, route) {
     commit("addCachedView", route)
   },
   /**
@@ -133,8 +127,6 @@ const actions = {
    */
   delVisitedRoute({ commit }, route) {
     commit("delVisitedRoute", route)
-  },
-  delCachedView({ commit }, route) {
     commit("delCachedView", route)
   },
   /**
@@ -144,8 +136,6 @@ const actions = {
    */
   delOthersVisitedRoutes({ commit }, route) {
     commit("delOthersVisitedRoutes", route)
-  },
-  delOthersCachedView({ commit }, route) {
     commit("delOthersCachedView", route)
   },
   /**
@@ -170,9 +160,7 @@ const actions = {
    */
   delAllVisitedRoutes({ commit }) {
     commit("delAllVisitedRoutes")
-  },
-  delAllCachedView({ commit }) {
-    commit("delAllCachedView")
+    commit("delAllVisitedRoutes")
   },
 }
 export default { state, getters, mutations, actions }

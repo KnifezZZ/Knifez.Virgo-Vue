@@ -1,4 +1,4 @@
-  <template>
+<template>
   <a-layout id="layout-virgo-custom-trigger">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo">
@@ -11,20 +11,9 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
-        <v-icon
-          class="trigger"
-          icon="indent-increase"
-          v-if="collapsed"
-          @click="() => (collapsed = !collapsed)"
-        >
+        <v-icon class="trigger" icon="indent-increase" v-if="collapsed" @click="() => (collapsed = !collapsed)">
         </v-icon>
-        <v-icon
-          class="trigger"
-          icon="indent-decrease"
-          v-else
-          @click="() => (collapsed = !collapsed)"
-        >
-        </v-icon>
+        <v-icon class="trigger" icon="indent-decrease" v-else @click="() => (collapsed = !collapsed)"> </v-icon>
         <v-header></v-header>
       </a-layout-header>
       <v-tabs></v-tabs>
@@ -32,8 +21,6 @@
         :style="{
           margin: '0px 16px',
           padding: '24px',
-          background: '#fff',
-          minHeight: '280px',
         }"
       >
         <router-view v-slot="{ Component }">
@@ -48,14 +35,13 @@
   </a-layout>
 </template>
 
-
 <script>
-import config from '@/configs/index'
-import { mapActions, mapGetters } from 'vuex'
-import VIcon from '@/components/v-icon/index'
-import VMenu from './v-menu/index'
-import VHeader from './v-header/index'
-import VTabs from './v-tabs/index'
+import config from "@/configs/index"
+import { mapActions, mapGetters } from "vuex"
+import VIcon from "@/components/v-icon/index"
+import VMenu from "./v-menu/index"
+import VHeader from "./v-header/index"
+import VTabs from "./v-tabs/index"
 export default {
   components: {
     VMenu,
@@ -63,28 +49,28 @@ export default {
     VHeader,
     VTabs,
   },
-  data () {
+  data() {
     return {
       selectedKeys: [],
       collapsed: false,
-      projectName: config.projectName
-    };
+      projectName: config.projectName,
+    }
   },
 
   computed: {
     ...mapGetters({
-      cachedViews: 'tabsBar/cachedViews',
-      collapse: 'settings/collapse',
-      routes: 'routes/routes',
-      device: 'settings/device',
-    })
+      cachedViews: "tabsBar/cachedViews",
+      collapse: "settings/collapse",
+      routes: "routes/routes",
+      device: "settings/device",
+    }),
   },
   methods: {
-    ...mapActions({})
-  }
-};
+    ...mapActions({}),
+  },
+}
 </script>
-<style lang='less'>
+<style lang="less">
 #layout-virgo-custom-trigger {
   height: 100vh;
   .trigger {

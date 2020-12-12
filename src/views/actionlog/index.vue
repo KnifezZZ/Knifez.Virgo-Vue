@@ -1,7 +1,11 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <v-table :columns="columns" :actions="actions" :events="events" bordered> </v-table>
+      <v-table :columns="columns" :actions="actions" :events="events" bordered>
+        <template #Duration="{ text }">
+          <a-tag color="green"> {{ text }} </a-tag>
+        </template>
+      </v-table>
     </a-col>
   </a-row>
 </template>
@@ -17,16 +21,26 @@ export default {
   data() {
     return {
       columns: [
-        { dataIndex: "ActionTime", title: "执行时间" },
-        { dataIndex: "ModuleName", title: "模块" },
-        { dataIndex: "ActionName", title: "方法" },
-        { dataIndex: "LogType", title: "日志类型" },
-        { dataIndex: "Duration", title: "耗时", sortable: "custom", isSlot: true },
-        { dataIndex: "IP", title: "IP" },
-        { dataIndex: "Remark", title: "备注" },
-        { isOperate: true, title: "操作", actions: ["detail", "deleted"] },
+        { key: "ActionTime", title: "执行时间" },
+        { key: "ModuleName", title: "模块" },
+        { key: "ActionName", title: "方法" },
+        { key: "LogType", title: "日志类型" },
+        {
+          key: "Duration",
+          title: "耗时",
+          width: 200,
+          isSlot: true,
+        },
+        { key: "IP", title: "IP" },
+        { key: "Remark", title: "备注" },
+        {
+          title: "操作",
+          isOperate: true,
+
+          actions: ["detail", "edit", "deleted"],
+        },
       ],
-      actions: ["add", "edit", "delete", "export", "import"],
+      actions: ["add", "edit", "detail", "delete", "export", "import"],
       events: {
         Search,
       },

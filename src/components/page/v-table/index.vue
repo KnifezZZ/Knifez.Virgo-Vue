@@ -1,6 +1,29 @@
 <template>
-  <a-table :columns="columns" :data-source="tableData" :pagination="pagination" @change="handleChange" bordered>
-  </a-table>
+  <a-card>
+    <a-table :rowKey="rowKey" :data-source="tableData" :pagination="pagination" @change="handleChange" bordered>
+      <template v-for="item in columns">
+        <template v-if="item.isSlot">
+          <a-table-column :data-index="item.key" :title="item.title" :key="item.key">
+            <template v-slot[`index`]="{ text, record }">
+              <slot :name="item.key" v-bind="{ text, record }" />
+            </template>
+          </a-table-column>
+        </template>
+        <template v-else-if="item.isOperate">
+          <a-table-column :data-index="item.key" :title="item.title" :key="item.key">
+            <template v-slot[`index`]="{ text, record }">
+              <a-button type="link">查看</a-button>
+              <a-button type="link">修改</a-button>
+              <a-button type="link">删除</a-button>
+            </template>
+          </a-table-column>
+        </template>
+        <template v-else>
+          <a-table-column :data-index="item.key" :title="item.title" :key="item.key"> </a-table-column>
+        </template>
+      </template>
+    </a-table>
+  </a-card>
 </template>
 
 <script>
@@ -8,6 +31,13 @@ import { ref } from "vue"
 export default {
   name: "VTable",
   props: {
+    rowKey: {
+      type: String,
+      required: false,
+      default() {
+        return "ID"
+      },
+    },
     columns: {
       type: Array,
       required: true,
@@ -38,7 +68,7 @@ export default {
     //分页配置
     const pagination = ref({
       position: "bottom",
-      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+      showTotal: (total, range) => `共 ${total} 条`,
       showQuickJumper: true,
       showSizeChanger: true,
       pageSizeOptions: ["10", "20", "30", "50", "100"],
@@ -105,7 +135,7 @@ export default {
       handleChange,
     }
   },
-  mounted() {
+  created() {
     this.doSearch(false)
   },
 }
