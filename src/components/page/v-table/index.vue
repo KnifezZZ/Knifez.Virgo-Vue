@@ -1,10 +1,19 @@
 <template>
   <a-card>
     <div class="v-toolbar" v-if="useToolBar">
+      <slot name="toolbar" />
       <a-button type="primary"><v-icon icon="add-line"></v-icon> 添加</a-button>
       <a-button type="danger"><v-icon icon="delete-bin-line"></v-icon> 批量删除</a-button>
-      <a-button type="info">导出</a-button>
-      <a-button type="info">导入</a-button>
+      <a-dropdown v-if="actions.includes('export')">
+        <template #overlay>
+          <a-menu @click="handleMenuClick">
+            <a-menu-item v-if="actions.includes('import')" key="import">导入 </a-menu-item>
+            <a-menu-item key="exportAll">导出全部 </a-menu-item>
+            <a-menu-item key="exportSelect">导出勾选 </a-menu-item>
+          </a-menu>
+        </template>
+        <a-button> 导出 <v-icon icon="arrow-down-s-line"></v-icon></a-button>
+      </a-dropdown>
     </div>
     <a-table
       :rowKey="rowKey"
@@ -43,7 +52,7 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import CompTable from "./comp-table"
 export default {
   name: "VTable",
   props: {
@@ -73,111 +82,28 @@ export default {
       type: Array,
       required: false,
     },
+    formItems: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props) {
-    //查询条件
-    const searchForm = ref({
-      orderByColumn: null,
-      isAsc: null,
-    })
-    //查询条件Copy
-    const searchFormClone = ref({})
-    //是否加载
-    const loading = ref(false)
-    //列表数据
-    const tableData = ref([])
-    //选中数据
-    const selectData = ref([])
-    //分页配置
-    const pagination = ref({
-      position: "both",
-      showTotal: (total, range) => `共 ${total} 条`,
-      showQuickJumper: true,
-      showSizeChanger: true,
-      pageSizeOptions: ["10", "20", "30", "50", "100"],
-      currentPage: 1,
-      pageSize: 20,
-      events: {},
-    })
-
-    /**
-     * @param changePage 是否改变页面为1
-     */
-    const doSearch = (changePage) => {
-      loading.value = true
-      const params = {
-        ...searchFormClone,
-        Page: pagination.value.currentPage,
-        Limit: pagination.value.pageSize,
-      }
-      //查询时页码默认为1
-      if (!changePage) {
-        params.Page = 1
-      }
-      //排序
-      if (params["isAsc"]) {
-        params["SortInfo"] = {
-          Direction: params["isAsc"],
-          Property: params["orderByColumn"],
-        }
-      }
-      for (const key in params) {
-        if (params[key] === "" || params[key] === undefined) {
-          delete params[key]
-        }
-        // 删除自定义字段
-        if (["isAsc", "orderByColumn"].includes(key)) {
-          delete params[key]
-        }
-      }
-      props.events
-        .Search(params)
-        .then((repData) => {
-          loading.value = false
-          pagination.value.total = repData.Count || 0
-          tableData.value = repData.Data || []
-        })
-        .catch((error) => {
-          console.error(error.response.data.Form)
-          loading.value = false
-        })
-    }
-    //翻页
-    const handleChange = (page, filter, sorter) => {
-      pagination.value.currentPage = page.current
-      pagination.value.pageSize = page.pageSize
-      doSearch(true)
-    }
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        debugger
-        selectData.value = selectedRows
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows)
-      },
-      onSelect: (record, selected, selectedRows) => {
-        debugger
-        console.log(record, selected, selectedRows)
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        debugger
-        console.log(selected, selectedRows, changeRows)
-      },
-    }
-    //删除
-    const doDelete = () => {
-      debugger
-      props.events.BatchDelete().then((res) => {
-        doSearch(false)
-      })
-    }
-    //查看
-    const doView = () => {}
-    //修改
-    const doEdit = () => {}
-
+    const {
+      loading,
+      searchFormClone,
+      selectData,
+      pagination,
+      tableData,
+      doSearch,
+      doDelete,
+      doView,
+      doEdit,
+      handleChange,
+      rowSelection,
+      handleMenuClick,
+    } = CompTable(props)
     return {
       loading,
-      searchForm,
       searchFormClone,
       tableData,
       selectData,
@@ -188,6 +114,7 @@ export default {
       pagination,
       handleChange,
       rowSelection,
+      handleMenuClick,
     }
   },
   created() {
@@ -199,16 +126,9 @@ export default {
 <style lang="less">
 .v-toolbar {
   border: 0;
-  text-align: right;
+  // text-align: right;
   .ant-card-body {
     padding: 8px;
-  }
-  .ant-btn {
-    margin-right: 8px;
-    margin-bottom: 16px;
-    i {
-      padding-right: 8px;
-    }
   }
 }
 </style>

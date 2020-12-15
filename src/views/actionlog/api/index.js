@@ -23,6 +23,15 @@ export function ExportExcel(data) {
   return request({
     url: reqPath + "ExportExcel",
     method: "post",
+    contentType: contentType.stream,
+    data: data,
+  })
+}
+export function ExportExcelByIds(data) {
+  return request({
+    url: reqPath + "ExportExcelByIds",
+    method: "post",
+    contentType: contentType.stream,
     data: data,
   })
 }

@@ -7,21 +7,14 @@
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import zhCN from "ant-design-vue/es/locale/zh_CN"
+import "@/assets/css/base.less"
 export default {
-  name: 'App',
-  data () {
+  name: "App",
+  data() {
     return {
       locale: zhCN,
-    };
-  }
+    }
+  },
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-</style>
