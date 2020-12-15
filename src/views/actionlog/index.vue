@@ -78,8 +78,7 @@ export default {
       {
         title: "操作",
         isOperate: true,
-
-        actions: ["detail", "edit", "deleted"],
+        actions: ["edit", "delete"],
       },
     ]
   },

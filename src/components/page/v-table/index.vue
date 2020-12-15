@@ -2,8 +2,10 @@
   <a-card>
     <div class="v-toolbar" v-if="useToolBar">
       <slot name="toolbar" />
-      <a-button type="primary"><v-icon icon="add-line"></v-icon> 添加</a-button>
-      <a-button type="danger"><v-icon icon="delete-bin-line"></v-icon> 批量删除</a-button>
+      <a-button type="primary" @click="doAdd"><v-icon icon="add-line"></v-icon> 添加</a-button>
+      <a-button :disabled="selectData.length === 0" type="danger" @click="doDelete">
+        <v-icon icon="delete-bin-line"></v-icon> 批量删除
+      </a-button>
       <a-dropdown v-if="actions.includes('export')">
         <template #overlay>
           <a-menu @click="handleMenuClick">
@@ -34,11 +36,10 @@
         <template v-else-if="item.isOperate">
           <a-table-column :data-index="item.key" :title="item.title" :key="item.key">
             <template v-slot[`index`]="{ text, record }">
-              <a-button type="link">查看</a-button>
-              <a-button type="link">修改</a-button>
-
-              <a-popconfirm placement="topRight" title="确定要删除吗?" @confirm="doDelete">
-                <a-button type="link">删除</a-button>
+              <a-button v-if="item.actions.includes('detail')" @click="doView(record)" type="link">查看</a-button>
+              <a-button v-if="item.actions.includes('edit')" @click="doEdit(record)" type="link">修改</a-button>
+              <a-popconfirm placement="topRight" title="确定要删除吗?" @confirm="doDelete(record)">
+                <a-button v-if="item.actions.includes('delete')" type="link">删除</a-button>
               </a-popconfirm>
             </template>
           </a-table-column>

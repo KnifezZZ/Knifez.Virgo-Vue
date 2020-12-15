@@ -82,30 +82,42 @@ export default function compTable(props) {
   const selectData = ref([])
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      debugger
       selectData.value = selectedRows
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows)
     },
     onSelect: (record, selected, selectedRows) => {
-      debugger
       console.log(record, selected, selectedRows)
     },
     onSelectAll: (selected, selectedRows, changeRows) => {
-      debugger
+      selectData.value = selectedRows
       console.log(selected, selectedRows, changeRows)
     },
   }
   //删除
-  const doDelete = () => {
+  const doDelete = (record) => {
     debugger
-    props.events.BatchDelete().then((res) => {
+    let ids = selectData.value.map((item) => {
+      return item.ID
+    })
+    //单条删除
+    if (record !== null && record !== undefined) {
+      ids = [record.ID]
+    }
+    props.events.BatchDelete({ ids }).then((res) => {
       doSearch(false)
     })
   }
   //查看
-  const doView = () => {}
+  const doAdd = () => {
+    debugger
+  }
+  //查看
+  const doView = (record) => {
+    debugger
+  }
   //修改
-  const doEdit = () => {}
+  const doEdit = (record) => {
+    debugger
+  }
 
   const handleMenuClick = (e) => {
     console.log("click", e)
@@ -141,9 +153,10 @@ export default function compTable(props) {
     selectData,
     queryReset,
     doSearch,
-    doDelete,
     doView,
+    doAdd,
     doEdit,
+    doDelete,
     handleChange,
     rowSelection,
     handleMenuClick,
