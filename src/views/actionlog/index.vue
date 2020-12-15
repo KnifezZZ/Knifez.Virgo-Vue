@@ -1,11 +1,11 @@
 <template>
   <a-row :gutter="[16, 16]">
     <a-col :span="24">
-      <v-searcher :events="$refs.vtable">
+      <v-searcher :events="$refs.vtable" :collapse.sync="collapse">
         <a-form-item label="访问地址" name="ActionUrl">
           <a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
         </a-form-item>
-        <a-form-item label="方法" name="ActionName">
+        <a-form-item label="方法" name="ActionName" v-show="collapse.isActive">
           <a-input type="text" v-model:value="queryInfos.ActionName"></a-input>
         </a-form-item>
       </v-searcher>
@@ -41,6 +41,10 @@ export default {
   components: { VSearcher, VTable },
   data() {
     return {
+      collapse: {
+        needCollapse: true,
+        isActive: false,
+      },
       columns: [],
       actions: ["view", "add", "edit", "detail", "delete", "export", "import"],
       events: {

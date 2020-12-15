@@ -14,7 +14,8 @@ module.exports = {
         'vue/no-unused-components': 'off',
         'no-unused-vars': 'off',
         'vue/no-parsing-error': 'off',
-        'no-empty': 'off'
+        'no-empty': 'off',
+        "no-tabs":"off"
     },
     parserOptions: {
         parser: 'babel-eslint'

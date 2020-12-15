@@ -19,11 +19,19 @@ export default function compTable(props) {
     pageSize: 20,
     events: {},
   })
+  const queryReset = () => {
+    Object.keys(props.formItems).forEach((item) => {
+      if (typeof props.formItems[item] == Array) {
+        props.formItems[item] = undefined
+      } else {
+        props.formItems[item] = ""
+      }
+    })
+  }
   /**
    * @param changePage 是否改变页面为1
    */
   const doSearch = (changePage) => {
-    debugger
     loading.value = true
     const params = {
       ...props.formItems,
@@ -44,7 +52,7 @@ export default function compTable(props) {
       }
     }
     for (const key in params) {
-      if (params[key] === "" || params[key] === undefined) {
+      if (params[key] === "" || params[key] === [] || params[key] === undefined) {
         delete params[key]
       }
       // 删除自定义字段
@@ -131,6 +139,7 @@ export default function compTable(props) {
     pagination,
     tableData,
     selectData,
+    queryReset,
     doSearch,
     doDelete,
     doView,

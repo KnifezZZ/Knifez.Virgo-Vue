@@ -13,3 +13,6 @@ html {
   margin-left: 5px;
   margin-right: 5px;
 }
+.ant-btn-group .ant-btn {
+  margin: 0;
+}
