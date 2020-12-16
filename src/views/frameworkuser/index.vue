@@ -62,23 +62,16 @@ export default {
 	created() {
 		//table字段
 		this.columns = [
-			{ key: 'ActionTime', title: '执行时间' },
-			{ key: 'ModuleName', title: '模块' },
-			{ key: 'ActionName', title: '方法' },
-			{ key: 'ActionUrl', title: '访问地址' },
-			{ key: 'LogType', title: '日志类型' },
-			{
-				key: 'Duration',
-				title: '耗时',
-				width: 200,
-				isSlot: true,
-			},
-			{ key: 'IP', title: 'IP' },
-			{ key: 'Remark', title: '备注' },
+			{ key: 'ITCode', title: '账户' },
+			{ key: 'Name', title: '姓名' },
+			{ key: 'Sex', title: '性别' },
+			{ key: 'RoleName_view', title: '角色' },
+			{ key: 'GroupName_view', title: '用户组' },
+			{ key: 'IsValid', title: '是否生效' },
 			{
 				title: '操作',
 				isOperate: true,
-				actions: ['edit', 'delete'],
+				actions: ['detail', 'edit', 'delete'],
 			},
 		]
 	},
