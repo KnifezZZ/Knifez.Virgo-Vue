@@ -1,24 +1,31 @@
 <template>
-  <a-row>
-    <a-col>
-      <a-input type="text" v-model:value="ipt" />
-      <a-button>Hello</a-button>
-    </a-col>
-  </a-row>
+	<a-row>
+		<a-col :span="24">
+			<a-button @click="save">保存</a-button>
+			<v-editor v-model:value="entity.BodyText" editor="BodyText"></v-editor>
+		</a-col>
+	</a-row>
 </template>
 
 <script>
+import Veditor from '@/components/v-editor'
 export default {
-  data() {
-    return {
-      ipt: "",
-    }
-  },
-  watch: {
-    ipt(newValue, oldValue) {
-      debugger
-    },
-  },
+	data() {
+		return {
+			entity: {
+				BodyText: 'hello ,v editor',
+			},
+		}
+	},
+	components: {
+		'v-editor': Veditor,
+	},
+	methods: {
+		save() {
+			debugger
+			console.log(this.entity.BodyText)
+		},
+	},
 }
 </script>
 
