@@ -60,12 +60,9 @@ export default {
 	created() {
 		//table字段
 		this.columns = [
-			{ key: 'ITCode', title: '账户' },
-			{ key: 'Name', title: '姓名' },
-			{ key: 'Sex', title: '性别' },
-			{ key: 'RoleName_view', title: '角色' },
-			{ key: 'GroupName_view', title: '用户组' },
-			{ key: 'IsValid', title: '是否生效', isSlot: true },
+			{ key: 'RoleCode', title: '角色编号' },
+			{ key: 'RoleName', title: '角色名称' },
+			{ key: 'RoleRemark', title: '备注' },
 			{
 				title: '操作',
 				isOperate: true,

@@ -4,6 +4,7 @@ export const constantRoutes = [
 	{
 		path: '/',
 		component: Layout,
+		name: 'home',
 		redirect: '/dashboard',
 		children: [
 			{
@@ -14,7 +15,7 @@ export const constantRoutes = [
 				name: 'Dashboard',
 				meta: {
 					title: '面板',
-					icon: 'home-4-line',
+					icon: 'home-4',
 					affix: true,
 				},
 			},

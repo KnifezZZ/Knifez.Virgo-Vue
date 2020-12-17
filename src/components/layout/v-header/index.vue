@@ -5,12 +5,12 @@
       <template #overlay>
         <a-menu class="user-drop">
           <a-menu-item key="0" @click="password">
-            <v-icon icon="lock-password-line"></v-icon>
+            <v-icon icon="lock-password"></v-icon>
             <span>密码修改</span>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="LogOut" @click="logOut">
-            <v-icon icon="logout-circle-line"></v-icon>
+            <v-icon icon="logout-circle"></v-icon>
             <span>退出登录</span>
           </a-menu-item>
         </a-menu>
