@@ -32,7 +32,7 @@
 <script>
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
-import { Search, BatchDelete, ExportExcel, ExportExcelByIds } from './api/index'
+import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
 export default {
 	name: 'frameworkuser',
@@ -45,12 +45,7 @@ export default {
 			},
 			columns: [],
 			actions: ['add', 'edit', 'detail', 'delete', 'export', 'import'],
-			events: {
-				Search,
-				BatchDelete,
-				ExportExcel,
-				ExportExcelByIds,
-			},
+			events: API,
 			queryInfos: {
 				ActionUrl: '',
 				ActionTime: [],

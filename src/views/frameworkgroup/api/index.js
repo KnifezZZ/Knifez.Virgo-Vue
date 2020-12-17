@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import config from '@/configs/index'
 import contentType from '@/configs/content-type'
-const reqPath = config.headerApi + '/_FrameworkUserBase/'
+const reqPath = config.headerApi + '/_FrameworkGroup/'
 import {
 	bSearch,
 	bBatchDelete,
