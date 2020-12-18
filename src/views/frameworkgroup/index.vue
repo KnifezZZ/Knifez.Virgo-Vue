@@ -1,7 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs.vtable" :collapse.sync="collapse">
+			<v-searcher :events="$refs" :collapse.sync="collapse">
 				<a-form-item label="访问地址" name="ActionUrl">
 					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
 				</a-form-item>
@@ -55,9 +55,9 @@ export default {
 	created() {
 		//table字段
 		this.columns = [
-			{ key: 'RoleCode', title: '角色编号' },
-			{ key: 'RoleName', title: '角色名称' },
-			{ key: 'RoleRemark', title: '备注' },
+			{ key: 'GroupCode', title: '用户组编号' },
+			{ key: 'GroupName', title: '用户组名称' },
+			{ key: 'GroupRemark', title: '备注' },
 			{
 				title: '操作',
 				isOperate: true,

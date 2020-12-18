@@ -40,10 +40,11 @@ export default {
 	},
 	methods: {
 		queryClick() {
-			this.events.doSearch(false)
+			console.log(this.events)
+			this.events.vtable.doSearch(false)
 		},
 		resetClick() {
-			this.events.queryReset()
+			this.events.vtable.queryReset()
 		},
 	},
 }

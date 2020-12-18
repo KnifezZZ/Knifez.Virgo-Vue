@@ -2,6 +2,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { createBlob } from '@/utils/files'
 import { saveAsyncRoutes } from '@/utils/hasRole'
+import { getTreeData } from '@/utils/tool'
 import { notification } from 'ant-design-vue'
 export default function compTable(props) {
 	const router = useRouter()
@@ -12,16 +13,7 @@ export default function compTable(props) {
 	//列表数据
 	const tableData = ref([])
 	//分页配置
-	const pagination = ref({
-		position: 'both',
-		showTotal: (total, range) => `共 ${total} 条`,
-		showQuickJumper: true,
-		showSizeChanger: true,
-		pageSizeOptions: ['10', '20', '30', '50', '100'],
-		currentPage: 1,
-		pageSize: 20,
-		events: {},
-	})
+	const pagination = ref(props.pagination)
 	const queryReset = () => {
 		Object.keys(props.formItems).forEach((item) => {
 			if (typeof props.formItems[item] == Array) {
@@ -36,12 +28,14 @@ export default function compTable(props) {
 	 */
 	const doSearch = (changePage) => {
 		loading.value = true
-		const params = {
+		let params = {
 			...props.formItems,
 			orderByColumn: null,
 			isAsc: null,
-			Page: pagination.value.currentPage,
-			Limit: pagination.value.pageSize,
+		}
+		if (pagination.value) {
+			params.Page = pagination.value.currentPage
+			params.Limit = pagination.value.pageSize
 		}
 		//查询时页码默认为1
 		if (!changePage) {
@@ -67,11 +61,17 @@ export default function compTable(props) {
 			.Search(params)
 			.then((repData) => {
 				loading.value = false
-				pagination.value.total = repData.Count || 0
-				tableData.value = repData.Data || []
+				if (pagination.value) {
+					pagination.value.total = repData.Count || 0
+				}
+				if (props.useTree) {
+					tableData.value = getTreeData(repData.Data, props.treeParentKey, props.treeKey) || []
+				} else {
+					tableData.value = repData.Data || []
+				}
 			})
 			.catch((error) => {
-				console.error(error.response.data.Form)
+				console.error(error)
 				loading.value = false
 			})
 	}
@@ -97,7 +97,6 @@ export default function compTable(props) {
 	}
 	//删除
 	const doDelete = (record) => {
-		debugger
 		let ids = selectData.value.map((item) => {
 			return item.ID
 		})
@@ -110,12 +109,12 @@ export default function compTable(props) {
 		})
 	}
 	const exeNewTab = (record) => {
-		const addroute = router.currentRoute.value.name + '-cur'
-		if (!router.hasRoute(addroute)) {
+		const newRouter = router.currentRoute.value.name + '-cur'
+		if (!router.hasRoute(newRouter)) {
 			//防止刷新404
 			let asyncRoute = {
 				path: router.currentRoute.value.path + '/cur',
-				name: addroute,
+				name: newRouter,
 				component: () => import(`@/views${router.currentRoute.value.path}/views/dialog-form.vue`),
 				meta: {
 					title: router.currentRoute.value.name + '-编辑',
@@ -139,15 +138,18 @@ export default function compTable(props) {
 	const doEdit = (record) => {
 		exeNewTab(record, 'edit')
 	}
+	const doImport = () => {}
 
 	const handleExportClick = (e) => {
 		if (e.key == 'exportAll') {
-			const params = {
+			let params = {
 				...props.formItems,
 				orderByColumn: null,
 				isAsc: null,
-				Page: pagination.value.currentPage,
-				Limit: pagination.value.pageSize,
+			}
+			if (pagination.value) {
+				params.Page = pagination.value.currentPage
+				params.Limit = pagination.value.pageSize
 			}
 			props.events.ExportExcel(params).then((res) => {
 				createBlob(res)
@@ -167,7 +169,7 @@ export default function compTable(props) {
 	return {
 		loading,
 		searchFormClone,
-		pagination,
+		tablePagination: pagination,
 		tableData,
 		selectData,
 		queryReset,
@@ -176,6 +178,7 @@ export default function compTable(props) {
 		doAdd,
 		doEdit,
 		doDelete,
+		doImport,
 		handleChange,
 		rowSelection,
 		handleExportClick,

@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 import config from '@/configs/index'
 import contentType from '@/configs/content-type'
+const reqPath = config.headerApi + '/_DataPrivilege/'
 import {
 	bSearch,
 	bBatchDelete,
@@ -11,23 +12,25 @@ import {
 	bGetExcelTemplate,
 	bImported,
 } from '@/api/baseCURD'
-
-const reqPath = config.headerApi + '/_ActionLog/'
 const API = {
 	// 列表查询
-	Search: (data) => {
+	Search(data) {
 		return bSearch(reqPath, data)
 	},
 	// 批量删除
-	BatchDelete: (data) => {
+	BatchDelete(data) {
 		return bBatchDelete(reqPath, data)
 	},
+	// 修改
+	Edit(data) {
+		return bEdit(reqPath, data)
+	},
 	// 详情
-	Detail: (id) => {
+	Detail(id) {
 		return bDetail(reqPath, id)
 	},
 	//导出excel
-	ExportExcel: (data) => {
+	ExportExcel(data) {
 		return bExportExcel({
 			url: reqPath + 'ExportExcel',
 			method: 'post',
@@ -35,14 +38,14 @@ const API = {
 			data: data,
 		})
 	},
-	ExportExcelByIds: (data) => {
+	ExportExcelByIds(data) {
 		return bExportExcelByIds(reqPath, data)
 	},
-	GetExcelTemplate: (data) => {
+	GetExcelTemplate(data) {
 		return bGetExcelTemplate(reqPath, data)
 	},
 	//导入
-	Imported: (data) => {
+	Imported(data) {
 		return bImported(reqPath, data)
 	},
 }

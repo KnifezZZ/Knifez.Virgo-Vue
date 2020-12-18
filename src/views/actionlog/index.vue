@@ -1,7 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs.vtable" :collapse.sync="collapse">
+			<v-searcher :events="$refs" :collapse.sync="collapse">
 				<a-form-item label="访问地址" name="ActionUrl">
 					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
 				</a-form-item>
@@ -46,7 +46,7 @@ export default {
 				isActive: false,
 			},
 			columns: [],
-			actions: ['view', 'add', 'edit', 'detail', 'delete', 'export', 'import'],
+			actions: ['detail', 'delete', 'export', 'import'],
 			events: API,
 			queryInfos: {
 				ActionUrl: '',
@@ -73,15 +73,9 @@ export default {
 			{
 				title: '操作',
 				isOperate: true,
-				actions: ['edit', 'delete'],
+				actions: ['detail', 'delete'],
 			},
 		]
-	},
-	mounted() {
-		debugger
-		API.Search({}).then((res) => {
-			debugger
-		})
 	},
 }
 </script>

@@ -22,7 +22,7 @@
 		<a-table
 			:rowKey="rowKey"
 			:data-source="tableData"
-			:pagination="pagination"
+			:pagination="tablePagination"
 			@change="handleChange"
 			:row-selection="rowSelection"
 			bordered
@@ -59,13 +59,6 @@ import CompTable from './comp-table'
 export default {
 	name: 'VTable',
 	props: {
-		useToolBar: {
-			type: Boolean,
-			required: false,
-			default() {
-				return true
-			},
-		},
 		rowKey: {
 			type: String,
 			required: false,
@@ -89,13 +82,57 @@ export default {
 			type: Object,
 			required: true,
 		},
+		pagination: {
+			type: Object,
+			required: false,
+			default() {
+				return {
+					position: 'both',
+					showTotal: (total, range) => `共 ${total} 条`,
+					showQuickJumper: true,
+					showSizeChanger: true,
+					pageSizeOptions: ['10', '20', '30', '50', '100'],
+					currentPage: 1,
+					pageSize: 20,
+					events: {},
+				}
+			},
+		},
+		useToolBar: {
+			type: Boolean,
+			required: false,
+			default() {
+				return true
+			},
+		},
+		useTree: {
+			type: Boolean,
+			required: false,
+			default: function() {
+				return false
+			},
+		},
+		treeKey: {
+			type: String,
+			required: false,
+			default: function() {
+				return 'ID'
+			},
+		},
+		treeParentKey: {
+			type: String,
+			required: false,
+			default: function() {
+				return 'ParentID'
+			},
+		},
 	},
 	setup(props) {
 		const {
 			loading,
 			searchFormClone,
 			selectData,
-			pagination,
+			tablePagination,
 			tableData,
 			queryReset,
 			doSearch,
@@ -103,6 +140,7 @@ export default {
 			doAdd,
 			doDelete,
 			doEdit,
+			doImport,
 			handleChange,
 			rowSelection,
 			handleExportClick,
@@ -118,7 +156,8 @@ export default {
 			doAdd,
 			doDelete,
 			doEdit,
-			pagination,
+			doImport,
+			tablePagination,
 			handleChange,
 			rowSelection,
 			handleExportClick,

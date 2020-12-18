@@ -1,7 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs.vtable" :collapse.sync="collapse">
+			<v-searcher :events="$refs" :collapse.sync="collapse">
 				<a-form-item label="访问地址" name="ActionUrl">
 					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
 				</a-form-item>
