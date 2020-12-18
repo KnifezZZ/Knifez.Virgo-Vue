@@ -43,7 +43,7 @@
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import API from './api/index'
-import { LogTypeEnum } from './config'
+import { LogTypeEnum } from '@/views/enums.js'
 import { ref, onMounted, watch } from 'vue'
 export default {
 	name: 'actionlog',
