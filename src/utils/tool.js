@@ -16,3 +16,7 @@ export function getTreeData(list, parentCol, idCol) {
 	const tree = getChildren(null)
 	return tree
 }
+
+export function openDialog() {
+  
+}

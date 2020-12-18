@@ -48,5 +48,17 @@ const API = {
 	Imported(data) {
 		return bImported(reqPath, data)
 	},
+	GetFrameworkRoles() {
+		return request({
+			url: reqPath + 'GetFrameworkRoles',
+			method: 'get',
+		})
+	},
+	GetFrameworkGroups() {
+		return request({
+			url: reqPath + 'GetFrameworkGroups',
+			method: 'get',
+		})
+	},
 }
 export default API

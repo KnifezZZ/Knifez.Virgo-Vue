@@ -2,11 +2,11 @@
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
 			<v-searcher :events="$refs" :collapse.sync="collapse">
-				<a-form-item label="访问地址" name="ActionUrl">
-					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
+				<a-form-item label="账户" name="ITCode">
+					<a-input type="text" v-model:value="queryInfos.ITCode"></a-input>
 				</a-form-item>
-				<a-form-item label="方法" name="ActionName" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.ActionName"></a-input>
+				<a-form-item label="姓名" name="Name">
+					<a-input type="text" v-model:value="queryInfos.Name"></a-input>
 				</a-form-item>
 			</v-searcher>
 		</a-col>
@@ -40,16 +40,18 @@ export default {
 	data() {
 		return {
 			collapse: {
-				needCollapse: true,
+				needCollapse: false,
 				isActive: false,
 			},
 			columns: [],
 			actions: ['add', 'edit', 'detail', 'delete', 'export', 'import'],
 			events: API,
 			queryInfos: {
-				ActionUrl: '',
-				ActionTime: [],
+				ITCode: '',
+				Name: '',
 			},
+			getFrameworkRolesData: [],
+			getFrameworkGroupsData: [],
 		}
 	},
 	created() {
@@ -67,6 +69,12 @@ export default {
 				actions: ['detail', 'edit', 'delete'],
 			},
 		]
+		API.GetFrameworkRoles().then((res) => {
+			this.getFrameworkRolesData = res
+		})
+		API.GetFrameworkGroups().then((res) => {
+			this.getFrameworkGroupsData = res
+		})
 	},
 	mounted() {},
 }

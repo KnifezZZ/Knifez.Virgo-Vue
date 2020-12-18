@@ -3,7 +3,9 @@ import { useRouter } from 'vue-router'
 import { createBlob } from '@/utils/files'
 import { saveAsyncRoutes } from '@/utils/hasRole'
 import { getTreeData } from '@/utils/tool'
-import { notification } from 'ant-design-vue'
+import { notification, Modal } from 'ant-design-vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { createVNode } from 'vue'
 export default function compTable(props) {
 	const router = useRouter()
 	//是否加载
@@ -16,12 +18,20 @@ export default function compTable(props) {
 	const pagination = ref(props.pagination)
 	const queryReset = () => {
 		Object.keys(props.formItems).forEach((item) => {
-			if (typeof props.formItems[item] == Array) {
-				props.formItems[item] = undefined
+			if (typeof props.formItems[item] == 'object') {
+				props.formItems[item] = []
 			} else {
 				props.formItems[item] = ''
 			}
 		})
+		console.log(props.formItems)
+	}
+	const queryPageParams = (params) => {
+		if (pagination.value.position) {
+			params.Page = pagination.value.currentPage
+			params.Limit = pagination.value.pageSize
+		}
+		return params
 	}
 	/**
 	 * @param changePage 是否改变页面为1
@@ -33,10 +43,7 @@ export default function compTable(props) {
 			orderByColumn: null,
 			isAsc: null,
 		}
-		if (pagination.value) {
-			params.Page = pagination.value.currentPage
-			params.Limit = pagination.value.pageSize
-		}
+		params = queryPageParams(params)
 		//查询时页码默认为1
 		if (!changePage) {
 			params.Page = 1
@@ -61,7 +68,7 @@ export default function compTable(props) {
 			.Search(params)
 			.then((repData) => {
 				loading.value = false
-				if (pagination.value) {
+				if (pagination.value.position) {
 					pagination.value.total = repData.Count || 0
 				}
 				if (props.useTree) {
@@ -101,17 +108,23 @@ export default function compTable(props) {
 			return item.ID
 		})
 		//单条删除
-		if (record !== null && record !== undefined) {
+		if (record !== null) {
 			ids = [record.ID]
 		}
-		props.events.BatchDelete({ ids }).then((res) => {
-			doSearch(false)
+		Modal.confirm({
+			title: '确定要删除吗?',
+			icon: createVNode(ExclamationCircleOutlined),
+			onOk() {
+				props.events.BatchDelete(ids).then((res) => {
+					doSearch(false)
+				})
+			},
+			onCancel() {},
 		})
 	}
-	const exeNewTab = (record) => {
+	const exeNewTab = (record, status) => {
 		const newRouter = router.currentRoute.value.name + '-cur'
 		if (!router.hasRoute(newRouter)) {
-			//防止刷新404
 			let asyncRoute = {
 				path: router.currentRoute.value.path + '/cur',
 				name: newRouter,
@@ -122,10 +135,13 @@ export default function compTable(props) {
 				},
 			}
 			router.addRoute('home', asyncRoute)
+			//防止刷新404
 			saveAsyncRoutes(asyncRoute, router.currentRoute.value.path)
 		}
-		router.push({ path: router.currentRoute.value.path + '/cur', params: record })
+		router.push({ path: router.currentRoute.value.path + '/cur', params: { record, status } })
 	}
+
+	const exeNewDialog = (record) => {}
 	//查看
 	const doAdd = () => {
 		exeNewTab({}, 'add')
@@ -138,7 +154,9 @@ export default function compTable(props) {
 	const doEdit = (record) => {
 		exeNewTab(record, 'edit')
 	}
-	const doImport = () => {}
+	const doImport = () => {
+		exeNewDialog(null)
+	}
 
 	const handleExportClick = (e) => {
 		if (e.key == 'exportAll') {
@@ -147,10 +165,7 @@ export default function compTable(props) {
 				orderByColumn: null,
 				isAsc: null,
 			}
-			if (pagination.value) {
-				params.Page = pagination.value.currentPage
-				params.Limit = pagination.value.pageSize
-			}
+			params = queryPageParams(params)
 			props.events.ExportExcel(params).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')

@@ -5,7 +5,12 @@
 			<a-button v-if="actions.includes('add')" type="primary" @click="doAdd">
 				<v-icon icon="add"></v-icon> 添加
 			</a-button>
-			<a-button v-if="actions.includes('delete')" :disabled="selectData.length === 0" type="danger" @click="doDelete">
+			<a-button
+				v-if="actions.includes('delete')"
+				:disabled="selectData.length === 0"
+				type="danger"
+				@click="doDelete(null)"
+			>
 				<v-icon icon="delete-bin"></v-icon> 批量删除
 			</a-button>
 			<a-button v-if="actions.includes('import')" @click="doImport">导入</a-button>
@@ -83,7 +88,7 @@ export default {
 			required: true,
 		},
 		pagination: {
-			type: Object,
+			type: [Object, Boolean],
 			required: false,
 			default() {
 				return {

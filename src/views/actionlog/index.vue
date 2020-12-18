@@ -2,11 +2,18 @@
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
 			<v-searcher :events="$refs" :collapse.sync="collapse">
+				<a-form-item label="访问时间" name="ActionTime">
+					<a-range-picker v-model:value="queryInfos.ActionTime" allowClear />
+				</a-form-item>
 				<a-form-item label="访问地址" name="ActionUrl">
 					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
 				</a-form-item>
-				<a-form-item label="方法" name="ActionName" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.ActionName"></a-input>
+				<a-form-item label="日志类型" name="LogType">
+					<a-select v-model:value="queryInfos.LogType" mode="multiple" placeholder="请选择" style="width:200px">
+						<a-select-option v-for="i in logTypes" :key="i.value">
+							{{ i.text }}
+						</a-select-option>
+					</a-select>
 				</a-form-item>
 			</v-searcher>
 		</a-col>
@@ -20,8 +27,9 @@
 				:events="events"
 				bordered
 			>
-				<template #toolbar>
-					<a-button>Hello</a-button>
+				<template #toolbar> </template>
+				<template #LogType="{text}">
+					<a-tag :color="text == 1 ? 'red' : 'gray'">{{ logTypes[text].text }}</a-tag>
 				</template>
 				<template #Duration="{ text }">
 					<a-tag :color="text > 0.15 ? 'red' : 'green'"> {{ text }} </a-tag>
@@ -35,6 +43,7 @@
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import API from './api/index'
+import { LogTypeEnum } from './config'
 import { ref, onMounted, watch } from 'vue'
 export default {
 	name: 'actionlog',
@@ -51,7 +60,9 @@ export default {
 			queryInfos: {
 				ActionUrl: '',
 				ActionTime: [],
+				LogType: [],
 			},
+			logTypes: LogTypeEnum,
 		}
 	},
 	created() {
@@ -61,7 +72,7 @@ export default {
 			{ key: 'ModuleName', title: '模块' },
 			{ key: 'ActionName', title: '方法' },
 			{ key: 'ActionUrl', title: '访问地址' },
-			{ key: 'LogType', title: '日志类型' },
+			{ key: 'LogType', title: '日志类型', isSlot: true },
 			{
 				key: 'Duration',
 				title: '耗时',
