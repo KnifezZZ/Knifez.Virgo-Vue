@@ -40,9 +40,9 @@
 				:destroyOnClose="true"
 				v-model:visible="dialogInfo.visible"
 				:title="dialogInfo.title"
-				@ok="handleOk"
+				:footer="false"
 			>
-				<dialog-form :status="formStatus" :data="formData"></dialog-form>
+				<dialog-form :status="formStatus" :id="formId"></dialog-form>
 			</a-modal>
 		</a-col>
 	</a-row>
@@ -77,8 +77,8 @@ export default {
 				visible: false,
 				title: '编辑',
 			},
-			formData: {},
 			formStatus: 'detail',
+			formId: '',
 		}
 	},
 	created() {
@@ -104,23 +104,15 @@ export default {
 			},
 		]
 	},
-	methods: {
-		handleOk() {
-			this.dialogInfo.visible = false
-		},
-	},
 	mounted() {
 		let _this = this
 		this.$refs.vtable.doView = function(record) {
 			_this.formId = record.ID
 			_this.formStatus = 'detail'
-			API.Detail(record.ID).then((res) => {
-				_this.formData = res.entity
-				_this.dialogInfo = {
-					visible: true,
-					title: '查看',
-				}
-			})
+			_this.dialogInfo = {
+				visible: true,
+				title: '查看',
+			}
 		}
 	},
 }

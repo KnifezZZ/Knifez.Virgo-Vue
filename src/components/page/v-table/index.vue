@@ -56,11 +56,12 @@
 				</template>
 			</template>
 		</a-table>
+		<a-modal v-model:visible="dialogImportShow">{{ dialogImportTable }}</a-modal>
 	</a-card>
 </template>
 
 <script>
-import CompTable from './comp-table'
+import CompTable from '../../comp-api/table'
 export default {
 	name: 'VTable',
 	props: {
@@ -145,6 +146,8 @@ export default {
 			doAdd,
 			doDelete,
 			doEdit,
+			dialogImportShow,
+			dialogImportTable,
 			doImport,
 			handleChange,
 			rowSelection,
@@ -161,6 +164,8 @@ export default {
 			doAdd,
 			doDelete,
 			doEdit,
+			dialogImportShow,
+			dialogImportTable,
 			doImport,
 			tablePagination,
 			handleChange,

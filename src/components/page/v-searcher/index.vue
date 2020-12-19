@@ -1,5 +1,5 @@
 <template>
-	<a-card style="padding:10px;">
+	<a-card>
 		<a-form layout="inline">
 			<slot></slot>
 			<a-button @click="resetClick"><v-icon icon="refresh"></v-icon> 重置</a-button>

@@ -42,4 +42,6 @@ export function loadAsyncRoutes() {
 	}
 }
 
-export function openOnDialog(record, status) {}
+export function openOnDialog(record, status) {
+	// TODO openDialog
+}

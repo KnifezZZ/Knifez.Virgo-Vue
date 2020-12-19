@@ -25,6 +25,10 @@
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
 			</v-table>
+
+			<a-modal :destroyOnClose="true" v-model:visible="dialogInfo.visible" :title="dialogInfo.title" :footer="false">
+				<dialog-form :status="formStatus" :id="formId"></dialog-form>
+			</a-modal>
 		</a-col>
 	</a-row>
 </template>
@@ -34,9 +38,10 @@ import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
+import DialogForm from './views/dialog-form'
 export default {
 	name: 'frameworkuser',
-	components: { VSearcher, VTable },
+	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
 			collapse: {
@@ -50,6 +55,12 @@ export default {
 				ActionUrl: '',
 				ActionTime: [],
 			},
+			dialogInfo: {
+				visible: false,
+				title: '编辑',
+			},
+			formStatus: 'detail',
+			formId: '',
 		}
 	},
 	created() {
@@ -65,7 +76,33 @@ export default {
 			},
 		]
 	},
-	mounted() {},
+	mounted() {
+		let _this = this
+		this.$refs.vtable.doView = function(record) {
+			_this.formId = record.ID
+			_this.formStatus = 'detail'
+			_this.dialogInfo = {
+				visible: true,
+				title: '查看',
+			}
+		}
+		this.$refs.vtable.doAdd = function(record) {
+			_this.formId = record.ID
+			_this.formStatus = 'add'
+			_this.dialogInfo = {
+				visible: true,
+				title: '添加',
+			}
+		}
+		this.$refs.vtable.doEdit = function(record) {
+			_this.formId = record.ID
+			_this.formStatus = 'edit'
+			_this.dialogInfo = {
+				visible: true,
+				title: '添加',
+			}
+		}
+	},
 }
 </script>
 

@@ -125,7 +125,7 @@ export default function compTable(props) {
 	const showPage = (record, status, openType = 'tab') => {
 		const newRouter = router.currentRoute.value.name + '-cur'
 		let nextRoute = {
-			path: router.currentRoute.value.path + '/cur/:status/:ID',
+			path: router.currentRoute.value.path + '/cur/:status/:id',
 			name: newRouter,
 			component: () => import(`@/views${router.currentRoute.value.path}/views/dialog-form.vue`),
 			meta: {
@@ -141,7 +141,11 @@ export default function compTable(props) {
 		if (status == 'detail') {
 			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
 		}
-		openOnTab(nextRoute, { ID: record.ID, status })
+		if (openType == 'dialog') {
+			openOnDialog(nextRoute, { id: record.ID, status })
+		} else {
+			openOnTab(nextRoute, { id: record.ID, status })
+		}
 	}
 
 	//查看
@@ -156,7 +160,11 @@ export default function compTable(props) {
 	const doEdit = (record) => {
 		showPage(record, 'edit')
 	}
+	const dialogImportShow = ref(false)
+	const dialogImportTable = ref('')
 	const doImport = () => {
+		dialogImportTable.value = router.currentRoute.value.path
+		dialogImportShow.value = true
 		// showPage({}, 'imported', 'dialog')
 	}
 
@@ -195,6 +203,8 @@ export default function compTable(props) {
 		doAdd,
 		doEdit,
 		doDelete,
+		dialogImportShow,
+		dialogImportTable,
 		doImport,
 		handleChange,
 		rowSelection,

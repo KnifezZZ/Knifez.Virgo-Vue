@@ -1,10 +1,10 @@
 <template>
 	<a-card>
-		<a-form :layout="layout">
+		<a-form :layout="layout" class="v-form">
 			<slot></slot>
-			<a-form-item :wrapper-col="{ span: 14, offset: 4 }" v-if="status !== 'detail'">
-				<a-button>
-					重置
+			<a-form-item :wrapper-col="{ span: 12, offset: 12 }" v-if="status !== 'detail'">
+				<a-button @click="doClose">
+					关闭
 				</a-button>
 				<a-button type="primary" @click="doSubmit">
 					提交
@@ -40,10 +40,14 @@ export default {
 	setup(props) {
 		const doSubmit = () => {
 			if (props.status == 'add') {
-				console.log('add')
+				props.events.Add({ Entity: props.formData }).then((res) => {
+					debugger
+				})
 			}
 			if (props.status == 'edit') {
-				console.log('edit')
+				props.events.Edit({ Entity: props.formData }).then((res) => {
+					debugger
+				})
 			}
 		}
 		return {
@@ -53,8 +57,16 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.ant-form-item {
-	width: 48%;
+<style lang="less">
+.v-form {
+	.ant-form-item {
+		// width: 48%;
+		.ant-form-item-label {
+			min-width: 100px;
+		}
+		.ant-form-item-control-wrapper {
+			width: 70%;
+		}
+	}
 }
 </style>

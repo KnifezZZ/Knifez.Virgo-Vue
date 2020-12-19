@@ -5,6 +5,7 @@ const reqPath = config.headerApi + '/_FrameworkRole/'
 import {
 	bSearch,
 	bBatchDelete,
+	bAdd,
 	bEdit,
 	bDetail,
 	bExportExcel,
@@ -20,6 +21,10 @@ const API = {
 	// 批量删除
 	BatchDelete(data) {
 		return bBatchDelete(reqPath, data)
+	},
+	// 新增
+	Add(data) {
+		return bAdd(reqPath, data)
 	},
 	// 修改
 	Edit(data) {

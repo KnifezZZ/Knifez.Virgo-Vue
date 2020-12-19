@@ -8,6 +8,14 @@ export function bSearch(reqPath, data) {
 		data: data,
 	})
 }
+// 修改
+export function bAdd(reqPath, data) {
+	return request({
+		url: reqPath + 'Add',
+		method: 'post',
+		data: data,
+	})
+}
 // 批量删除
 export function bBatchDelete(reqPath, data) {
 	return request({
