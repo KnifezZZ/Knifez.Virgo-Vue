@@ -1,7 +1,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { createBlob } from '@/utils/files'
-import { saveAsyncRoutes } from '@/utils/hasRole'
+import { openOnTab, openOnDialog } from '@/utils/openPage'
 import { getTreeData } from '@/utils/tool'
 import { notification, Modal } from 'ant-design-vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
@@ -122,40 +122,42 @@ export default function compTable(props) {
 			onCancel() {},
 		})
 	}
-	const exeNewTab = (record, status) => {
+	const showPage = (record, status, openType = 'tab') => {
 		const newRouter = router.currentRoute.value.name + '-cur'
-		if (!router.hasRoute(newRouter)) {
-			let asyncRoute = {
-				path: router.currentRoute.value.path + '/cur',
-				name: newRouter,
-				component: () => import(`@/views${router.currentRoute.value.path}/views/dialog-form.vue`),
-				meta: {
-					title: router.currentRoute.value.name + '-编辑',
-					hidden: true,
-				},
-			}
-			router.addRoute('home', asyncRoute)
-			//防止刷新404
-			saveAsyncRoutes(asyncRoute, router.currentRoute.value.path)
+		let nextRoute = {
+			path: router.currentRoute.value.path + '/cur/:status/:ID',
+			name: newRouter,
+			component: () => import(`@/views${router.currentRoute.value.path}/views/dialog-form.vue`),
+			meta: {
+				title: router.currentRoute.value.name + '-编辑',
+				hidden: true,
+				componentUrl: `${router.currentRoute.value.path}/views/dialog-form.vue`,
+				inLayout: true,
+			},
 		}
-		router.push({ path: router.currentRoute.value.path + '/cur', params: { record, status } })
+		if (status == 'add') {
+			nextRoute.meta.title = router.currentRoute.value.name + '-添加'
+		}
+		if (status == 'detail') {
+			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
+		}
+		openOnTab(nextRoute, { ID: record.ID, status })
 	}
 
-	const exeNewDialog = (record) => {}
 	//查看
 	const doAdd = () => {
-		exeNewTab({}, 'add')
+		showPage({}, 'add')
 	}
 	//查看
 	const doView = (record) => {
-		exeNewTab(record, 'detail')
+		showPage(record, 'detail')
 	}
 	//修改
 	const doEdit = (record) => {
-		exeNewTab(record, 'edit')
+		showPage(record, 'edit')
 	}
 	const doImport = () => {
-		exeNewDialog(null)
+		// showPage({}, 'imported', 'dialog')
 	}
 
 	const handleExportClick = (e) => {

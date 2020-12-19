@@ -35,6 +35,15 @@
 					<a-tag :color="text > 0.15 ? 'red' : 'green'"> {{ text }} </a-tag>
 				</template>
 			</v-table>
+			<a-modal
+				width="65%"
+				:destroyOnClose="true"
+				v-model:visible="dialogInfo.visible"
+				:title="dialogInfo.title"
+				@ok="handleOk"
+			>
+				<dialog-form :status="formStatus" :data="formData"></dialog-form>
+			</a-modal>
 		</a-col>
 	</a-row>
 </template>
@@ -42,12 +51,13 @@
 <script>
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
+import DialogForm from './views/dialog-form'
 import API from './api/index'
 import { LogTypeEnum } from '@/views/enums.js'
 import { ref, onMounted, watch } from 'vue'
 export default {
 	name: 'actionlog',
-	components: { VSearcher, VTable },
+	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
 			collapse: {
@@ -55,7 +65,7 @@ export default {
 				isActive: false,
 			},
 			columns: [],
-			actions: ['detail', 'delete', 'export', 'import'],
+			actions: ['detail', 'delete', 'exported', 'imported'],
 			events: API,
 			queryInfos: {
 				ActionUrl: '',
@@ -63,6 +73,12 @@ export default {
 				LogType: [],
 			},
 			logTypes: LogTypeEnum,
+			dialogInfo: {
+				visible: false,
+				title: '编辑',
+			},
+			formData: {},
+			formStatus: 'detail',
 		}
 	},
 	created() {
@@ -87,6 +103,25 @@ export default {
 				actions: ['detail', 'delete'],
 			},
 		]
+	},
+	methods: {
+		handleOk() {
+			this.dialogInfo.visible = false
+		},
+	},
+	mounted() {
+		let _this = this
+		this.$refs.vtable.doView = function(record) {
+			_this.formId = record.ID
+			_this.formStatus = 'detail'
+			API.Detail(record.ID).then((res) => {
+				_this.formData = res.entity
+				_this.dialogInfo = {
+					visible: true,
+					title: '查看',
+				}
+			})
+		}
 	},
 }
 </script>

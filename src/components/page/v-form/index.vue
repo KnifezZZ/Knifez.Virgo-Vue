@@ -1,13 +1,13 @@
 <template>
-	<a-card style="padding:10px;">
+	<a-card>
 		<a-form :layout="layout">
 			<slot></slot>
-			<a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-				<a-button type="primary" @click="onSubmit">
-					提交
-				</a-button>
+			<a-form-item :wrapper-col="{ span: 14, offset: 4 }" v-if="status !== 'detail'">
 				<a-button>
 					重置
+				</a-button>
+				<a-button type="primary" @click="doSubmit">
+					提交
 				</a-button>
 			</a-form-item>
 		</a-form>
@@ -18,7 +18,15 @@
 export default {
 	name: 'VForm',
 	props: {
+		status: {
+			type: String,
+			required: true,
+		},
 		events: {
+			type: Object,
+			required: true,
+		},
+		formData: {
 			type: Object,
 			required: true,
 		},
@@ -29,15 +37,24 @@ export default {
 			},
 		},
 	},
-	methods: {
-		onSubmit() {
-			this.events.doSearch(false)
-		},
-		resetClick() {
-			this.events.queryReset()
-		},
+	setup(props) {
+		const doSubmit = () => {
+			if (props.status == 'add') {
+				console.log('add')
+			}
+			if (props.status == 'edit') {
+				console.log('edit')
+			}
+		}
+		return {
+			doSubmit,
+		}
 	},
 }
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.ant-form-item {
+	width: 48%;
+}
+</style>

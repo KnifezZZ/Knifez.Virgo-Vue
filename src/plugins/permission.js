@@ -8,7 +8,7 @@ import router from '@/router'
 import store from '@/store'
 import { title, authentication, loginInterception, recordRoute, routesWhiteList } from '@/configs/index'
 import { notification } from 'ant-design-vue'
-import { loadAsyncRoutes } from '@/utils/hasRole'
+import { loadAsyncRoutes } from '@/utils/openPage'
 NProgress.configure({ showSpinner: false })
 /**
  * @param {页面标题} pageTitle

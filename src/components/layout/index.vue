@@ -42,6 +42,7 @@ import VMenu from './v-menu/index'
 import VHeader from './v-header/index'
 import VTabs from './v-tabs/index'
 export default {
+	name: 'home',
 	components: {
 		VMenu,
 		VHeader,

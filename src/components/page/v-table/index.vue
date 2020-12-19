@@ -13,8 +13,8 @@
 			>
 				<v-icon icon="delete-bin"></v-icon> 批量删除
 			</a-button>
-			<a-button v-if="actions.includes('import')" @click="doImport">导入</a-button>
-			<a-dropdown v-if="actions.includes('export')">
+			<a-button v-if="actions.includes('imported')" @click="doImport">导入</a-button>
+			<a-dropdown v-if="actions.includes('exported')">
 				<template #overlay>
 					<a-menu @click="handleExportClick">
 						<a-menu-item key="exportAll">导出全部 </a-menu-item>

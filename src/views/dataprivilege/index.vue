@@ -44,7 +44,7 @@ export default {
 				isActive: false,
 			},
 			columns: [],
-			actions: ['add', 'edit', 'detail', 'delete', 'export'],
+			actions: ['add', 'edit', 'detail', 'delete', 'exported'],
 			events: API,
 			queryInfos: {
 				ActionUrl: '',

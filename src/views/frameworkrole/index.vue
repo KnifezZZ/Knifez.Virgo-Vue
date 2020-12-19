@@ -44,7 +44,7 @@ export default {
 				isActive: false,
 			},
 			columns: [],
-			actions: ['add', 'edit', 'detail', 'delete', 'export', 'import'],
+			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: API,
 			queryInfos: {
 				RoleCode: '',
