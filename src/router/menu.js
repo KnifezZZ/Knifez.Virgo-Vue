@@ -79,7 +79,6 @@ class Menu {
 	 * @param children
 	 */
 	recursionTree(datalist, parentId = null, children = []) {
-		debugger
 		datalist
 			.filter((item) => {
 				if (parentId === null) {

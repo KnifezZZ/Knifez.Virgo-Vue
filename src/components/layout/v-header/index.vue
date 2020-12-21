@@ -24,18 +24,18 @@
 </template>
 
 <script>
-import VIcon from '@/components/v-icon'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
 	name: 'VHeader',
-	components: {
-		VIcon,
-	},
-	methods: {
-		password() {},
-		logOut() {
-			this.$store.dispatch('user/doLogOut')
-			this.$router.push(`/login?redirect=${this.$route.path}`)
-		},
+	setup() {
+		const router = useRouter()
+		const store = useStore()
+		const logOut = () => {
+			store.dispatch('user/doLogOut')
+			router.push(`/login?redirect=${router.currentRoute.value.path}`)
+		}
+		return { logOut }
 	},
 }
 </script>

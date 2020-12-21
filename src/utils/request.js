@@ -50,12 +50,12 @@ class requestBase {
 	 * @param configs
 	 */
 	serviceFormData(url, option, configs) {
-		const datas = new FormData()
+		const data = new FormData()
 		option.data.mapKeys((value, key) => {
-			datas.append(key, value)
+			data.append(key, value)
 		})
 		return axios
-			.post(url, datas, { headers: configs, responseType: 'arraybuffer' })
+			.post(url, data, { headers: configs, responseType: 'arraybuffer' })
 			.then((response) => response.data)
 			.catch((errors) => console.error(errors))
 	}

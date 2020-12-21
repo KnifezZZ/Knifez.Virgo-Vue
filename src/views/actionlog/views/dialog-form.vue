@@ -52,7 +52,7 @@ export default {
 		},
 	},
 	setup(props) {
-		let { formStatus, formData } = compDialogForm(props, API.Detail)
+		let { formStatus, formData } = compDialogForm(props, API)
 		return { formStatus, formData }
 	},
 }

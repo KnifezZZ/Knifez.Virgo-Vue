@@ -41,13 +41,9 @@
 </template>
 
 <script>
-import VIcon from '@/components/v-icon/index'
 import { mapActions, mapGetters } from 'vuex'
 export default {
 	name: 'VTabs',
-	components: {
-		VIcon,
-	},
 	data() {
 		return {
 			affixTabs: [],

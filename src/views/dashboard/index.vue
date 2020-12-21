@@ -22,7 +22,6 @@ export default {
 	},
 	methods: {
 		save() {
-			debugger
 			console.log(this.entity.BodyText)
 		},
 	},

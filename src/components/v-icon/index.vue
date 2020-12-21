@@ -2,9 +2,10 @@
 	<i :class="'ri-' + icon + type" aria-hidden="true"></i>
 </template>
 
-<script>
+<script lang="ts">
 import 'remixicon/fonts/remixicon.css'
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
 	name: 'VIcon',
 	props: {
 		icon: {
@@ -22,7 +23,10 @@ export default {
 			},
 		},
 	},
-}
+	setup() {
+		return {}
+	},
+})
 </script>
 
 <style lang="less" scoped>

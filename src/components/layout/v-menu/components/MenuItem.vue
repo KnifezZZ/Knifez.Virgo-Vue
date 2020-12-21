@@ -9,10 +9,8 @@
 
 <script>
 import { isExternal } from '@/utils/validate'
-import VIcon from '@/components/v-icon'
 export default {
   name: 'MenuItem',
-  components: { VIcon },
   props: {
     item: {
       type: Object,
