@@ -30,6 +30,10 @@ export default {
 			type: Object,
 			required: true,
 		},
+		model: {
+			type: Object,
+			required: true,
+		},
 		layout: {
 			type: String,
 			default: function() {
@@ -37,21 +41,26 @@ export default {
 			},
 		},
 	},
-	setup(props) {
+	setup(props, context) {
+		const doClose = (refresh) => {
+			context.emit('closeDialog', refresh)
+		}
 		const doSubmit = () => {
+			//clean model
 			if (props.status == 'add') {
 				props.events.Add({ Entity: props.formData }).then((res) => {
-					debugger
+					doClose(true)
 				})
 			}
 			if (props.status == 'edit') {
 				props.events.Edit({ Entity: props.formData }).then((res) => {
-					debugger
+					doClose(true)
 				})
 			}
 		}
 		return {
 			doSubmit,
+			doClose,
 		}
 	},
 }
@@ -66,6 +75,7 @@ export default {
 		}
 		.ant-form-item-control-wrapper {
 			width: 70%;
+			min-width: 300px;
 		}
 	}
 }

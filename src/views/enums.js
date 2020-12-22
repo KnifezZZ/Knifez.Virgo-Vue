@@ -1,5 +1,5 @@
 export const LogTypeEnum = [
-	{ value: 0, text: '普通' },
-	{ value: 1, text: '异常' },
-	{ value: 2, text: '调试' },
+	{ Value: 0, Text: '普通' },
+	{ Value: 1, Text: '异常' },
+	{ Value: 2, Text: '调试' },
 ]

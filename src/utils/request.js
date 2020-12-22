@@ -80,10 +80,11 @@ class requestBase {
 	requestError(error) {
 		let msg = '接口请求异常'
 		const { response, message } = error
-		if (response && response.data) {
+		if (response && response.data && response.data.Form) {
+			msg = Object.values(response.data.Form).join(',')
 			notification.error({
 				message: 'HTTP Code ' + response.status,
-				description: response.statusText,
+				description: msg,
 			})
 		} else {
 			if (message === 'Network Error') {

@@ -27,7 +27,7 @@
 			</v-table>
 
 			<a-modal :destroyOnClose="true" v-model:visible="dialogInfo.visible" :title="dialogInfo.title" :footer="false">
-				<dialog-form :status="formStatus" :id="formId"></dialog-form>
+				<dialog-form :status="formStatus" :id="formId" :dialogInfo="dialogInfo"></dialog-form>
 			</a-modal>
 		</a-col>
 	</a-row>
@@ -77,6 +77,7 @@ export default {
 		]
 	},
 	mounted() {
+		//#region use dialog
 		let _this = this
 		this.$refs.vtable.doView = function(record) {
 			_this.formId = record.ID
@@ -102,6 +103,7 @@ export default {
 				title: '添加',
 			}
 		}
+		//#endregion
 	},
 }
 </script>

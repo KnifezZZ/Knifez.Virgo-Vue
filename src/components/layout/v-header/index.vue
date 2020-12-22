@@ -8,7 +8,7 @@
 						<v-icon icon="lock-password"></v-icon>
 						<span>密码修改</span>
 					</a-menu-item>
-					<a-menu-item key="dev-genpage" @click="password">
+					<a-menu-item key="dev-genpage" @click="genPage">
 						<v-icon icon="vuejs"></v-icon>
 						<span>生成代码</span>
 					</a-menu-item>
@@ -20,14 +20,31 @@
 				</a-menu>
 			</template>
 		</a-dropdown>
+		<a-modal width="80%" title="生成代码" :footer="false" v-model:visible="visible"
+			><virgo-produce></virgo-produce>
+		</a-modal>
 	</div>
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import VirgoProduce from './produce/index'
 export default {
 	name: 'VHeader',
+	components: {
+		VirgoProduce,
+	},
+	data() {
+		return {
+			visible: false,
+		}
+	},
+	methods: {
+		genPage() {
+			this.visible = true
+		},
+	},
 	setup() {
 		const router = useRouter()
 		const store = useStore()

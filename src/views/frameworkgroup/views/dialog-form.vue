@@ -1,5 +1,5 @@
 <template>
-	<v-form :status="formStatus" :events="events" :form-data="formData">
+	<v-form :status="formStatus" :events="events" :form-data="formData" @closeDialog="closeDialog">
 		<template v-if="formStatus === 'detail'">
 			<a-form-item label="用户组编码" name="GroupCode">
 				{{ formData.GroupCode }}
@@ -43,13 +43,17 @@ export default {
 		status: {
 			type: String,
 		},
-		data: {
+		id: {
+			type: String,
+		},
+		dialogInfo: {
 			type: Object,
 		},
 	},
-	setup(props) {
-		let { formStatus, formData } = compDialogForm(props, API)
-		return { formStatus, formData }
+	setup(props, context) {
+		let model = ['ID', 'GroupCode', 'GroupName', 'GroupRemark']
+		let { formStatus, formData, closeDialog } = compDialogForm(props, API, model)
+		return { formStatus, formData, closeDialog }
 	},
 }
 </script>

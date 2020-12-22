@@ -43,11 +43,11 @@ const actions = {
 	 */
 	async setAllRoutes({ commit }) {
 		let data = []
-		if (sessionStorage.getItem('allroutes') !== null) {
-			data = JSON.parse(sessionStorage.getItem('allroutes'))
+		if (sessionStorage.getItem('allRoutes') !== null) {
+			data = JSON.parse(sessionStorage.getItem('allRoutes'))
 		} else {
 			data = store.getters['user/menus']
-			sessionStorage.setItem('allroutes', JSON.stringify(data))
+			sessionStorage.setItem('allRoutes', JSON.stringify(data))
 		}
 		let asyncRoutes = Menu.getTreeMenu(data)
 		const finallyRoutes = Menu.filterRoutes([...constantRoutes, ...asyncRoutes])

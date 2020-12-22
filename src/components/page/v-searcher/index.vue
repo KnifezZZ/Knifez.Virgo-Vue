@@ -17,10 +17,6 @@
 export default {
 	name: 'VSearcher',
 	props: {
-		events: {
-			type: Object,
-			required: true,
-		},
 		collapse: {
 			type: Object,
 			default: function() {
@@ -40,11 +36,10 @@ export default {
 	},
 	methods: {
 		queryClick() {
-			console.log(this.events)
-			this.events.vtable.doSearch(false)
+			this.$emit('search', false)
 		},
 		resetClick() {
-			this.events.vtable.queryReset()
+			this.$emit('reset')
 		},
 	},
 }

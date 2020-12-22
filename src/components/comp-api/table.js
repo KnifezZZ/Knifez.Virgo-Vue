@@ -1,7 +1,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { createBlob } from '@/utils/files'
-import { openOnTab, openOnDialog } from '@/utils/openPage'
+import { openOnTab } from '@/utils/openPage'
 import { getTreeData } from '@/utils/tool'
 import { notification, Modal } from 'ant-design-vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
@@ -115,14 +115,17 @@ export default function compTable(props) {
 			title: '确定要删除吗?',
 			icon: createVNode(ExclamationCircleOutlined),
 			onOk() {
-				props.events.BatchDelete(ids).then((res) => {
-					doSearch(false)
-				})
+				return new Promise((resolve, reject) => {
+					props.events.BatchDelete(ids).then((res) => {
+						doSearch(false)
+						resolve(true)
+					})
+				}).catch(() => console.log('Oops errors!'))
 			},
 			onCancel() {},
 		})
 	}
-	const showPage = (record, status, openType = 'tab') => {
+	const showPage = (record, status) => {
 		const newRouter = router.currentRoute.value.name + '-cur'
 		let nextRoute = {
 			path: router.currentRoute.value.path + '/cur/:status/:id',
@@ -141,11 +144,7 @@ export default function compTable(props) {
 		if (status == 'detail') {
 			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
 		}
-		if (openType == 'dialog') {
-			openOnDialog(nextRoute, { id: record.ID, status })
-		} else {
-			openOnTab(nextRoute, { id: record.ID, status })
-		}
+		openOnTab(nextRoute, { id: record.ID, status })
 	}
 
 	//查看

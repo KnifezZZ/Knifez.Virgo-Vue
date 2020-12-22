@@ -34,7 +34,7 @@
 		>
 			<template v-for="item in columns">
 				<template v-if="item.isSlot">
-					<a-table-column :data-index="item.key" :title="item.title" :key="item.key">
+					<a-table-column :data-index="item.key" :title="item.title" :width="item.width" :key="item.key">
 						<template v-slot[`index`]="{ text, record }">
 							<slot :name="item.key" v-bind="{ text, record }" />
 						</template>
@@ -52,7 +52,8 @@
 					</a-table-column>
 				</template>
 				<template v-else>
-					<a-table-column :data-index="item.key" :title="item.title" :key="item.key"> </a-table-column>
+					<a-table-column :data-index="item.key" :title="item.title" :width="item.width" :key="item.key">
+					</a-table-column>
 				</template>
 			</template>
 		</a-table>
