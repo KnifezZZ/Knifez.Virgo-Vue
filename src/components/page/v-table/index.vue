@@ -30,6 +30,7 @@
 			:pagination="tablePagination"
 			@change="handleChange"
 			:row-selection="rowSelection"
+			:loading="loading"
 			bordered
 		>
 			<template v-for="item in columns">
@@ -57,7 +58,6 @@
 				</template>
 			</template>
 		</a-table>
-		<a-modal v-model:visible="dialogImportShow">{{ dialogImportTable }}</a-modal>
 	</a-card>
 </template>
 
@@ -134,7 +134,7 @@ export default {
 			},
 		},
 	},
-	setup(props) {
+	setup(props, context) {
 		const {
 			loading,
 			searchFormClone,
@@ -147,13 +147,11 @@ export default {
 			doAdd,
 			doDelete,
 			doEdit,
-			dialogImportShow,
-			dialogImportTable,
 			doImport,
 			handleChange,
 			rowSelection,
 			handleExportClick,
-		} = CompTable(props)
+		} = CompTable(props, context)
 		return {
 			loading,
 			searchFormClone,
@@ -165,8 +163,6 @@ export default {
 			doAdd,
 			doDelete,
 			doEdit,
-			dialogImportShow,
-			dialogImportTable,
 			doImport,
 			tablePagination,
 			handleChange,
@@ -174,7 +170,7 @@ export default {
 			handleExportClick,
 		}
 	},
-	created() {
+	mounted() {
 		this.doSearch(false)
 	},
 }

@@ -1,59 +1,71 @@
 <template>
-	<v-form :status="formStatus" :events="events" :form-data="formData" layout="inline">
-		<template v-if="formStatus === 'detail'">
-			<a-form-item style="width:100%" label="访问地址" name="ActionUrl">
-				{{ formData.ActionUrl }}
-			</a-form-item>
-			<a-form-item label="模块" name="ActionName">
-				{{ formData.ActionName }}
-			</a-form-item>
-			<a-form-item label="方法" name="ModuleName">
-				{{ formData.ModuleName }}
-			</a-form-item>
-			<a-form-item label="操作用户" name="ITCode">
-				{{ formData.ITCode }}
-			</a-form-item>
-			<a-form-item label="IP" name="IP">
-				{{ formData.IP }}
-			</a-form-item>
-			<a-form-item label="访问时间" name="ActionTime">
-				{{ formData.ActionTime }}
-			</a-form-item>
-			<a-form-item label="耗时" name="Duration">
-				{{ formData.Duration }}
-			</a-form-item>
-			<a-form-item style="width:100%" label="备注" name="Remark">
-				{{ formData.Remark }}
-			</a-form-item>
-		</template>
-	</v-form>
+	<v-form-dialog :use-dialog="true">
+		<v-form layout="inline" :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+	</v-form-dialog>
 </template>
 
 <script>
+import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
 import API from '../api/index'
-import compDialogForm from '@/components/comp-api/dialog-form'
 export default {
-	name: 'actionlog-dialog',
+	name: 'frameworkgroup-dialog',
 	components: {
 		VForm,
+		VFormDialog,
 	},
 	data() {
 		return {
 			events: API,
 		}
 	},
-	props: {
-		status: {
-			type: String,
-		},
-		id: {
-			type: String,
-		},
-	},
-	setup(props) {
-		let { formStatus, formData } = compDialogForm(props, API)
-		return { formStatus, formData }
+	setup(props, context) {
+		let fields = [
+			{
+				key: 'ID',
+				type: 'input',
+				hidden: true,
+			},
+			{
+				title: '模块',
+				key: 'ActionName',
+				type: 'input',
+			},
+			{
+				title: '方法',
+				key: 'ModuleName',
+				type: 'input',
+			},
+			{
+				title: '操作账户',
+				key: 'ITCode',
+				type: 'input',
+			},
+			{
+				title: 'IP',
+				key: 'IP',
+				type: 'input',
+			},
+			{
+				title: '访问时间',
+				key: 'ActionTime',
+				type: 'input',
+			},
+			{
+				title: '耗时',
+				key: 'Duration',
+				type: 'input',
+			},
+			{
+				title: '备注',
+				key: 'Remark',
+				type: 'input',
+			},
+		]
+		const reSearch = () => {
+			context.emit('reSearch')
+		}
+		return { fields, reSearch }
 	},
 }
 </script>

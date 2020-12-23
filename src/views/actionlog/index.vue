@@ -35,15 +35,7 @@
 					<a-tag :color="text > 0.15 ? 'red' : 'green'"> {{ text }} </a-tag>
 				</template>
 			</v-table>
-			<a-modal
-				width="50%"
-				:destroyOnClose="true"
-				v-model:visible="dialogInfo.visible"
-				:title="dialogInfo.title"
-				:footer="false"
-			>
-				<dialog-form :status="formStatus" :id="formId"></dialog-form>
-			</a-modal>
+			<dialog-form @search="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -54,7 +46,6 @@ import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
 import API from './api/index'
 import { LogTypeEnum } from '@/views/enums.js'
-import { ref, onMounted, watch } from 'vue'
 export default {
 	name: 'actionlog',
 	components: { VSearcher, VTable, DialogForm },
@@ -73,12 +64,6 @@ export default {
 				LogType: [],
 			},
 			logTypes: LogTypeEnum,
-			dialogInfo: {
-				visible: false,
-				title: '编辑',
-			},
-			formStatus: 'detail',
-			formId: '',
 		}
 	},
 	created() {
@@ -111,17 +96,6 @@ export default {
 		queryReset() {
 			this.$refs.vtable.queryReset()
 		},
-	},
-	mounted() {
-		let _this = this
-		this.$refs.vtable.doView = function(record) {
-			_this.formId = record.ID
-			_this.formStatus = 'detail'
-			_this.dialogInfo = {
-				visible: true,
-				title: '查看',
-			}
-		}
 	},
 }
 </script>

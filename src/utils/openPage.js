@@ -1,4 +1,5 @@
 import router from '@/router'
+import store from '@/store'
 /**
  * 在新建tab标签内打开
  */
@@ -13,6 +14,32 @@ export function openOnTab(next, params) {
 		saveAsyncRoutes(next)
 	}
 	router.push({ name: next.name, params: params })
+}
+
+export function closeOnTab() {
+	store.commit('tabsBar/delVisitedRoute', router.currentRoute.value)
+	const latestView = store.getters['tabsBar/visitedRoutes'].slice(-1)[0]
+	console.log(latestView)
+	if (latestView) router.push(latestView)
+	else router.push('/')
+}
+
+export function openOnDialog(next, params) {
+	store.commit('app/setOpenDialog', {
+		useDialog: true,
+		visible: true,
+		id: params.id,
+		status: params.status,
+		title: next.meta.title,
+	})
+}
+
+export function closeOnDialog() {
+	store.commit('app/setOpenDialog', {
+		useDialog: true,
+		visible: false,
+		title: '新建窗口',
+	})
 }
 
 // 保存动态路由

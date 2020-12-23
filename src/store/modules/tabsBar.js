@@ -41,6 +41,7 @@ const mutations = {
 	 * @returns
 	 */
 	delVisitedRoute(state, route) {
+		debugger
 		state.visitedRoutes.forEach((item, index) => {
 			if (item.path === route.path) state.visitedRoutes.splice(index, 1)
 		})

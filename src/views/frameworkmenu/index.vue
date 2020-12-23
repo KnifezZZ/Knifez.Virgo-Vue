@@ -57,6 +57,11 @@ export default {
 			},
 		]
 	},
+	methods: {
+		querySearch() {
+			this.$refs.vtable.doSearch()
+		},
+	},
 	mounted() {},
 }
 </script>

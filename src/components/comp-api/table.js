@@ -1,13 +1,15 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { createBlob } from '@/utils/files'
-import { openOnTab } from '@/utils/openPage'
+import { openOnTab, openOnDialog } from '@/utils/openPage'
 import { getTreeData } from '@/utils/tool'
 import { notification, Modal } from 'ant-design-vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
-export default function compTable(props) {
+import { useStore } from 'vuex'
+export default function compTable(props, context) {
 	const router = useRouter()
+	const store = useStore()
 	//是否加载
 	const loading = ref(false)
 	//查询条件Copy
@@ -24,7 +26,6 @@ export default function compTable(props) {
 				props.formItems[item] = ''
 			}
 		})
-		console.log(props.formItems)
 	}
 	const queryPageParams = (params) => {
 		if (pagination.value.position) {
@@ -67,7 +68,6 @@ export default function compTable(props) {
 		props.events
 			.Search(params)
 			.then((repData) => {
-				loading.value = false
 				if (pagination.value.position) {
 					pagination.value.total = repData.Count || 0
 				}
@@ -76,6 +76,7 @@ export default function compTable(props) {
 				} else {
 					tableData.value = repData.Data || []
 				}
+				loading.value = false
 			})
 			.catch((error) => {
 				console.error(error)
@@ -134,7 +135,7 @@ export default function compTable(props) {
 			meta: {
 				title: router.currentRoute.value.name + '-编辑',
 				hidden: true,
-				componentUrl: `${router.currentRoute.value.path}/views/dialog-form.vue`,
+				componentUrl: router.currentRoute.value.path + '/views/dialog-form.vue',
 				inLayout: true,
 			},
 		}
@@ -144,7 +145,11 @@ export default function compTable(props) {
 		if (status == 'detail') {
 			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
 		}
-		openOnTab(nextRoute, { id: record.ID, status })
+		if (store.getters['app/openDialog'].useDialog) {
+			openOnDialog(nextRoute, { id: record.ID, status })
+		} else {
+			openOnTab(nextRoute, { id: record.ID, status })
+		}
 	}
 
 	//查看
@@ -159,12 +164,8 @@ export default function compTable(props) {
 	const doEdit = (record) => {
 		showPage(record, 'edit')
 	}
-	const dialogImportShow = ref(false)
-	const dialogImportTable = ref('')
 	const doImport = () => {
-		dialogImportTable.value = router.currentRoute.value.path
-		dialogImportShow.value = true
-		// showPage({}, 'imported', 'dialog')
+		showPage({}, 'imported', 'dialog')
 	}
 
 	const handleExportClick = (e) => {
@@ -202,8 +203,6 @@ export default function compTable(props) {
 		doAdd,
 		doEdit,
 		doDelete,
-		dialogImportShow,
-		dialogImportTable,
 		doImport,
 		handleChange,
 		rowSelection,

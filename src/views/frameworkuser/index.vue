@@ -25,6 +25,7 @@
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
 			</v-table>
+			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -54,6 +55,14 @@ export default {
 			getFrameworkGroupsData: [],
 		}
 	},
+	methods: {
+		querySearch() {
+			this.$refs.vtable.doSearch()
+		},
+		queryReset() {
+			this.$refs.vtable.queryReset()
+		},
+	},
 	created() {
 		//table字段
 		this.columns = [
@@ -76,7 +85,6 @@ export default {
 			this.getFrameworkGroupsData = res
 		})
 	},
-	mounted() {},
 }
 </script>
 

@@ -1,12 +1,12 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs" :collapse.sync="collapse">
-				<a-form-item label="访问地址" name="ActionUrl">
-					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
+			<v-searcher :collapse.sync="collapse" @search="querySearch" @reset="queryReset">
+				<a-form-item label="用户组" name="GroupName">
+					<a-input type="text" v-model:value="queryInfos.GroupName"></a-input>
 				</a-form-item>
-				<a-form-item label="方法" name="ActionName" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.ActionName"></a-input>
+				<a-form-item label="用户组编码" name="GroupCode" v-show="collapse.isActive">
+					<a-input type="text" v-model:value="queryInfos.GroupCode"></a-input>
 				</a-form-item>
 			</v-searcher>
 		</a-col>
@@ -14,10 +14,10 @@
 			<v-table
 				ref="vtable"
 				:form-items="queryInfos"
-				:useToolBar="true"
 				:columns="columns"
 				:actions="actions"
 				:events="events"
+				:useToolBar="true"
 				bordered
 			>
 				<template #toolbar> </template>
@@ -25,10 +25,7 @@
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
 			</v-table>
-
-			<a-modal :destroyOnClose="true" v-model:visible="dialogInfo.visible" :title="dialogInfo.title" :footer="false">
-				<dialog-form :status="formStatus" :id="formId" :dialogInfo="dialogInfo"></dialog-form>
-			</a-modal>
+			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -55,12 +52,6 @@ export default {
 				ActionUrl: '',
 				ActionTime: [],
 			},
-			dialogInfo: {
-				visible: false,
-				title: '编辑',
-			},
-			formStatus: 'detail',
-			formId: '',
 		}
 	},
 	created() {
@@ -76,34 +67,13 @@ export default {
 			},
 		]
 	},
-	mounted() {
-		//#region use dialog
-		let _this = this
-		this.$refs.vtable.doView = function(record) {
-			_this.formId = record.ID
-			_this.formStatus = 'detail'
-			_this.dialogInfo = {
-				visible: true,
-				title: '查看',
-			}
-		}
-		this.$refs.vtable.doAdd = function(record) {
-			_this.formId = record.ID
-			_this.formStatus = 'add'
-			_this.dialogInfo = {
-				visible: true,
-				title: '添加',
-			}
-		}
-		this.$refs.vtable.doEdit = function(record) {
-			_this.formId = record.ID
-			_this.formStatus = 'edit'
-			_this.dialogInfo = {
-				visible: true,
-				title: '添加',
-			}
-		}
-		//#endregion
+	methods: {
+		querySearch() {
+			this.$refs.vtable.doSearch()
+		},
+		queryReset() {
+			this.$refs.vtable.queryReset()
+		},
 	},
 }
 </script>

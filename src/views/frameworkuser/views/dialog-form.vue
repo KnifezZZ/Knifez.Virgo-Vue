@@ -1,59 +1,51 @@
 <template>
-	<v-form :status="formStatus" :events="events" :form-data="formData" @closeDialog="closeDialog">
-		<template v-if="formStatus === 'detail'">
-			<a-form-item label="账号" name="ITCode">
-				{{ formData.ITCode }}
-			</a-form-item>
-			<a-form-item label="姓名" name="Name">
-				{{ formData.Name }}
-			</a-form-item>
-			<a-form-item label="邮箱" name="Email">
-				{{ formData.Email }}
-			</a-form-item>
-		</template>
-		<template v-else>
-			<a-form-item label="用户组编码" name="GroupCode">
-				<a-input type="text" v-model:value="formData.ITCode"></a-input>
-			</a-form-item>
-			<a-form-item label="用户组名称" name="GroupName">
-				<a-input type="text" v-model:value="formData.Name"></a-input>
-			</a-form-item>
-			<a-form-item label="备注" name="Email">
-				<a-input type="text" v-model:value="formData.Email"></a-input>
-			</a-form-item>
-		</template>
-	</v-form>
+	<v-form-dialog :use-dialog="false">
+		<v-form layout="inline" :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+	</v-form-dialog>
 </template>
 
 <script>
+import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
 import API from '../api/index'
-import compDialogForm from '@/components/comp-api/dialog-form'
 export default {
-	name: 'frameworkuser-dialog',
+	name: 'frameworkmenu-dialog',
 	components: {
 		VForm,
+		VFormDialog,
 	},
 	data() {
 		return {
 			events: API,
 		}
 	},
-	props: {
-		status: {
-			type: String,
-		},
-		id: {
-			type: String,
-		},
-		dialogInfo: {
-			type: Object,
-		},
-	},
-	setup(props) {
-		let model = ['ID', 'ITCode', 'Name', 'Email']
-		let { formStatus, formData, closeDialog } = compDialogForm(props, API, model)
-		return { formStatus, formData, closeDialog }
+	setup(props, context) {
+		let fields = [
+			{
+				key: 'ID',
+				type: 'input',
+				hidden: true,
+			},
+			{
+				title: '账号',
+				key: 'ITCode',
+				type: 'input',
+			},
+			{
+				title: '姓名',
+				key: 'Name',
+				type: 'input',
+			},
+			{
+				title: '邮箱',
+				key: 'Email',
+				type: 'input',
+			},
+		]
+		const reSearch = () => {
+			context.emit('reSearch')
+		}
+		return { fields, reSearch }
 	},
 }
 </script>

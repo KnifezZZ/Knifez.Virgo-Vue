@@ -1,9 +1,29 @@
 <template>
 	<a-card>
 		<a-form :layout="layout" class="v-form">
-			<slot></slot>
-			<a-form-item :wrapper-col="{ span: 12, offset: 12 }" v-if="status !== 'detail'">
-				<a-button @click="doClose">
+			<template v-for="item in fields.filter((x) => !x.hidden)">
+				<template v-if="formStatus === 'detail'">
+					<a-form-item :label="item.title" :key="item.key" :name="item.key">
+						{{ formData[item.key] }}
+					</a-form-item>
+				</template>
+				<template v-else>
+					<template v-if="item.isSlot">
+						<a-form-item :label="item.title" :key="item.key" :name="item.key">
+							<template v-slot[`index`]>
+								<slot :name="item.key" v-bind="formData" />
+							</template>
+						</a-form-item>
+					</template>
+					<template v-else>
+						<a-form-item :label="item.title" :key="item.key" :name="item.key">
+							<a-input type="text" v-model:value="formData[item.key]"></a-input>
+						</a-form-item>
+					</template>
+				</template>
+			</template>
+			<a-form-item :wrapper-col="{ span: 12, offset: 12 }" v-if="formStatus !== 'detail'">
+				<a-button @click="doClose(false)">
 					关闭
 				</a-button>
 				<a-button type="primary" @click="doSubmit">
@@ -15,23 +35,19 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { closeOnDialog, closeOnTab } from '@/utils/openPage'
 export default {
 	name: 'VForm',
 	props: {
-		status: {
-			type: String,
-			required: true,
-		},
 		events: {
 			type: Object,
 			required: true,
 		},
-		formData: {
-			type: Object,
-			required: true,
-		},
-		model: {
-			type: Object,
+		fields: {
+			type: Array,
 			required: true,
 		},
 		layout: {
@@ -42,23 +58,57 @@ export default {
 		},
 	},
 	setup(props, context) {
+		const router = useRouter()
+		const store = useStore()
+		let dialogConfig = store.getters['app/openDialog']
+		console.log(dialogConfig)
+		let formStatus = ref(dialogConfig.status)
+		let formData = ref({})
+
+		//兼容非弹窗展示
+		if (!dialogConfig.useDialog) {
+			formStatus.value = router.currentRoute.value.params.status
+			dialogConfig.id = router.currentRoute.value.params.id
+		}
+
+		//非添加窗口加载页面数据
+		if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
+			props.events.Detail(dialogConfig.id).then((res) => {
+				let data = {}
+				if (props.fields !== undefined) {
+					props.fields.forEach((item) => {
+						data[item.key] = res.Entity[item.key]
+					})
+				}
+				formData.value = data
+			})
+		}
+
 		const doClose = (refresh) => {
-			context.emit('closeDialog', refresh)
+			if (dialogConfig.useDialog) {
+				closeOnDialog()
+				if (refresh) {
+					context.emit('reSearch')
+				}
+			} else {
+				closeOnTab()
+			}
 		}
 		const doSubmit = () => {
-			//clean model
-			if (props.status == 'add') {
-				props.events.Add({ Entity: props.formData }).then((res) => {
+			if (formStatus.value == 'add') {
+				props.events.Add({ Entity: formData.value }).then((res) => {
 					doClose(true)
 				})
 			}
-			if (props.status == 'edit') {
-				props.events.Edit({ Entity: props.formData }).then((res) => {
+			if (formStatus.value == 'edit') {
+				props.events.Edit({ Entity: formData.value }).then((res) => {
 					doClose(true)
 				})
 			}
 		}
 		return {
+			formStatus,
+			formData,
 			doSubmit,
 			doClose,
 		}
