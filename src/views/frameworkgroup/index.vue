@@ -42,8 +42,8 @@ export default {
 	data() {
 		return {
 			collapse: {
-				needCollapse: true,
-				isActive: false,
+				needCollapse: false,
+				isActive: true,
 			},
 			columns: [],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],

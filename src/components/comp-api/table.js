@@ -111,20 +111,24 @@ export default function compTable(props, context) {
 		//单条删除
 		if (record !== null) {
 			ids = [record.ID]
+			props.events.BatchDelete(ids).then((res) => {
+				doSearch(false)
+			})
+		} else {
+			Modal.confirm({
+				title: '确定要删除吗?',
+				icon: createVNode(ExclamationCircleOutlined),
+				onOk() {
+					return new Promise((resolve, reject) => {
+						props.events.BatchDelete(ids).then((res) => {
+							doSearch(false)
+							resolve(true)
+						})
+					}).catch(() => console.log('Oops errors!'))
+				},
+				onCancel() {},
+			})
 		}
-		Modal.confirm({
-			title: '确定要删除吗?',
-			icon: createVNode(ExclamationCircleOutlined),
-			onOk() {
-				return new Promise((resolve, reject) => {
-					props.events.BatchDelete(ids).then((res) => {
-						doSearch(false)
-						resolve(true)
-					})
-				}).catch(() => console.log('Oops errors!'))
-			},
-			onCancel() {},
-		})
 	}
 	const showPage = (record, status) => {
 		const newRouter = router.currentRoute.value.name + '-cur'

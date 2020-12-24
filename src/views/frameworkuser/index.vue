@@ -51,8 +51,6 @@ export default {
 				ITCode: '',
 				Name: '',
 			},
-			getFrameworkRolesData: [],
-			getFrameworkGroupsData: [],
 		}
 	},
 	methods: {
