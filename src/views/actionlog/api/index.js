@@ -28,12 +28,7 @@ const API = {
 	},
 	//导出excel
 	ExportExcel: (data) => {
-		return bExportExcel({
-			url: reqPath + 'ExportExcel',
-			method: 'post',
-			contentType: contentType.stream,
-			data: data,
-		})
+		return bExportExcel(reqPath,data)
 	},
 	ExportExcelByIds: (data) => {
 		return bExportExcelByIds(reqPath, data)

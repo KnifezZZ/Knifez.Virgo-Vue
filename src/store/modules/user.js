@@ -42,7 +42,7 @@ const actions = {
 	async login({ commit }, userInfo) {
 		const res = await login(userInfo)
 		commit('setToken', res)
-		Cookies.set('Authorization', res.TokenType + ' ' + res.AccessToken, { expires: res.ExpiresIn })
+		Cookies.set('Authorization', res.token_type + ' ' + res.access_token, { expires: res.expires_in })
 		const hour = new Date().getHours()
 		const thisTime =
 			hour < 8 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 18 ? '下午好' : '晚上好'

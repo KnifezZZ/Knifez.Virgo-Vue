@@ -10,15 +10,11 @@
 </template>
 
 <script>
-import VForm from '@/components/page/v-form'
 import { ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import router from '../../../router'
 export default {
 	name: 'v-form-dialog',
-	components: {
-		VForm,
-	},
 	props: {
 		useDialog: {
 			type: Boolean,

@@ -131,6 +131,7 @@ export default function compTable(props, context) {
 		}
 	}
 	const showPage = (record, status) => {
+		debugger
 		const newRouter = router.currentRoute.value.name + '-cur'
 		let nextRoute = {
 			path: router.currentRoute.value.path + '/cur/:status/:id',

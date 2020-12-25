@@ -71,7 +71,7 @@ export default {
 			dialogConfig.id = router.currentRoute.value.params.id
 		}
 
-		//非添加窗口加载页面数据
+		// 非添加窗口加载页面数据
 		if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
 			props.events.Detail(dialogConfig.id).then((res) => {
 				let data = {}
