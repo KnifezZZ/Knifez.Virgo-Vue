@@ -19,33 +19,15 @@ export default {
 			events: API,
 		}
 	},
-	setup(props, context) {
-		let fields = [
-			{
-				key: 'ID',
-				type: 'input',
-				hidden: true,
-			},
-			{
-				title: '用户组编码',
-				key: 'GroupCode',
-				type: 'input',
-			},
-			{
-				title: '用户组名称',
-				key: 'GroupName',
-				type: 'input',
-			},
-			{
-				title: '备注',
-				key: 'GroupRemark',
-				type: 'input',
-			},
-		]
-		const reSearch = () => {
-			context.emit('reSearch')
-		}
-		return { fields, reSearch }
+	props: {
+		fields: {
+			type: Array,
+		},
+	},
+	methods: {
+		reSearch() {
+			this.$emit('reSearch')
+		},
 	},
 }
 </script>

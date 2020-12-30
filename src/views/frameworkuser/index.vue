@@ -25,7 +25,7 @@
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
 			</v-table>
-			<dialog-form @reSearch="querySearch"></dialog-form>
+			<dialog-form @reSearch="querySearch" :fields="fields"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -36,6 +36,7 @@ import VTable from '@/components/page/v-table/index'
 import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
+import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkuser',
 	components: { VSearcher, VTable,DialogForm },
@@ -46,6 +47,7 @@ export default {
 				isActive: false,
 			},
 			columns: [],
+			fields: [],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: API,
 			queryInfos: {
@@ -63,20 +65,10 @@ export default {
 		},
 	},
 	created() {
-		//table字段
-		this.columns = [
-			{ key: 'ITCode', title: '账户' },
-			{ key: 'Name', title: '姓名' },
-			{ key: 'Sex', title: '性别' },
-			{ key: 'RoleName_view', title: '角色' },
-			{ key: 'GroupName_view', title: '用户组' },
-			{ key: 'IsValid', title: '是否生效', isSlot: true },
-			{
-				title: '操作',
-				isOperate: true,
-				actions: ['detail', 'edit', 'delete'],
-			},
-		]
+		loadJson('frameworkuser').then((res) => {
+			this.columns = res.columns
+			this.fields = res.fields
+		})
 		API.GetFrameworkRoles().then((res) => {
 			this.getFrameworkRolesData = res
 		})

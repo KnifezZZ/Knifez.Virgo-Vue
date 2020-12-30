@@ -1,0 +1,64 @@
+{
+	"columns": [
+		{ "key": "ActionTime", "width": 200, "title": "执行时间" },
+		{ "key": "ModuleName", "width": 100, "title": "模块" },
+		{ "key": "ActionName", "width": 100, "title": "方法" },
+		{ "key": "ActionUrl", "width": 300, "title": "访问地址" },
+		{ "key": "LogType", "width": 100, "title": "日志类型", "isSlot": true },
+		{
+			"key": "Duration",
+			"width": 100,
+			"title": "耗时",
+			"isSlot": true
+		},
+		{ "key": "IP", "title": "IP" },
+		{ "key": "Remark", "title": "备注" },
+		{
+			"title": "操作",
+			"isOperate": true,
+			"actions": ["detail", "delete"]
+		}
+	],
+	"fields": [
+		{
+			"key": "ID",
+			"type": "input",
+			"hidden": true
+		},
+		{
+			"title": "模块",
+			"key": "ActionName",
+			"type": "input"
+		},
+		{
+			"title": "方法",
+			"key": "ModuleName",
+			"type": "input"
+		},
+		{
+			"title": "操作账户",
+			"key": "ITCode",
+			"type": "input"
+		},
+		{
+			"title": "IP",
+			"key": "IP",
+			"type": "input"
+		},
+		{
+			"title": "访问时间",
+			"key": "ActionTime",
+			"type": "input"
+		},
+		{
+			"title": "耗时",
+			"key": "Duration",
+			"type": "input"
+		},
+		{
+			"title": "备注",
+			"key": "Remark",
+			"type": "input"
+		}
+	]
+}

@@ -28,7 +28,7 @@ const API = {
 	},
 	//导出excel
 	ExportExcel: (data) => {
-		return bExportExcel(reqPath,data)
+		return bExportExcel(reqPath, data)
 	},
 	ExportExcelByIds: (data) => {
 		return bExportExcelByIds(reqPath, data)

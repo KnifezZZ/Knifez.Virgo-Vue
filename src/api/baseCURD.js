@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import axios from 'axios'
 import contentType from '@/configs/content-type'
 // 列表查询
 export function bSearch(reqPath, data) {
@@ -71,5 +72,25 @@ export function bImported(reqPath, data) {
 		url: reqPath + 'Import',
 		method: 'post',
 		data: data,
+	})
+}
+// 加載json配置文件
+export function loadJson(reqPath) {
+	let domain = localStorage.getItem('domain')
+	if (domain === null) domain = 'default'
+	return new Promise((resolve, reject) => {
+		axios({
+			method: 'get',
+			url: `static/configs/${domain}/${reqPath}.json`,
+			dataType: 'json',
+			crossDomain: true,
+			cache: false,
+		})
+			.then((res) => {
+				resolve(res.data)
+			})
+			.catch((error) => {
+				reject(error)
+			})
 	})
 }

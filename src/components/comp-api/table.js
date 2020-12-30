@@ -79,7 +79,7 @@ export default function compTable(props, context) {
 				loading.value = false
 			})
 			.catch((error) => {
-				console.error(error)
+				notification.error(error)
 				loading.value = false
 			})
 	}
@@ -95,12 +95,9 @@ export default function compTable(props, context) {
 		onChange: (selectedRowKeys, selectedRows) => {
 			selectData.value = selectedRows
 		},
-		onSelect: (record, selected, selectedRows) => {
-			console.log(record, selected, selectedRows)
-		},
+		onSelect: (record, selected, selectedRows) => {},
 		onSelectAll: (selected, selectedRows, changeRows) => {
 			selectData.value = selectedRows
-			console.log(selected, selectedRows, changeRows)
 		},
 	}
 	//删除
@@ -124,14 +121,13 @@ export default function compTable(props, context) {
 							doSearch(false)
 							resolve(true)
 						})
-					}).catch(() => console.log('Oops errors!'))
+					}).catch(() => notification.error('Oops errors!'))
 				},
 				onCancel() {},
 			})
 		}
 	}
 	const showPage = (record, status) => {
-		debugger
 		const newRouter = router.currentRoute.value.name + '-cur'
 		let nextRoute = {
 			path: router.currentRoute.value.path + '/cur/:status/:id',

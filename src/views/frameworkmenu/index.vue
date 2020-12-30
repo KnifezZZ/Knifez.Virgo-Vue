@@ -19,17 +19,20 @@
 					<v-icon :icon="text"></v-icon>
 				</template>
 			</v-table>
+			<dialog-form @reSearch="querySearch" :fields="fields"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
 
 <script>
 import VTable from '@/components/page/v-table/index'
+import DialogForm from './views/dialog-form'
 import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
+import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkmenu',
-	components: { VTable },
+	components: { VTable, DialogForm },
 	data() {
 		return {
 			collapse: {
@@ -37,6 +40,7 @@ export default {
 				isActive: false,
 			},
 			columns: [],
+			fields: [],
 			actions: ['add', 'edit', 'detail', 'delete'],
 			events: API,
 			queryInfos: {
@@ -45,24 +49,16 @@ export default {
 		}
 	},
 	created() {
-		//table字段
-		this.columns = [
-			{ key: 'PageName', title: '页面名称' },
-			{ key: 'DisplayOrder', title: '顺序' },
-			{ key: 'ICon', title: '图标', isSlot: true },
-			{
-				title: '操作',
-				isOperate: true,
-				actions: ['detail', 'edit', 'delete'],
-			},
-		]
+		loadJson('frameworkmenu').then((res) => {
+			this.columns = res.columns
+			this.fields = res.fields
+		})
 	},
 	methods: {
 		querySearch() {
 			this.$refs.vtable.doSearch()
 		},
 	},
-	mounted() {},
 }
 </script>
 

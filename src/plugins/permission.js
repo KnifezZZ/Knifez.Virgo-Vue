@@ -7,7 +7,6 @@ import Cookies from 'js-cookie'
 import router from '@/router'
 import store from '@/store'
 import { title, authentication, loginInterception, recordRoute, routesWhiteList } from '@/configs/index'
-import { notification } from 'ant-design-vue'
 import { loadAsyncRoutes } from '@/utils/openPage'
 NProgress.configure({ showSpinner: false })
 /**
@@ -56,7 +55,7 @@ router.beforeEach(async (to, from, next) => {
 						loadAsyncRoutes()
 						next({ ...to, replace: true })
 					} catch (err) {
-						console.error(err)
+						// error log
 						await store.dispatch('user/resetAll')
 						if (recordRoute)
 							next({

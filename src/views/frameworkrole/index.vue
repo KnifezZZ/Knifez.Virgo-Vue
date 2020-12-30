@@ -34,6 +34,7 @@ import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
+import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkuser',
 	components: { VSearcher, VTable },

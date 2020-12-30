@@ -61,16 +61,22 @@ export default {
 		const router = useRouter()
 		const store = useStore()
 		let dialogConfig = store.getters['app/openDialog']
-		console.log(dialogConfig)
 		let formStatus = ref(dialogConfig.status)
 		let formData = ref({})
-
 		//兼容非弹窗展示
 		if (!dialogConfig.useDialog) {
 			formStatus.value = router.currentRoute.value.params.status
 			dialogConfig.id = router.currentRoute.value.params.id
 		}
-
+		props.fields.forEach((item) => {
+			if (typeof item.hidden === 'string') {
+				if (item.hidden.startsWith('!')) {
+					item.hidden = formStatus.value !== item.hidden
+				} else {
+					item.hidden = formStatus.value == item.hidden
+				}
+			}
+		})
 		// 非添加窗口加载页面数据
 		if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
 			props.events.Detail(dialogConfig.id).then((res) => {

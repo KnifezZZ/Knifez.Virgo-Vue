@@ -41,6 +41,9 @@ export default {
 		}
 	},
 	methods: {
+		password(){
+
+		},
 		genPage() {
 			this.visible = true
 		},

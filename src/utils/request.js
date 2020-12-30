@@ -57,7 +57,7 @@ class requestBase {
 		return axios
 			.post(url, data, { headers: configs, responseType: 'arraybuffer' })
 			.then((response) => response.data)
-			.catch((errors) => console.error(errors))
+			.catch((errors) => notification.error(errors))
 	}
 	/**
 	 * 替换模块{}

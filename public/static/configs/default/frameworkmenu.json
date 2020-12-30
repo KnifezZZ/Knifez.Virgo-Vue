@@ -1,0 +1,19 @@
+{
+	"columns": [
+		{ "key": "PageName", "title": "页面名称" },
+		{ "key": "DisplayOrder", "title": "顺序" },
+		{ "key": "ICon", "title": "图标", "isSlot": true },
+		{
+			"title": "操作",
+			"isOperate": true,
+			"actions": ["detail", "edit", "delete"]
+		}
+	],
+	"fields": [
+		{
+			"key": "ID",
+			"type": "input",
+			"hidden": true
+		}
+	]
+}

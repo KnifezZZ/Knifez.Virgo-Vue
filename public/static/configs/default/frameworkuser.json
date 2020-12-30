@@ -1,0 +1,78 @@
+{
+	"columns": [
+		{ "key": "ITCode", "title": "账户" },
+		{ "key": "Name", "title": "姓名" },
+		{ "key": "Sex", "title": "性别" },
+		{ "key": "RoleName_view", "title": "角色" },
+		{ "key": "GroupName_view", "title": "用户组" },
+		{ "key": "IsValid", "title": "是否生效", "isSlot": true },
+		{
+			"title": "操作",
+			"isOperate": true,
+			"actions": ["detail", "edit", "delete"]
+		}
+	],
+	"fields": [
+		{
+			"key": "ID",
+			"type": "input",
+			"hidden": true
+		},
+		{
+			"title": "账号",
+			"key": "ITCode",
+			"type": "input"
+		},
+		{
+			"title": "密码",
+			"key": "Password",
+			"type": "input",
+			"hidden": "!add"
+		},
+		{
+			"title": "姓名",
+			"key": "Name",
+			"type": "input"
+		},
+		{
+			"title": "头像",
+			"key": "PhotoId",
+			"type": "input"
+		},
+		{
+			"title": "邮箱",
+			"key": "Email",
+			"type": "input"
+		},
+		{
+			"title": "性别",
+			"key": "Sex",
+			"type": "input"
+		},
+		{
+			"title": "手机号码",
+			"key": "CellPhone",
+			"type": "input"
+		},
+		{
+			"title": "固话",
+			"key": "HomePhone",
+			"type": "input"
+		},
+		{
+			"title": "地址",
+			"key": "Address",
+			"type": "input"
+		},
+		{
+			"title": "邮编",
+			"key": "ZipCode",
+			"type": "input"
+		},
+		{
+			"title": "是否启用",
+			"key": "IsValid",
+			"type": "input"
+		}
+	]
+}
