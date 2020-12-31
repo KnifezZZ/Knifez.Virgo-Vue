@@ -20,8 +20,8 @@
 				</a-menu>
 			</template>
 		</a-dropdown>
-		<a-modal width="80%" title="生成代码" :footer="false" v-model:visible="visible"
-			><virgo-produce></virgo-produce>
+		<a-modal width="80%" title="生成代码" v-model:visible="visible" :footer="null">
+			<virgo-produce></virgo-produce>
 		</a-modal>
 	</div>
 </template>
@@ -41,12 +41,14 @@ export default {
 		}
 	},
 	methods: {
-		password(){
-
-		},
+		password() {},
 		genPage() {
 			this.visible = true
 		},
+    handleGenPageOk(e) {
+      console.log(e);
+      this.visible = false;
+    },
 	},
 	setup() {
 		const router = useRouter()
