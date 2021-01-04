@@ -1,7 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs" :collapse.sync="collapse">
+			<v-searcher :collapse.sync="collapse" @search="querySearch" @reset="queryReset">
 				<a-form-item label="角色名称" name="RoleName">
 					<a-input type="text" v-model:value="queryInfos.RoleName"></a-input>
 				</a-form-item>
@@ -44,7 +44,16 @@ export default {
 				needCollapse: true,
 				isActive: false,
 			},
-			columns: [],
+			columns: [
+				{ key: 'RoleCode', title: '角色编号' },
+				{ key: 'RoleName', title: '角色名称' },
+				{ key: 'RoleRemark', title: '备注' },
+				{
+					title: '操作',
+					isOperate: true,
+					actions: ['detail', 'edit', 'delete'],
+				},
+			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: API,
 			queryInfos: {
@@ -53,18 +62,13 @@ export default {
 			},
 		}
 	},
-	created() {
-		//table字段
-		this.columns = [
-			{ key: 'RoleCode', title: '角色编号' },
-			{ key: 'RoleName', title: '角色名称' },
-			{ key: 'RoleRemark', title: '备注' },
-			{
-				title: '操作',
-				isOperate: true,
-				actions: ['detail', 'edit', 'delete'],
-			},
-		]
+	methods: {
+		querySearch() {
+			this.$refs.vtable.doSearch()
+		},
+		queryReset() {
+			this.$refs.vtable.queryReset()
+		},
 	},
 	mounted() {},
 }

@@ -46,7 +46,6 @@ import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
 import API from './api/index'
 import { LogTypeEnum } from '@/views/enums.js'
-import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'actionlog',
 	components: { VSearcher, VTable, DialogForm },
@@ -56,7 +55,26 @@ export default {
 				needCollapse: true,
 				isActive: false,
 			},
-			columns: [],
+			columns: [
+				{ key: 'ActionTime', width: 200, title: '执行时间' },
+				{ key: 'ModuleName', width: 100, title: '模块' },
+				{ key: 'ActionName', width: 100, title: '方法' },
+				{ key: 'ActionUrl', width: 300, title: '访问地址' },
+				{ key: 'LogType', width: 100, title: '日志类型', isSlot: true },
+				{
+					key: 'Duration',
+					width: 100,
+					title: '耗时',
+					isSlot: true,
+				},
+				{ key: 'IP', title: 'IP' },
+				{ key: 'Remark', title: '备注' },
+				{
+					title: '操作',
+					isOperate: true,
+					actions: ['detail', 'delete'],
+				},
+			],
 			fields: [],
 			actions: ['detail', 'delete', 'exported', 'imported'],
 			events: API,

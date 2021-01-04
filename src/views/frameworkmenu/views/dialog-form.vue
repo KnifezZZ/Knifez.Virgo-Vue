@@ -17,12 +17,14 @@ export default {
 	data() {
 		return {
 			events: API,
+			fields: [
+				{
+					key: 'ID',
+					type: 'input',
+					hidden: true,
+				},
+			],
 		}
-	},
-	props: {
-		fields: {
-			type: Array,
-		},
 	},
 	methods: {
 		reSearch() {

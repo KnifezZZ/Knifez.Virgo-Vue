@@ -29,7 +29,6 @@ import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
 import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
-import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkmenu',
 	components: { VTable, DialogForm },
@@ -39,20 +38,22 @@ export default {
 				needCollapse: true,
 				isActive: false,
 			},
-			columns: [],
-			fields: [],
+			columns: [
+				{ key: 'PageName', title: '页面名称' },
+				{ key: 'DisplayOrder', title: '顺序' },
+				{ key: 'ICon', title: '图标', isSlot: true },
+				{
+					title: '操作',
+					isOperate: true,
+					actions: ['detail', 'edit', 'delete'],
+				},
+			],
 			actions: ['add', 'edit', 'detail', 'delete'],
 			events: API,
 			queryInfos: {
 				PageName: '',
 			},
 		}
-	},
-	created() {
-		loadJson('frameworkmenu').then((res) => {
-			this.columns = res.columns
-			this.fields = res.fields
-		})
 	},
 	methods: {
 		querySearch() {

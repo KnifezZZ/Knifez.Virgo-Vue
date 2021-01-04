@@ -19,14 +19,73 @@ export default {
 	data() {
 		return {
 			events: API,
+
+			fields: [
+				{
+					key: 'ID',
+					type: 'input',
+					hidden: true,
+				},
+				{
+					title: '账号',
+					key: 'ITCode',
+					type: 'input',
+				},
+				{
+					title: '密码',
+					key: 'Password',
+					type: 'input',
+					hidden: '!add',
+				},
+				{
+					title: '姓名',
+					key: 'Name',
+					type: 'input',
+				},
+				{
+					title: '头像',
+					key: 'PhotoId',
+					type: 'input',
+				},
+				{
+					title: '邮箱',
+					key: 'Email',
+					type: 'input',
+				},
+				{
+					title: '性别',
+					key: 'Sex',
+					type: 'input',
+				},
+				{
+					title: '手机号码',
+					key: 'CellPhone',
+					type: 'input',
+				},
+				{
+					title: '固话',
+					key: 'HomePhone',
+					type: 'input',
+				},
+				{
+					title: '地址',
+					key: 'Address',
+					type: 'input',
+				},
+				{
+					title: '邮编',
+					key: 'ZipCode',
+					type: 'input',
+				},
+				{
+					title: '是否启用',
+					key: 'IsValid',
+					type: 'input',
+				},
+			],
 			getFrameworkRolesData: [],
 			getFrameworkGroupsData: [],
 		}
-	},
-	props: {
-		fields: {
-			type: Array,
-		},
 	},
 	methods: {
 		reSearch() {

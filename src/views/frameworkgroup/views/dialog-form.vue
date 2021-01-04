@@ -17,12 +17,29 @@ export default {
 	data() {
 		return {
 			events: API,
+			fields: [
+				{
+					key: 'ID',
+					type: 'input',
+					hidden: true,
+				},
+				{
+					title: '用户组编码',
+					key: 'GroupCode',
+					type: 'input',
+				},
+				{
+					title: '用户组名称',
+					key: 'GroupName',
+					type: 'input',
+				},
+				{
+					title: '备注',
+					key: 'GroupRemark',
+					type: 'input',
+				},
+			],
 		}
-	},
-	props: {
-		fields: {
-			type: Array,
-		},
 	},
 	methods: {
 		reSearch() {

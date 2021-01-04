@@ -1,7 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs" :collapse.sync="collapse">
+			<v-searcher :collapse.sync="collapse" @search="querySearch" @reset="queryReset">
 				<a-form-item label="账户" name="ITCode">
 					<a-input type="text" v-model:value="queryInfos.ITCode"></a-input>
 				</a-form-item>
@@ -39,15 +39,26 @@ import DialogForm from './views/dialog-form'
 import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkuser',
-	components: { VSearcher, VTable,DialogForm },
+	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
 			collapse: {
 				needCollapse: false,
 				isActive: false,
 			},
-			columns: [],
-			fields: [],
+			columns: [
+				{ key: 'ITCode', title: '账户' },
+				{ key: 'Name', title: '姓名' },
+				{ key: 'Sex', title: '性别' },
+				{ key: 'RoleName_view', title: '角色' },
+				{ key: 'GroupName_view', title: '用户组' },
+				{ key: 'IsValid', title: '是否生效', isSlot: true },
+				{
+					title: '操作',
+					isOperate: true,
+					actions: ['detail', 'edit', 'delete'],
+				},
+			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: API,
 			queryInfos: {
@@ -65,10 +76,6 @@ export default {
 		},
 	},
 	created() {
-		loadJson('frameworkuser').then((res) => {
-			this.columns = res.columns
-			this.fields = res.fields
-		})
 		API.GetFrameworkRoles().then((res) => {
 			this.getFrameworkRolesData = res
 		})

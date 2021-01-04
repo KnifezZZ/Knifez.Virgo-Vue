@@ -25,7 +25,7 @@
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
 			</v-table>
-			<dialog-form @reSearch="querySearch" :fields="fields"></dialog-form>
+			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -36,7 +36,6 @@ import VTable from '@/components/page/v-table/index'
 import API from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
-import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkuser',
 	components: { VSearcher, VTable, DialogForm },
@@ -46,8 +45,16 @@ export default {
 				needCollapse: false,
 				isActive: true,
 			},
-			columns: [],
-			fields: [],
+			columns: [
+				{ key: 'GroupCode', title: '用户组编号' },
+				{ key: 'GroupName', title: '用户组名称' },
+				{ key: 'GroupRemark', title: '备注' },
+				{
+					title: '操作',
+					isOperate: true,
+					actions: ['detail', 'edit', 'delete'],
+				},
+			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: API,
 			queryInfos: {
@@ -55,12 +62,6 @@ export default {
 				ActionTime: [],
 			},
 		}
-	},
-	created() {
-		loadJson('frameworkgroup').then((res) => {
-			this.columns = res.columns
-			this.fields = res.fields
-		})
 	},
 	methods: {
 		querySearch() {
