@@ -7,7 +7,7 @@
 				</a-form-item>
 				<a-form-item label="日志类型" name="LogType">
 					<a-select v-model:value="queryInfos.LogType" mode="multiple" placeholder="请选择" style="width:200px">
-						<a-select-option v-for="i in logTypes" :key="i.Value">
+						<a-select-option v-for="i in LogTypeEnum" :key="i.Value">
 							{{ i.Text }}
 						</a-select-option>
 					</a-select>
@@ -51,7 +51,7 @@ import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
 import apiEvents from './api/index'
-import { LogTypeEnum } from '@/views/enums.js'
+import { LogTypeEnum } from '@/configs/enums.js'
 export default {
 	name: 'actionLog',
 	components: { VSearcher, VTable, DialogForm },

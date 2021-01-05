@@ -1,6 +1,10 @@
 <template>
 	<v-form-dialog :use-dialog="false">
-		<v-form :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+		<v-form :fields="fields" :events="events" @reSearch="reSearch">
+			<template #Password="formData">
+				<a-input-password v-model:value="formData.Password"></a-input-password>
+			</template>
+		</v-form>
 	</v-form-dialog>
 </template>
 
@@ -10,6 +14,7 @@ import VForm from '@/components/page/v-form'
 import apiEvents from '../api/index'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { SexEnumTypes } from '@/configs/enums'
 export default {
 	name: 'frameworkmenu-dialog',
 	components: {
@@ -34,6 +39,7 @@ export default {
 					title: '密码',
 					key: 'Password',
 					type: 'input',
+					isSlot: true,
 					hidden: '!add',
 				},
 				{
@@ -44,17 +50,27 @@ export default {
 				{
 					title: '头像',
 					key: 'PhotoId',
-					type: 'input',
+					type: 'upload',
+					props: {
+						limit: 1,
+					},
 				},
 				{
 					title: '邮箱',
 					key: 'Email',
-					type: 'input',
+					type: 'select',
+					props: {
+						mode: 'multiple',
+						items: SexEnumTypes,
+					},
 				},
 				{
 					title: '性别',
 					key: 'Sex',
-					type: 'input',
+					type: 'radio',
+					props: {
+						items: SexEnumTypes,
+					},
 				},
 				{
 					title: '手机号码',
@@ -79,7 +95,11 @@ export default {
 				{
 					title: '是否启用',
 					key: 'IsValid',
-					type: 'input',
+					type: 'switch',
+					props: {
+						checkedChildren: '启用',
+						unCheckedChildren: '禁用',
+					},
 				},
 			],
 			getFrameworkRolesData: [],
