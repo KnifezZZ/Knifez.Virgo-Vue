@@ -5,15 +5,21 @@
 				<a-form-item label="访问时间" name="ActionTime">
 					<a-range-picker v-model:value="queryInfos.ActionTime" allowClear />
 				</a-form-item>
-				<a-form-item label="访问地址" name="ActionUrl">
-					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
-				</a-form-item>
 				<a-form-item label="日志类型" name="LogType">
 					<a-select v-model:value="queryInfos.LogType" mode="multiple" placeholder="请选择" style="width:200px">
 						<a-select-option v-for="i in logTypes" :key="i.Value">
 							{{ i.Text }}
 						</a-select-option>
 					</a-select>
+				</a-form-item>
+				<a-form-item label="访问IP" name="IP">
+					<a-input type="text" v-model:value="queryInfos.IP"></a-input>
+				</a-form-item>
+				<a-form-item label="操作账户" name="ITCode" v-show="collapse.isActive">
+					<a-input type="text" v-model:value="queryInfos.ITCode"></a-input>
+				</a-form-item>
+				<a-form-item label="访问地址" name="ActionUrl" v-show="collapse.isActive">
+					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
 				</a-form-item>
 			</v-searcher>
 		</a-col>
@@ -44,10 +50,10 @@
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
-import API from './api/index'
+import apiEvents from './api/index'
 import { LogTypeEnum } from '@/views/enums.js'
 export default {
-	name: 'actionlog',
+	name: 'actionLog',
 	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
@@ -77,20 +83,16 @@ export default {
 			],
 			fields: [],
 			actions: ['detail', 'delete', 'exported', 'imported'],
-			events: API,
+			events: apiEvents,
 			queryInfos: {
 				ActionUrl: '',
 				ActionTime: [],
 				LogType: [],
+				ITCode:'',
+				IP:''
 			},
 			logTypes: LogTypeEnum,
 		}
-	},
-	created() {
-		loadJson('actionlog').then((res) => {
-			this.columns = res.columns
-			this.fields = res.fields
-		})
 	},
 	methods: {
 		querySearch() {

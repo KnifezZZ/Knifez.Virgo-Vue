@@ -14,10 +14,10 @@
 			<v-table
 				ref="vtable"
 				:form-items="queryInfos"
-				:useToolBar="true"
 				:columns="columns"
 				:actions="actions"
 				:events="events"
+				:useToolBar="true"
 				bordered
 			>
 				<template #toolbar> </template>
@@ -25,6 +25,7 @@
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
 			</v-table>
+			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -32,17 +33,17 @@
 <script>
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
-import API from './api/index'
+import apiEvents from './api/index'
 import { ref, onMounted, watch } from 'vue'
-import { loadJson } from '@/api/baseCURD.js'
+import DialogForm from './views/dialog-form'
 export default {
-	name: 'frameworkuser',
-	components: { VSearcher, VTable },
+	name: 'frameworkRole',
+	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
 			collapse: {
-				needCollapse: true,
-				isActive: false,
+				needCollapse: false,
+				isActive: true,
 			},
 			columns: [
 				{ key: 'RoleCode', title: '角色编号' },
@@ -51,11 +52,11 @@ export default {
 				{
 					title: '操作',
 					isOperate: true,
-					actions: ['detail', 'edit', 'delete'],
+					actions: ['detail', 'edit','', 'delete'],
 				},
 			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
-			events: API,
+			events: apiEvents,
 			queryInfos: {
 				RoleCode: '',
 				RoleName: '',
@@ -70,7 +71,6 @@ export default {
 			this.$refs.vtable.queryReset()
 		},
 	},
-	mounted() {},
 }
 </script>
 

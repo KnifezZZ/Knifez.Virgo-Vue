@@ -33,7 +33,7 @@
 <script>
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
-import API from './api/index'
+import apiEvents from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
 import { loadJson } from '@/api/baseCURD.js'
@@ -60,7 +60,7 @@ export default {
 				},
 			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
-			events: API,
+			events: apiEvents,
 			queryInfos: {
 				ITCode: '',
 				Name: '',
@@ -76,10 +76,10 @@ export default {
 		},
 	},
 	created() {
-		API.GetFrameworkRoles().then((res) => {
+		apiEvents.GetFrameworkRoles().then((res) => {
 			this.getFrameworkRolesData = res
 		})
-		API.GetFrameworkGroups().then((res) => {
+		apiEvents.GetFrameworkGroups().then((res) => {
 			this.getFrameworkGroupsData = res
 		})
 	},

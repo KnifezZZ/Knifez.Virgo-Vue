@@ -65,8 +65,7 @@ export default function compTable(props, context) {
 				delete params[key]
 			}
 		}
-		props.events
-			.Search(params)
+		props.events.search(params)
 			.then((repData) => {
 				if (pagination.value.position) {
 					pagination.value.total = repData.Count || 0
@@ -108,7 +107,7 @@ export default function compTable(props, context) {
 		//单条删除
 		if (record !== null) {
 			ids = [record.ID]
-			props.events.BatchDelete(ids).then((res) => {
+			props.events.batchDelete(ids).then((res) => {
 				doSearch(false)
 			})
 		} else {
@@ -117,7 +116,7 @@ export default function compTable(props, context) {
 				icon: createVNode(ExclamationCircleOutlined),
 				onOk() {
 					return new Promise((resolve, reject) => {
-						props.events.BatchDelete(ids).then((res) => {
+						props.events.batchDelete(ids).then((res) => {
 							doSearch(false)
 							resolve(true)
 						})
@@ -177,7 +176,7 @@ export default function compTable(props, context) {
 				isAsc: null,
 			}
 			params = queryPageParams(params)
-			props.events.ExportExcel(params).then((res) => {
+			props.events.exportExcel(params).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')
 			})
@@ -186,7 +185,7 @@ export default function compTable(props, context) {
 			const parameters = selectData.value.map((item) => {
 				return item.ID
 			})
-			props.events.ExportExcelByIds(parameters).then((res) => {
+			props.events.exportExcelByIds(parameters).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')
 			})

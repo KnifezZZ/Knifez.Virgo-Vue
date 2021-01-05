@@ -27,10 +27,10 @@
 <script>
 import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
-import API from './api/index'
+import apiEvents from './api/index'
 import { ref, onMounted, watch } from 'vue'
 export default {
-	name: 'frameworkmenu',
+	name: 'frameworkMenu',
 	components: { VTable, DialogForm },
 	data() {
 		return {
@@ -49,7 +49,7 @@ export default {
 				},
 			],
 			actions: ['add', 'edit', 'detail', 'delete'],
-			events: API,
+			events: apiEvents,
 			queryInfos: {
 				PageName: '',
 			},

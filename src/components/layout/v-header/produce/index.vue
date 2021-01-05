@@ -112,7 +112,7 @@ export default {
 					IsInsertMenu: this.IsInsertMenu,
 				},
 			}).then((res) => {
-				notification.success(res)
+				notification.success({ message: res })
 			})
 		},
 	},

@@ -79,7 +79,7 @@ export default {
 		})
 		// 非添加窗口加载页面数据
 		if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
-			props.events.Detail(dialogConfig.id).then((res) => {
+			props.events.detail(dialogConfig.id).then((res) => {
 				let data = {}
 				if (props.fields !== undefined) {
 					props.fields.forEach((item) => {
@@ -102,12 +102,12 @@ export default {
 		}
 		const doSubmit = () => {
 			if (formStatus.value == 'add') {
-				props.events.Add({ Entity: formData.value }).then((res) => {
+				props.events.add({ Entity: formData.value }).then((res) => {
 					doClose(true)
 				})
 			}
 			if (formStatus.value == 'edit') {
-				props.events.Edit({ Entity: formData.value }).then((res) => {
+				props.events.edit({ Entity: formData.value }).then((res) => {
 					doClose(true)
 				})
 			}

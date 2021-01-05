@@ -7,7 +7,7 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import API from '../api/index'
+import apiEvents from '../api/index'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 export default {
@@ -18,8 +18,7 @@ export default {
 	},
 	data() {
 		return {
-			events: API,
-
+			events: apiEvents,
 			fields: [
 				{
 					key: 'ID',
@@ -93,10 +92,10 @@ export default {
 		},
 	},
 	created() {
-		API.GetFrameworkRoles().then((res) => {
+		apiEvents.GetFrameworkRoles().then((res) => {
 			this.getFrameworkRolesData = res
 		})
-		API.GetFrameworkGroups().then((res) => {
+		apiEvents.GetFrameworkGroups().then((res) => {
 			this.getFrameworkGroupsData = res
 		})
 	},

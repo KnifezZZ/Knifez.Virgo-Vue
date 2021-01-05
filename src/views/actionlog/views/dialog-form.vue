@@ -7,7 +7,7 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import API from '../api/index'
+import apiEvents from '../api/index'
 export default {
 	name: 'frameworkgroup-dialog',
 	components: {
@@ -16,7 +16,7 @@ export default {
 	},
 	data() {
 		return {
-			events: API,
+			events: apiEvents,
 			fields: [
 				{
 					key: 'ID',

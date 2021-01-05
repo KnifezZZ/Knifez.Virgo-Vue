@@ -33,11 +33,11 @@
 <script>
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
-import API from './api/index'
+import apiEvents from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
 export default {
-	name: 'frameworkuser',
+	name: 'frameworkGroup',
 	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
@@ -56,7 +56,7 @@ export default {
 				},
 			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
-			events: API,
+			events: apiEvents,
 			queryInfos: {
 				ActionUrl: '',
 				ActionTime: [],

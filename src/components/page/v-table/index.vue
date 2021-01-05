@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import CompTable from '../../comp-api/table'
+import CompTable from './table'
 export default {
 	name: 'VTable',
 	props: {
