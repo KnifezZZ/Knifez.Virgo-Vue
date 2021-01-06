@@ -61,7 +61,7 @@ export default {
 					type: 'select',
 					props: {
 						mode: 'multiple',
-						items: SexEnumTypes,
+						loadData: apiEvents.GetFrameworkRoles,
 					},
 				},
 				{
@@ -110,14 +110,6 @@ export default {
 		reSearch() {
 			this.$emit('reSearch')
 		},
-	},
-	created() {
-		apiEvents.GetFrameworkRoles().then((res) => {
-			this.getFrameworkRolesData = res
-		})
-		apiEvents.GetFrameworkGroups().then((res) => {
-			this.getFrameworkGroupsData = res
-		})
 	},
 }
 </script>

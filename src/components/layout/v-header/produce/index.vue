@@ -112,6 +112,7 @@ export default {
 					IsInsertMenu: this.IsInsertMenu,
 				},
 			}).then((res) => {
+				sessionStorage.removeItem("allRoutes")
 				notification.success({ message: res })
 			})
 		},

@@ -30,6 +30,19 @@
 									</a-select-option>
 								</a-select>
 							</template>
+							<template v-else-if="item.type === 'treeSelect'">
+								<a-tree-select
+									v-model:value="formData[item.key]"
+									style="width: 100%"
+									:dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+									:tree-data="item.props.items"
+									:replace-fields="{ children: 'children', title: 'Text', key: 'Value', value: 'Value' }"
+									:tree-checkable="item.props.treeCheckable ? item.props.treeCheckable : false"
+									placeholder="请选择"
+								/>
+
+								<!-- :replace-fields="{ children: 'children', title: 'Text', key: 'Value', value: 'Value' }" -->
+							</template>
 							<template v-else-if="item.type === 'upload'">
 								<a-upload
 									action="api/_file/upload"
@@ -55,18 +68,19 @@
 								<a-date-picker v-model:value="formData[item.key]" show-time type="date" style="width: 100%;" />
 							</template>
 							<template v-else-if="item.type === 'radio'">
-								<a-radio-group :name="item.key" v-model:value="formData[item.key]">
-									<a-radio v-for="rad in item.props.items" :key="rad.Value" :value="rad.Value">{{ rad.Text }}</a-radio>
+								<a-radio-group :name="item.key" v-model:value="formData[item.key]" button-style="solid">
+									<template v-if="item.props.button">
+										<a-radio-button v-for="rad in item.props.items" :key="rad.Value" :value="rad.Value">
+											{{ rad.Text }}
+										</a-radio-button>
+									</template>
+									<template v-else>
+										<a-radio v-for="rad in item.props.items" :key="rad.Value" :value="rad.Value">
+											{{ rad.Text }}
+										</a-radio>
+									</template>
 								</a-radio-group>
 							</template>
-							<template v-else-if="item.type === 'radioButton'">
-								<a-radio-group :name="item.key" button-style="solid" v-model:value="formData[item.key]">
-									<a-radio-button v-for="rad in item.props.items" :key="rad.Value" :value="rad.Value">{{
-										rad.Text
-									}}</a-radio-button>
-								</a-radio-group>
-							</template>
-							<template v-else-if="item.type === 'treeSelect'"></template>
 							<template v-else>
 								<a-input type="text" v-model:value="formData[item.key]"></a-input>
 							</template>
@@ -93,6 +107,7 @@ import { useStore } from 'vuex'
 import { closeOnDialog, closeOnTab } from '@/utils/openPage'
 import { message } from 'ant-design-vue'
 import { fileUploadOptions } from '@/configs/index'
+import { getTreeData } from '@/utils/tool'
 export default {
 	name: 'VForm',
 	props: {
@@ -142,6 +157,16 @@ export default {
 				} else {
 					item.hidden = formStatus.value == item.hidden
 				}
+			}
+			if (item.type === 'select') {
+				item.props.loadData().then((res) => {
+					item.props.items = res
+				})
+			}
+			if (item.type === 'treeSelect') {
+				item.props.loadData().then((res) => {
+					item.props.items = getTreeData(res, 'ParentId', 'Value', '')
+				})
 			}
 		})
 		// 非添加窗口加载页面数据

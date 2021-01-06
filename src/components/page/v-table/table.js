@@ -71,7 +71,7 @@ export default function compTable(props, context) {
 					pagination.value.total = repData.Count || 0
 				}
 				if (props.useTree) {
-					tableData.value = getTreeData(repData.Data, props.treeParentKey, props.treeKey) || []
+					tableData.value = getTreeData(repData.Data, props.treeParentKey, props.treeKey,null) || []
 				} else {
 					tableData.value = repData.Data || []
 				}

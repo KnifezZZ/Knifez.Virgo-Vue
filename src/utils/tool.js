@@ -1,5 +1,5 @@
 // table data转tree格式
-export function getTreeData(list, parentCol, idCol) {
+export function getTreeData(list, parentCol, idCol,top) {
 	const getChildren = (pid, children = []) => {
 		list
 			.filter((x) => x[parentCol] == pid)
@@ -13,6 +13,6 @@ export function getTreeData(list, parentCol, idCol) {
 			})
 		return children
 	}
-	const tree = getChildren(null)
+	let tree = getChildren(top)
 	return tree
 }

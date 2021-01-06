@@ -71,6 +71,8 @@ const actions = {
 	},
 	resetAll({ commit, dispatch }) {
 		Cookies.remove('Authorization')
+		sessionStorage.removeItem("allRoutes")
+		sessionStorage.removeItem("visitedTabs")
 		commit('setToken', '')
 		commit('setRoles', [])
 		commit('setActions', [])
