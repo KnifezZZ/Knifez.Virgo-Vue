@@ -1,19 +1,19 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :collapse.sync="collapse" @search="querySearch" @reset="queryReset">
-				<a-form-item label="账户" name="ITCode">
-					<a-input type="text" v-model:value="queryInfos.ITCode"></a-input>
-				</a-form-item>
-				<a-form-item label="姓名" name="Name">
-					<a-input type="text" v-model:value="queryInfos.Name"></a-input>
-				</a-form-item>
+			<v-searcher
+				:collapse.sync="collapse"
+				:events="events"
+				:fields="queryFields"
+				@search="querySearch"
+				@reset="queryReset"
+			>
 			</v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
 				ref="vtable"
-				:form-items="queryInfos"
+				:form-items="queryForm"
 				:useToolBar="true"
 				:columns="columns"
 				:actions="actions"
@@ -61,27 +61,33 @@ export default {
 			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: apiEvents,
-			queryInfos: {
-				ITCode: '',
-				Name: '',
-			},
+			queryFields: [
+				{
+					title: '姓名',
+					key: 'Name',
+					type: 'input',
+				},
+				{
+					title: '账号',
+					key: 'ITCode',
+					type: 'input',
+				},
+			],
+			queryForm: {},
 		}
 	},
 	methods: {
-		querySearch() {
-			this.$refs.vtable.doSearch()
+		querySearch(info) {
+			new Promise((resolve, reject) => {
+				this.queryForm = info
+				resolve(true)
+			}).then((res) => {
+				this.$refs.vtable.doSearch(true)
+			})
 		},
 		queryReset() {
 			this.$refs.vtable.queryReset()
 		},
-	},
-	created() {
-		apiEvents.GetFrameworkRoles().then((res) => {
-			this.getFrameworkRolesData = res
-		})
-		apiEvents.GetFrameworkGroups().then((res) => {
-			this.getFrameworkGroupsData = res
-		})
 	},
 }
 </script>

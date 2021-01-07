@@ -1,32 +1,19 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :collapse.sync="collapse" @search="querySearch" @reset="queryReset">
-				<a-form-item label="访问时间" name="ActionTime">
-					<a-range-picker v-model:value="queryInfos.ActionTime" allowClear />
-				</a-form-item>
-				<a-form-item label="日志类型" name="LogType">
-					<a-select v-model:value="queryInfos.LogType" mode="multiple" placeholder="请选择" style="width:200px">
-						<a-select-option v-for="i in LogTypeEnum" :key="i.Value">
-							{{ i.Text }}
-						</a-select-option>
-					</a-select>
-				</a-form-item>
-				<a-form-item label="访问IP" name="IP">
-					<a-input type="text" v-model:value="queryInfos.IP"></a-input>
-				</a-form-item>
-				<a-form-item label="操作账户" name="ITCode" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.ITCode"></a-input>
-				</a-form-item>
-				<a-form-item label="访问地址" name="ActionUrl" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
-				</a-form-item>
+			<v-searcher
+				:collapse.sync="collapse"
+				:events="events"
+				:fields="queryFields"
+				@search="querySearch"
+				@reset="queryReset"
+			>
 			</v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
 				ref="vtable"
-				:form-items="queryInfos"
+				:form-items="queryForm"
 				:useToolBar="true"
 				:columns="columns"
 				:actions="actions"
@@ -41,7 +28,7 @@
 					<a-tag :color="text > 0.3 ? 'red' : 'green'"> {{ text }} </a-tag>
 				</template>
 			</v-table>
-			<dialog-form @search="querySearch" :fields="fields"></dialog-form>
+			<dialog-form @search="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -81,22 +68,42 @@ export default {
 					actions: ['detail', 'delete'],
 				},
 			],
-			fields: [],
 			actions: ['detail', 'delete', 'exported', 'imported'],
 			events: apiEvents,
-			queryInfos: {
-				ActionUrl: '',
-				ActionTime: [],
-				LogType: [],
-				ITCode:'',
-				IP:''
-			},
+			queryFields: [
+				{
+					title: '操作账户',
+					key: 'ITCode',
+					type: 'input',
+				},
+				{
+					title: '访问路径',
+					key: 'ActionUrl',
+					type: 'input',
+				},
+				{
+					title: 'IP',
+					key: 'IP',
+					type: 'input',
+				},
+				{
+					title: '访问时间',
+					key: 'ActionTime',
+					type: 'dataPicker',
+				},
+			],
+			queryForm: {},
 			logTypes: LogTypeEnum,
 		}
 	},
 	methods: {
-		querySearch() {
-			this.$refs.vtable.doSearch()
+		querySearch(info) {
+			new Promise((resolve, reject) => {
+				this.queryForm = info
+				resolve(true)
+			}).then((res) => {
+				this.$refs.vtable.doSearch(true)
+			})
 		},
 		queryReset() {
 			this.$refs.vtable.queryReset()

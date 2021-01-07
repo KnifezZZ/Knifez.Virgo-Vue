@@ -1,30 +1,31 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :events="$refs" :collapse.sync="collapse">
-				<a-form-item label="访问地址" name="ActionUrl">
-					<a-input type="text" v-model:value="queryInfos.ActionUrl"></a-input>
-				</a-form-item>
-				<a-form-item label="方法" name="ActionName" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.ActionName"></a-input>
-				</a-form-item>
+			<v-searcher
+				:collapse.sync="collapse"
+				:events="events"
+				:fields="queryFields"
+				@search="querySearch"
+				@reset="queryReset"
+			>
 			</v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
 				ref="vtable"
-				:form-items="queryInfos"
-				:useToolBar="true"
+				:form-items="queryForm"
 				:columns="columns"
 				:actions="actions"
 				:events="events"
+				:useToolBar="true"
 				bordered
 			>
 				<template #toolbar> </template>
-				<template #IsValid="{ record }">
+				<!-- <template #IsValid="{ record }">
 					<a-switch v-model:checked="record.IsValid" disabled />
-				</template>
+				</template> -->
 			</v-table>
+			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>
@@ -34,38 +35,56 @@ import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import apiEvents from './api/index'
 import { ref, onMounted, watch } from 'vue'
+import DialogForm from './views/dialog-form'
 export default {
-	name: 'dataprivilege',
-	components: { VSearcher, VTable },
+	name: 'dataPrivilege',
+	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
 			collapse: {
-				needCollapse: true,
-				isActive: false,
+				needCollapse: false,
+				isActive: true,
 			},
-			columns: [],
-			actions: ['add', 'edit', 'detail', 'delete', 'exported'],
+			columns: [
+				{ key: 'Name', title: '授权对象' },
+				{ key: 'TableName', title: '权限名称' },
+				{ key: 'RelateIDs', title: '权限' },
+				{
+					title: '操作',
+					isOperate: true,
+					actions: ['detail', 'edit', 'delete'],
+				},
+			],
+			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: apiEvents,
-			queryInfos: {
-				ActionUrl: '',
-				ActionTime: [],
-			},
+			queryFields: [
+				{
+					title: '权限名称',
+					key: 'TableName',
+					type: 'input',
+				},
+				{
+					title: '授权对象',
+					key: 'Name',
+					type: 'input',
+				},
+			],
+			queryForm: {},
 		}
 	},
-	created() {
-		//table字段
-		this.columns = [
-			{ key: 'Name', title: '授权对象' },
-			{ key: 'TableName', title: '权限名称' },
-			{ key: 'RelateIDs', title: '权限' },
-			{
-				title: '操作',
-				isOperate: true,
-				actions: ['detail', 'edit', 'delete'],
-			},
-		]
+	methods: {
+		querySearch(info) {
+			new Promise((resolve, reject) => {
+				this.queryForm = info
+				resolve(true)
+			}).then((res) => {
+				this.$refs.vtable.doSearch(true)
+			})
+		},
+		queryReset() {
+			this.$refs.vtable.queryReset()
+		},
 	},
-	mounted() {},
 }
 </script>
 

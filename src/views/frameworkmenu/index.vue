@@ -3,7 +3,7 @@
 		<a-col :span="24">
 			<v-table
 				ref="vtable"
-				:form-items="queryInfos"
+				:form-items="queryForm"
 				:columns="columns"
 				:actions="actions"
 				:events="events"
@@ -13,7 +13,7 @@
 				bordered
 			>
 				<template #toolbar>
-					<a-button @click="$refs.vtable.doSearch(false)">刷新</a-button>
+					<a-button @click="querySearch">刷新</a-button>
 				</template>
 				<template #ICon="{ text }">
 					<v-icon :icon="text"></v-icon>
@@ -50,14 +50,19 @@ export default {
 			],
 			actions: ['add', 'edit', 'detail', 'delete'],
 			events: apiEvents,
-			queryInfos: {
+			queryForm: {
 				PageName: '',
 			},
 		}
 	},
 	methods: {
-		querySearch() {
-			this.$refs.vtable.doSearch()
+		querySearch(info) {
+			new Promise((resolve, reject) => {
+				this.queryForm = info
+				resolve(true)
+			}).then((res) => {
+				this.$refs.vtable.doSearch(true)
+			})
 		},
 	},
 }

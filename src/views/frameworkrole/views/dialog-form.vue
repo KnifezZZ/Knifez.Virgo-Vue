@@ -1,6 +1,6 @@
 <template>
 	<v-form-dialog :use-dialog="true">
-		<v-form layout="inline" :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+		<v-form :fields="fields" :events="events" @reSearch="reSearch"></v-form>
 	</v-form-dialog>
 </template>
 
@@ -25,17 +25,17 @@ export default {
 				},
 				{
 					title: '用户组编码',
-					key: 'GroupCode',
+					key: 'RoleCode',
 					type: 'input',
 				},
 				{
 					title: '用户组名称',
-					key: 'GroupName',
+					key: 'RoleName',
 					type: 'input',
 				},
 				{
 					title: '备注',
-					key: 'GroupRemark',
+					key: 'RoleRemark',
 					type: 'input',
 				},
 			],

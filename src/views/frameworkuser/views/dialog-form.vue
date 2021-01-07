@@ -54,15 +54,7 @@ export default {
 					props: {
 						limit: 1,
 					},
-				},
-				{
-					title: '邮箱',
-					key: 'Email',
-					type: 'select',
-					props: {
-						mode: 'multiple',
-						loadData: apiEvents.GetFrameworkRoles,
-					},
+					span:12
 				},
 				{
 					title: '性别',
@@ -71,26 +63,59 @@ export default {
 					props: {
 						items: SexEnumTypes,
 					},
+					span:12
+				},
+				{
+					title: '邮箱',
+					key: 'Email',
+					type: 'input',
+					span:6
 				},
 				{
 					title: '手机号码',
 					key: 'CellPhone',
 					type: 'input',
+					span:6
 				},
 				{
 					title: '固话',
 					key: 'HomePhone',
 					type: 'input',
+					span:6
 				},
 				{
 					title: '地址',
 					key: 'Address',
 					type: 'input',
+					span:12
 				},
 				{
 					title: '邮编',
 					key: 'ZipCode',
 					type: 'input',
+					span:6
+				},
+				{
+					title: '角色组',
+					key: 'SelectedRolesIDs',
+					type: 'select',
+					props:{
+						mode: 'multiple',
+						items:[],
+						loadData:apiEvents.GetFrameworkRoles,
+					},
+					span:12
+				},
+				{
+					title: '用户组',
+					key: 'SelectedGroupIDs',
+					type: 'select',
+					props:{
+						mode: 'multiple',
+						items:[],
+						loadData:apiEvents.GetFrameworkGroups,
+					},
+					span:12
 				},
 				{
 					title: '是否启用',
@@ -100,10 +125,9 @@ export default {
 						checkedChildren: '启用',
 						unCheckedChildren: '禁用',
 					},
+					span:12,
 				},
 			],
-			getFrameworkRolesData: [],
-			getFrameworkGroupsData: [],
 		}
 	},
 	methods: {

@@ -1,19 +1,19 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :collapse.sync="collapse" @search="querySearch" @reset="queryReset">
-				<a-form-item label="用户组" name="GroupName">
-					<a-input type="text" v-model:value="queryInfos.GroupName"></a-input>
-				</a-form-item>
-				<a-form-item label="用户组编码" name="GroupCode" v-show="collapse.isActive">
-					<a-input type="text" v-model:value="queryInfos.GroupCode"></a-input>
-				</a-form-item>
+			<v-searcher
+				:collapse.sync="collapse"
+				:events="events"
+				:fields="queryFields"
+				@search="querySearch"
+				@reset="queryReset"
+			>
 			</v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
 				ref="vtable"
-				:form-items="queryInfos"
+				:form-items="queryForm"
 				:columns="columns"
 				:actions="actions"
 				:events="events"
@@ -21,9 +21,6 @@
 				bordered
 			>
 				<template #toolbar> </template>
-				<template #IsValid="{ record }">
-					<a-switch v-model:checked="record.IsValid" disabled />
-				</template>
 			</v-table>
 			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
@@ -57,15 +54,29 @@ export default {
 			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: apiEvents,
-			queryInfos: {
-				ActionUrl: '',
-				ActionTime: [],
-			},
+			queryFields: [
+				{
+					title: '用户组',
+					key: 'GoupName',
+					type: 'input',
+				},
+				{
+					title: '用户组编号',
+					key: 'GroupCode',
+					type: 'input',
+				},
+			],
+			queryForm: {},
 		}
 	},
 	methods: {
-		querySearch() {
-			this.$refs.vtable.doSearch()
+		querySearch(info) {
+			new Promise((resolve, reject) => {
+				this.queryForm = info
+				resolve(true)
+			}).then((res) => {
+				this.$refs.vtable.doSearch(true)
+			})
 		},
 		queryReset() {
 			this.$refs.vtable.queryReset()

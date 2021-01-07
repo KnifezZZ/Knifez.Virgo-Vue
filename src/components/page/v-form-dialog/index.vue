@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<template v-if="useDialog">
-			<a-modal :destroyOnClose="true" v-model:visible="dialogShow" :title="title" :footer="false">
+			<a-modal width="700px" :destroyOnClose="true" v-model:visible="dialogShow" :title="title" :footer="false">
 				<slot />
 			</a-modal>
 		</template>
@@ -48,4 +48,3 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>

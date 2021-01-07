@@ -1,12 +1,12 @@
 <template>
 	<a-card>
-		<a-row>
+		<a-row class="vForm">
 			<template v-for="item in fields.filter((x) => !x.hidden)">
 				<template v-if="formStatus === 'detail'">
 					<a-col :span="item.span ? item.span : 24" :key="item.key">
 						<a-form-item
 							:label-col="{ span: item.span ? 48 / item.span : 2 }"
-							:wrapper-col="{ span: 16 }"
+							:wrapper-col="{ span: 24 - (item.span ? 48 / item.span : 4) }"
 							:label="item.title"
 							:name="item.key"
 						>
@@ -19,7 +19,7 @@
 						<template v-if="item.isSlot">
 							<a-form-item
 								:label-col="{ span: item.span ? 48 / item.span : 2 }"
-								:wrapper-col="{ span: 16 }"
+								:wrapper-col="{ span: 24 - (item.span ? 48 / item.span : 4) }"
 								:label="item.title"
 								:key="item.key"
 								:name="item.key"
@@ -32,7 +32,7 @@
 						<template v-else>
 							<a-form-item
 								:label-col="{ span: item.span ? 48 / item.span : 2 }"
-								:wrapper-col="{ span: 16 }"
+								:wrapper-col="{ span: 24 - (item.span ? 48 / item.span : 4) }"
 								:label="item.title"
 								:key="item.key"
 								:name="item.key"
@@ -192,9 +192,15 @@ export default {
 				let data = {}
 				if (props.fields !== undefined) {
 					props.fields.forEach((item) => {
-						data[item.key] = res.Entity[item.key]
+						let fieldValue = res.Entity[item.key]
+						if (res[item.key] !== undefined) {
+							fieldValue = res[item.key]
+						}
+						data[item.key] = fieldValue
 						if (item.type === 'treeSelect' || item.type === 'select') {
-							data[item.key] = getTreeNode(item.props.items, 'ParentId', 'Value', res.Entity[item.key]).Text
+							if (formStatus.value === 'detail') {
+								data[item.key] = getTreeNode(item.props.items, 'ParentId', 'Value', fieldValue).Text
+							}
 						}
 					})
 				}
@@ -213,13 +219,22 @@ export default {
 			}
 		}
 		const doSubmit = () => {
+			var payload = {}
+			var middleIds = {}
+			props.fields.forEach((element) => {
+				if (element.key.startsWith('Selected') && element.key.includes('IDs')) {
+					payload[element.key] = formData.value[element.key]
+					delete formData.value[element.key]
+				}
+			})
+			payload.Entity = formData.value
 			if (formStatus.value == 'add') {
-				props.events.add({ Entity: formData.value }).then((res) => {
+				props.events.add(payload).then((res) => {
 					doClose(true)
 				})
 			}
 			if (formStatus.value == 'edit') {
-				props.events.edit({ Entity: formData.value }).then((res) => {
+				props.events.edit(payload).then((res) => {
 					doClose(true)
 				})
 			}
@@ -234,7 +249,9 @@ export default {
 }
 </script>
 <style lang="less">
-.ant-form-item-label {
-	min-width: 100px;
+.vForm {
+	.ant-form-item-label {
+		min-width: 100px;
+	}
 }
 </style>
