@@ -1,6 +1,6 @@
 ﻿<template>
 	<v-form-dialog :use-dialog="true">
-		<v-form layout="inline" :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+		<v-form :fields="fields" :events="events" @reSearch="reSearch"></v-form>
 	</v-form-dialog>
 </template>
 
@@ -23,36 +23,36 @@ export default {
 				{
 					title: '类别描述',
 					key: 'Description',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					title: '图标',
 					key: 'Icon',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					title: '类别名称',
 					key: 'Name',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					title: '所属类别',
 					key: 'ParentId',
 					type: 'treeSelect',
 					props: {
-						loadData:apiEvents.getBlogCategoryList,
-						items:[]
-					},
+						items: [],
+						loadData: apiEvents.getBlogCategoryList,
+					}
 				},
 				{
 					title: '排序',
 					key: 'Sort',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					title: '静态地址',
 					key: 'Url',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					key: 'ID',
@@ -69,3 +69,4 @@ export default {
 	},
 }
 </script>
+

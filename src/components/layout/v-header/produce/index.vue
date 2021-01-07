@@ -11,17 +11,17 @@
 		</a-col>
 		<a-col :span="16">
 			<a-row>
-				<a-col :span="6">
+				<a-col :span="8">
 					<a-form-item label="区域">
 						<a-input v-model:value="Area" placeholder="默认为空" type="text" />
 					</a-form-item>
 				</a-col>
-				<a-col :span="6">
+				<a-col :span="8">
 					<a-form-item label="模块名称">
 						<a-input v-model:value="ModelName" placeholder="请输入模块名称" type="text" />
 					</a-form-item>
 				</a-col>
-				<a-col :span="6">
+				<a-col :span="4">
 					<a-form-item label="生成菜单">
 						<a-switch v-model:checked="IsInsertMenu" />
 					</a-form-item>

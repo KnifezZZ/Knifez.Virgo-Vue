@@ -1,16 +1,19 @@
 ﻿<template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher :collapse.sync="collapse" :fields="queryFields" :events="events" @search="querySearch" @reset="queryReset">
-				<a-form-item label="类别名称" name="Name">
-					<a-input type="text" v-model:value="queryInfos.Name"></a-input>
-				</a-form-item>
+			<v-searcher
+				:collapse.sync="collapse"
+				:events="events"
+				:fields="queryFields"
+				@search="querySearch"
+				@reset="queryReset"
+			>
 			</v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
 				ref="vtable"
-				:form-items="queryInfos"
+				:form-items="queryForm"
 				:columns="columns"
 				:actions="actions"
 				:events="events"
@@ -62,22 +65,30 @@ export default {
 				{
 					title: '类别名称',
 					key: 'Name',
-					type: 'input',
+					type: 'input'
+				},
+				{
+					title: '静态地址',
+					key: 'Url',
+					type: 'input'
 				},
 			],
-			queryInfos: {
-				Name: '',
-			},
+			queryForm: {},
 		}
 	},
 	methods: {
-		querySearch() {
-			this.$refs.vtable.doSearch()
+		querySearch(info) {
+			new Promise((resolve, reject) => {
+				this.queryForm = info
+				resolve(true)
+			}).then((res) => {
+				this.$refs.vtable.doSearch(true)
+			})
 		},
 		queryReset() {
 			this.$refs.vtable.queryReset()
 		},
 	},
-	setup() {},
 }
 </script>
+

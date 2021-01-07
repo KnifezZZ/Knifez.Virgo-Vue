@@ -46,10 +46,7 @@ const actions = {
 		const hour = new Date().getHours()
 		const thisTime =
 			hour < 8 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
-		notification.success({
-			message: `欢迎登录`,
-			description: `${thisTime}！`,
-		})
+		message.success(`${thisTime}！欢迎登录`)
 	},
 	async getUserInfo({ commit, dispatch, state }) {
 		const res = await checkLogin()
@@ -71,8 +68,8 @@ const actions = {
 	},
 	resetAll({ commit, dispatch }) {
 		Cookies.remove('Authorization')
-		sessionStorage.removeItem("allRoutes")
-		sessionStorage.removeItem("visitedTabs")
+		sessionStorage.removeItem('allRoutes')
+		sessionStorage.removeItem('visitedTabs')
 		commit('setToken', '')
 		commit('setRoles', [])
 		commit('setActions', [])

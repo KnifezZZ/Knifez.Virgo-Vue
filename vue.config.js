@@ -6,7 +6,7 @@ const { version, author } = require('./package.json')
 process.env.VUE_APP_VERSION = version
 process.env.VUE_APP_AUTHOR = author || 'KnifeZ'
 // gzip压缩
-const CompressionPlugin = require('compression-webpack-plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 module.exports = {
 	css: {
 		loaderOptions: {
@@ -24,25 +24,41 @@ module.exports = {
 			},
 		},
 	},
-	configureWebpack: () => {
-		// if (process.env.NODE_ENV === 'production') {
-		return {
+	configureWebpack: (config) => {
+		if (process.env.NODE_ENV === 'production') {
+			let optimization = {
+				resolve: {
+					alias: {
+						'@': resolve('src'),
+						'*': resolve(''),
+					},
+				},
+				plugins: [
+					new CompressionWebpackPlugin({
+						asset: '[path].gz[query]',
+						algorithm: 'gzip',
+						test: /\.js$|\.css$/, // 需要压缩的文件类型
+						threshold: 10240, // 归档需要进行压缩的文件大小最小值，我这个是10K以上的进行压缩
+						deleteOriginalAssets: false, // 是否删除原文件
+						minRatio: 0.8,
+					}),
+				],
+			}
+			Object.assign(config, {
+				optimization,
+			})
+		}
+		Object.assign(config, {
+			// 开发生产共同配置
 			resolve: {
+				extensions: ['.js', '.vue', '.json'], //请求本地json
 				alias: {
 					'@': resolve('src'),
 					'*': resolve(''),
+					'@c': resolve('src/components'),
 				},
 			},
-			plugins: [
-				new CompressionPlugin({
-					test: /\.js$|\.html$|\.css$|\.jpg$|\.jpeg$|\.png/, // 需要压缩的文件类型
-					threshold: 10240, // 归档需要进行压缩的文件大小最小值，我这个是10K以上的进行压缩
-					deleteOriginalAssets: false, // 是否删除原文件
-					minRatio: 0.8,
-				})
-			],
-		}
-		// }
+		})
 	},
 	chainWebpack(config) {
 		config.resolve.symlinks(true)
