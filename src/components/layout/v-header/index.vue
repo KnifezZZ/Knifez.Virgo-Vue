@@ -23,6 +23,7 @@
 		<a-modal width="80%" title="生成代码" v-model:visible="visible" :footer="null">
 			<virgo-produce></virgo-produce>
 		</a-modal>
+		<password :visible="passwordVisible" />
 	</div>
 </template>
 
@@ -30,25 +31,29 @@
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import VirgoProduce from './produce/index'
+import Password from './password/index'
 export default {
 	name: 'VHeader',
 	components: {
 		VirgoProduce,
+		Password,
 	},
 	data() {
 		return {
 			visible: false,
+			passwordVisible: false,
 		}
 	},
 	methods: {
-		password() {},
+		password() {
+			this.passwordVisible = true
+		},
 		genPage() {
 			this.visible = true
 		},
-    handleGenPageOk(e) {
-      console.log(e);
-      this.visible = false;
-    },
+		handleGenPageOk(e) {
+			this.visible = false
+		},
 	},
 	setup() {
 		const router = useRouter()

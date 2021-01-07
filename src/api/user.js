@@ -23,3 +23,12 @@ export function login (data) {
         data: data,
     })
 }
+
+export function changePassword(data){
+    return request({
+        url: reqPath + '/ChangePassword',
+        method: 'post',
+        contentType: contentType.form,
+        data: data,
+    })
+}
