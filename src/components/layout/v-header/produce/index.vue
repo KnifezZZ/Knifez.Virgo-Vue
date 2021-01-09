@@ -1,10 +1,10 @@
 <template>
 	<a-row>
 		<a-col :span="8">
-			<a-list item-layout="horizontal" :data-source="data" :bordered="true" header="Model列表">
+			<a-list item-layout="horizontal" :data-source="data" :bordered="true" header="Model列表" style="height:500px">
 				<template #renderItem="{ item }">
 					<a-list-item @click="getFields(item.Value)">
-						<a-list-item-meta :title="item.Text" :description="item.Value"> </a-list-item-meta>
+						<a-list-item-meta :title="item.Text"> </a-list-item-meta>
 					</a-list-item>
 				</template>
 			</a-list>

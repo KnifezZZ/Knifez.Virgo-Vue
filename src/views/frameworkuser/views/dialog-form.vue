@@ -14,7 +14,7 @@ import VForm from '@/components/page/v-form'
 import apiEvents from '../api/index'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { SexEnumTypes } from '@/configs/enums'
+import { GenderEnumTypes } from '@/configs/enums'
 export default {
 	name: 'frameworkmenu-dialog',
 	components: {
@@ -58,10 +58,10 @@ export default {
 				},
 				{
 					title: '性别',
-					key: 'Sex',
+					key: 'Gender',
 					type: 'radio',
 					props: {
-						items: SexEnumTypes,
+						items: GenderEnumTypes,
 					},
 					span:12
 				},

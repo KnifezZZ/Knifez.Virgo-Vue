@@ -50,7 +50,7 @@ export default {
 				{ key: 'Description', title: '类别描述' },
 				{ key: 'Icon', title: '图标' },
 				{ key: 'Name', title: '类别名称' },
-				{ key: 'BlogCategory_Name', title: '所属类别' },
+				{ key: 'BlogCategory_Name', title: 'Parent' },
 				{ key: 'Sort', title: '排序' },
 				{ key: 'Url', title: '静态地址' },
 				{

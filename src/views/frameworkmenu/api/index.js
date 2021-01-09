@@ -13,7 +13,27 @@ import {
 	bGetExcelTemplate,
 	bImported,
 } from '@/api/baseCURD'
-const API = {
+const apiEvents = {
+	getModules() {
+		return request({
+			url: reqPath + 'GetAllModules',
+			method: 'get',
+		})
+	},
+	getFolders() {
+		return request({
+			url: reqPath + 'GetFolders',
+			method: 'get',
+		})
+	},
+	getActionsByName(data){
+		return request({
+			url: reqPath + 'GetActionsByModel',
+			method: 'get',
+			data: data,
+		})
+
+	},
 	// 列表查询
 	search(data) {
 		return bSearch(reqPath, data)
@@ -49,4 +69,4 @@ const API = {
 		return bImported(reqPath, data)
 	},
 }
-export default API
+export default apiEvents

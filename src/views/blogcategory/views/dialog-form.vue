@@ -36,7 +36,7 @@ export default {
 					type: 'input'
 				},
 				{
-					title: '所属类别',
+					title: 'Parent',
 					key: 'ParentId',
 					type: 'treeSelect',
 					props: {

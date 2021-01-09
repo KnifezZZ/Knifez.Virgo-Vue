@@ -13,7 +13,7 @@ import {
 } from '@/api/baseCURD'
 
 const reqPath = config.headerApi + '/_ActionLog/'
-const API = {
+const apiEvents = {
 	// 列表查询
 	search: (data) => {
 		return bSearch(reqPath, data)
@@ -41,4 +41,4 @@ const API = {
 		return bImported(reqPath, data)
 	},
 }
-export default API
+export default apiEvents

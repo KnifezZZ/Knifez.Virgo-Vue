@@ -49,7 +49,7 @@ export default {
 			columns: [
 				{ key: 'ITCode', title: '账户' },
 				{ key: 'Name', title: '姓名' },
-				{ key: 'Sex', title: '性别' },
+				{ key: 'Gender', title: '性别' },
 				{ key: 'RoleName_view', title: '角色' },
 				{ key: 'GroupName_view', title: '用户组' },
 				{ key: 'IsValid', title: '是否生效', isSlot: true },

@@ -1,6 +1,5 @@
 <template>
 	<a-modal width="700px" :destroyOnClose="true" v-model:visible="pageShow" :title="密码修改">
-		<v-form :fields="fields" :events="events" @reSearch="reSearch"></v-form>
 		<a-row>
 			<a-col>
 				<a-form-item label="旧密码" name="OldPassword">
