@@ -7,9 +7,9 @@
 				:columns="columns"
 				:actions="actions"
 				:events="events"
-				:pagination="false"
 				:useToolBar="true"
 				:useTree="true"
+				:pagination="false"
 				bordered
 			>
 				<template #toolbar>

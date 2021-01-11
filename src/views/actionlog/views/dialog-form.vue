@@ -1,6 +1,6 @@
 <template>
 	<v-form-dialog :use-dialog="true">
-		<v-form :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+		<v-form :fields="fields" :events="events" @closed="reSearch"></v-form>
 	</v-form-dialog>
 </template>
 

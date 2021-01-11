@@ -6,7 +6,6 @@
 				:events="events"
 				:fields="queryFields"
 				@search="querySearch"
-				@reset="queryReset"
 			>
 			</v-searcher>
 		</a-col>
@@ -80,9 +79,6 @@ export default {
 			}).then((res) => {
 				this.$refs.vtable.doSearch(true)
 			})
-		},
-		queryReset() {
-			this.$refs.vtable.queryReset()
 		},
 	},
 }

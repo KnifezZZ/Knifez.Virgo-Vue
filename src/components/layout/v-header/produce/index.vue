@@ -1,5 +1,5 @@
 <template>
-	<a-row>
+	<a-row :gutter="4">
 		<a-col :span="8">
 			<a-list item-layout="horizontal" :data-source="data" :bordered="true" header="Model列表" style="height:500px">
 				<template #renderItem="{ item }">
@@ -86,7 +86,7 @@ export default {
 		getFields(info) {
 			this.ModelType = info
 			request({
-				url: 'api/_VGen/GetModelFields?modelName=' + info,
+				url: '/api/_VGen/GetModelFields?modelName=' + info,
 				method: 'get',
 			}).then((res) => {
 				this.tableData = res
@@ -94,7 +94,7 @@ export default {
 		},
 		loadModels() {
 			request({
-				url: 'api/_VGen/GetModelList',
+				url: '/api/_VGen/GetModelList',
 				method: 'get',
 			}).then((res) => {
 				this.data = res
@@ -102,7 +102,7 @@ export default {
 		},
 		handleGenPage() {
 			request({
-				url: 'api/_VGen/GenerateCodes',
+				url: '/api/_VGen/GenerateCodes',
 				method: 'post',
 				data: {
 					FieldInfos: this.tableData,

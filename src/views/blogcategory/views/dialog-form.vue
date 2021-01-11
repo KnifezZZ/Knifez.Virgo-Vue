@@ -1,6 +1,6 @@
 ﻿<template>
 	<v-form-dialog :use-dialog="true">
-		<v-form :fields="fields" :events="events" @reSearch="reSearch"></v-form>
+		<v-form :fields="fields" :events="events"></v-form>
 	</v-form-dialog>
 </template>
 
@@ -21,38 +21,38 @@ export default {
 			events: apiEvents,
 			fields: [
 				{
+					title: '类别名称',
+					key: 'Name',
+					type: 'input',
+				},
+				{
 					title: '类别描述',
 					key: 'Description',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '图标',
 					key: 'Icon',
-					type: 'input'
+					type: 'input',
 				},
 				{
-					title: '类别名称',
-					key: 'Name',
-					type: 'input'
-				},
-				{
-					title: 'Parent',
+					title: '父目录',
 					key: 'ParentId',
 					type: 'treeSelect',
 					props: {
 						items: [],
 						loadData: apiEvents.getBlogCategoryList,
-					}
+					},
 				},
 				{
 					title: '排序',
 					key: 'Sort',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '静态地址',
 					key: 'Url',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					key: 'ID',
@@ -62,11 +62,5 @@ export default {
 			],
 		}
 	},
-	methods: {
-		reSearch() {
-			this.$emit('reSearch')
-		},
-	},
 }
 </script>
-

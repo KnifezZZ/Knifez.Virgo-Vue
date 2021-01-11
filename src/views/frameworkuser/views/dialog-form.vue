@@ -1,6 +1,6 @@
 <template>
 	<v-form-dialog :use-dialog="false">
-		<v-form :fields="fields" :events="events" @reSearch="reSearch">
+		<v-form :fields="fields" :events="events" @closed="closed">
 			<template #Password="formData">
 				<a-input-password v-model:value="formData.Password"></a-input-password>
 			</template>
@@ -131,7 +131,7 @@ export default {
 		}
 	},
 	methods: {
-		reSearch() {
+		closed() {
 			this.$emit('reSearch')
 		},
 	},

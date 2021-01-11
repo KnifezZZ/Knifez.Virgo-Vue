@@ -18,19 +18,13 @@ export default function compTable(props, context) {
 	const tableData = ref([])
 	//分页配置
 	const pagination = ref(props.pagination)
-	const queryReset = () => {
-		Object.keys(props.formItems).forEach((item) => {
-			if (typeof props.formItems[item] == 'object') {
-				props.formItems[item] = []
-			} else {
-				props.formItems[item] = ''
-			}
-		})
-	}
+
 	const queryPageParams = (params) => {
-		if (pagination.value.position) {
+		if (pagination.value) {
 			params.Page = pagination.value.currentPage
 			params.Limit = pagination.value.pageSize
+		} else {
+			params.Limit = 0
 		}
 		return params
 	}
@@ -65,13 +59,14 @@ export default function compTable(props, context) {
 				delete params[key]
 			}
 		}
-		props.events.search(params)
+		props.events
+			.search(params)
 			.then((repData) => {
 				if (pagination.value.position) {
 					pagination.value.total = repData.Count || 0
 				}
 				if (props.useTree) {
-					tableData.value = getTreeData(repData.Data, props.treeParentKey, props.treeKey,null) || []
+					tableData.value = getTreeData(repData.Data, props.treeParentKey, props.treeKey) || []
 				} else {
 					tableData.value = repData.Data || []
 				}
@@ -197,7 +192,6 @@ export default function compTable(props, context) {
 		tablePagination: pagination,
 		tableData,
 		selectData,
-		queryReset,
 		doSearch,
 		doView,
 		doAdd,

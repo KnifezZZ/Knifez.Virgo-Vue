@@ -103,6 +103,7 @@ export default {
 					fullPath: tag.fullPath,
 					name: tag.name,
 					query: tag.query,
+					params: tag.params,
 					matched: matched,
 					meta: { ...tag.meta },
 				})

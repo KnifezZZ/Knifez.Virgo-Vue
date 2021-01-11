@@ -130,7 +130,7 @@ export default {
 			type: String,
 			required: false,
 			default: function() {
-				return 'ParentID'
+				return 'ParentId'
 			},
 		},
 	},
@@ -141,7 +141,6 @@ export default {
 			selectData,
 			tablePagination,
 			tableData,
-			queryReset,
 			doSearch,
 			doView,
 			doAdd,
@@ -157,7 +156,6 @@ export default {
 			searchFormClone,
 			tableData,
 			selectData,
-			queryReset,
 			doSearch,
 			doView,
 			doAdd,

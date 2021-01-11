@@ -85,7 +85,7 @@
 				<a-button @click="resetClick"><v-icon icon="refresh"></v-icon> 重置</a-button>
 				<a-button-group>
 					<a-button type="primary" @click="queryClick"><v-icon icon="search"></v-icon> 查询</a-button>
-					<a-button v-if="collapse.needCollapse" type="primary" style="padding:2px" @click="collapseQueryColumns">
+					<a-button v-if="needCollapse" type="primary" style="padding:2px" @click="collapseQueryColumns">
 						<v-icon icon="arrow-drop-down"></v-icon>
 					</a-button>
 				</a-button-group>
@@ -102,13 +102,10 @@ import { getTreeData } from '@/utils/tool'
 export default {
 	name: 'VSearcher',
 	props: {
-		collapse: {
-			type: Object,
+		needCollapse: {
+			type: Boolean,
 			default: function() {
-				return {
-					needCollapse: false,
-					isActive: true,
-				}
+				return false
 			},
 		},
 		events: {
@@ -122,22 +119,21 @@ export default {
 	},
 	setup(props, context) {
 		const collapseQueryColumns = () => {
-			// eslint-disable-next-line vue/no-mutating-props
-			props.collapse.isActive = !props.collapse.isActive
+			props.fields.forEach((item) => {
+				if (item.hidden !== undefined) {
+					item.hidden = !item.hidden
+				}
+			})
 		}
 		let formData = ref({})
 		props.fields.forEach((item) => {
-			if (item.type === 'select') {
+			if (item.hidden) {
+				item.hidden = props.needCollapse
+			}
+			if (['select', 'treeSelect'].includes(item.type)) {
 				if (item.props.items.length === 0) {
 					item.props.loadData().then((res) => {
 						item.props.items = res
-					})
-				}
-			}
-			if (item.type === 'treeSelect') {
-				if (item.props.items.length === 0) {
-					item.props.loadData().then((res) => {
-						item.props.items = getTreeData(res, 'ParentId', 'Value', '')
 					})
 				}
 			}
@@ -153,7 +149,7 @@ export default {
 			this.$emit('search', this.formData)
 		},
 		resetClick() {
-			this.$emit('reset')
+			this.formData = {}
 		},
 	},
 }
