@@ -148,7 +148,7 @@ export default {
 			this.moduleSelect(data.ModuleName)
 		},
 		beforeSubmit(payload, callback) {
-			debugger
+			payload.SelectedModule=payload.Entity.ModuleName
 			callback(payload)
 		},
 		moduleSelect(value) {
