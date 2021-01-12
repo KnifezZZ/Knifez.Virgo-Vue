@@ -1,6 +1,6 @@
 ﻿<template>
 	<v-form-dialog :use-dialog="true">
-		<v-form :fields="fields" :events="events"></v-form>
+		<v-form :fields="fields" :events="events" :rules="rules" @closed="closed"></v-form>
 	</v-form-dialog>
 </template>
 
@@ -23,17 +23,27 @@ export default {
 				{
 					title: '类别名称',
 					key: 'Name',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					title: '类别描述',
 					key: 'Description',
-					type: 'input',
+					type: 'input'
 				},
 				{
 					title: '图标',
 					key: 'Icon',
-					type: 'input',
+					type: 'input'
+				},
+				{
+					title: '静态地址',
+					key: 'Url',
+					type: 'input'
+				},
+				{
+					title: '排序',
+					key: 'Sort',
+					type: 'input'
 				},
 				{
 					title: '父目录',
@@ -42,17 +52,7 @@ export default {
 					props: {
 						items: [],
 						loadData: apiEvents.getBlogCategoryList,
-					},
-				},
-				{
-					title: '排序',
-					key: 'Sort',
-					type: 'input',
-				},
-				{
-					title: '静态地址',
-					key: 'Url',
-					type: 'input',
+					}
 				},
 				{
 					key: 'ID',
@@ -60,7 +60,16 @@ export default {
 					hidden: true,
 				},
 			],
+			rules: {
+				Name: [{ required: true, message: '类别名称是必填项', trigger: 'change' }],
+			},
 		}
+	},
+	methods: {
+		closed() {
+			this.$emit('reSearch')
+		},
 	},
 }
 </script>
+

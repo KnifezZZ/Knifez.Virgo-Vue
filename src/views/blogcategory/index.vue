@@ -2,7 +2,7 @@
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
 			<v-searcher
-				:needCollapse="true"
+				:collapse.sync="collapse"
 				:events="events"
 				:fields="queryFields"
 				@search="querySearch"
@@ -18,7 +18,7 @@
 				:events="events"
 				:useToolBar="true"
 				:useTree="true"
-				:pagination="false"
+				:pagination="false"				
 				bordered
 			>
 				<template #toolbar> </template>
@@ -43,13 +43,17 @@ export default {
 	components: { VSearcher, VTable, DialogForm },
 	data() {
 		return {
+			collapse: {
+				needCollapse: false,
+				isActive: true,
+			},
 			columns: [
+				{ key: 'Name', title: '类别名称' },
 				{ key: 'Description', title: '类别描述' },
 				{ key: 'Icon', title: '图标' },
-				{ key: 'Name', title: '类别名称' },
-				{ key: 'BlogCategory_Name', title: '父目录' },
-				{ key: 'Sort', title: '排序' },
 				{ key: 'Url', title: '静态地址' },
+				{ key: 'Sort', title: '排序' },
+				{ key: 'BlogCategory_Name', title: '父目录' },
 				{
 					title: '操作',
 					isOperate: true,
@@ -60,15 +64,14 @@ export default {
 			events: apiEvents,
 			queryFields: [
 				{
-					title: '类别名称',
-					key: 'Name',
-					type: 'input',
+					title: '类别描述',
+					key: 'Description',
+					type: 'input'
 				},
 				{
 					title: '静态地址',
 					key: 'Url',
-					type: 'input',
-					hidden: true,
+					type: 'input'
 				},
 			],
 			queryForm: {},
@@ -86,3 +89,4 @@ export default {
 	},
 }
 </script>
+

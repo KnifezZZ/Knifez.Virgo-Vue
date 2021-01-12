@@ -11,7 +11,7 @@
 								:label="item.title"
 								:name="item.key"
 							>
-								{{ formData[item.key] }}
+								<p v-html="showDetail(item)"></p>
 							</a-form-item>
 						</a-col>
 					</template>
@@ -64,18 +64,13 @@
 										/>
 									</template>
 									<template v-else-if="item.type === 'upload'">
-										<a-upload
-											action="api/_file/upload"
-											list-type="picture"
-											v-model:fileList="formData[item.key]"
-											:before-upload="beforeUpload"
-											class="upload-list-inline"
-										>
-											<!-- v-if="formData[item.key].length < item.props.limit" -->
-											<a-button>
-												<v-icon icon="upload-2"></v-icon>
-											</a-button>
-										</a-upload>
+										<v-upload
+											:action="`/api/_file/${item.props ? item.props.action : 'Upload'}`"
+											:accept="item.props.accept"
+											:limit="item.props.limit"
+											:files="formData[item.key]"
+											@bindValue="bindFile($event, item)"
+										></v-upload>
 									</template>
 									<template v-else-if="item.type === 'switch'">
 										<a-switch
@@ -126,11 +121,13 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { closeOnDialog, closeOnTab } from '@/utils/openPage'
 import { message } from 'ant-design-vue'
-import { fileUploadOptions } from '@/configs/index'
-import { getTreeData } from '@/utils/tool'
 import { getTreeNode } from '../../../utils/tool'
+import VUpload from '@c/v-upload/index'
 export default {
 	name: 'VForm',
+	components: {
+		VUpload,
+	},
 	props: {
 		events: {
 			type: Object,
@@ -143,17 +140,6 @@ export default {
 		rules: [],
 	},
 	methods: {
-		beforeUpload(file) {
-			const isJpgOrPng = fileUploadOptions.UploadTypes.includes(file.type)
-			if (!isJpgOrPng) {
-				message.error('请上传jpg格式的图片!')
-			}
-			const isLt2M = file.size < fileUploadOptions.UploadLimit
-			if (!isLt2M) {
-				message.error('请上传小于2MB的图片!')
-			}
-			return isJpgOrPng && isLt2M
-		},
 		//提交
 		doSubmit() {
 			this.$refs.vform.validate().then(() => {
@@ -162,14 +148,16 @@ export default {
 				this.formFields.forEach((element) => {
 					if (element.key.startsWith('Selected') && element.key.includes('IDs')) {
 						payload[element.key] = this.formData[element.key]
+						// delete this.formData[element.key]
 					}
 				})
 				payload.Entity = this.formData
 				let res = this.beforeSubmit(payload)
-				if (res) {
-					payload = res
-				} else {
+				if (res === false) {
 					return false
+				}
+				if (res.Entity) {
+					payload = res
 				}
 				if (this.formStatus == 'add') {
 					this.events.add(payload).then((res) => {
@@ -182,6 +170,29 @@ export default {
 					})
 				}
 			})
+		},
+		showDetail(item) {
+			let showInfo = this.formData[item.key]
+			if (['radio', 'select'].includes(item.type)) {
+				var tmpRadio = item.props.items.find((x) => x.Value == this.formData[item.key])
+				if (tmpRadio) {
+					showInfo = tmpRadio.Text
+				}
+			}
+			if (item.type === 'treeSelect') {
+				showInfo = getTreeNode(item.props.items, 'ParentId', 'Id', this.formData[item.key]).Text
+			}
+			if (item.type === 'upload') {
+				return '<img class="form-pic" src="/api/_file/getfile/' + this.formData[item.key] + '"/>'
+			}
+			return showInfo
+		},
+		bindFile(res, item) {
+			if (item.props.limit > 1) {
+				debugger
+			} else {
+				this.formData[item.key] = res.Id
+			}
 		},
 	},
 	setup(props, context) {
@@ -237,11 +248,6 @@ export default {
 									fieldValue = res[item.key]
 								}
 								data[item.key] = fieldValue
-								if (item.type === 'treeSelect' || item.type === 'select') {
-									if (formStatus.value === 'detail') {
-										data[item.key] = getTreeNode(item.props.items, 'ParentId', 'Value', fieldValue).Text
-									}
-								}
 							})
 						}
 						formData.value = data
@@ -300,5 +306,8 @@ export default {
 	.ant-form-item-label {
 		min-width: 100px;
 	}
+}
+.form-pic{
+	height: 100px;
 }
 </style>
