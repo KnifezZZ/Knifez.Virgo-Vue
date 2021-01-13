@@ -22,7 +22,6 @@
 <script>
 import { fileUploadOptions } from '@/configs/index'
 import { message } from 'ant-design-vue'
-import { deleteFile } from '@/api/baseApi'
 import { ref } from 'vue'
 export default {
 	name: 'VUpload',
@@ -57,11 +56,6 @@ export default {
 		}
 	},
 	methods: {
-		getBase64(img, callback) {
-			const reader = new FileReader()
-			reader.addEventListener('load', () => callback(reader.result))
-			reader.readAsDataURL(img)
-		},
 		beforeUpload(file) {
 			const isLt2M = file.size < fileUploadOptions.UploadLimit
 			if (!isLt2M) {
@@ -76,31 +70,39 @@ export default {
 			}
 			if (info.file.status === 'done') {
 				this.$emit('bindValue', info.file.response)
-				this.getBase64(info.file.originFileObj, (imageUrl) => {
-					this.imageUrl = imageUrl
-					this.loading = false
-				})
+				this.loading = false
 			}
 			if (info.file.status === 'error') {
 				this.loading = false
 			}
 		},
 		handleRemove(info) {
-			deleteFile(info.name)
+			debugger
+			this.fileList.splice(this.fileList.indexOf(info), 1)
+			this.$emit('remove', info.name)
 		},
 	},
 	watch: {
 		files(newValue, oldValue) {
-			if (newValue != '') {
-				let i = 1
-				newValue.split(',').forEach((element) => {
-					this.fileList.push({
-						uid: i++,
-						status: 'done',
-						name: element,
-						url: '/api/_file/GetFile/' + element,
-						thumbUrl: '/api/_file/GetFile/' + element,
+			if (this.fileList.length == 0) {
+				if (newValue != '' && newValue != null) {
+					let i = 1
+					newValue.split(',').forEach((element) => {
+						this.fileList.push({
+							uid: i++,
+							status: 'done',
+							name: element,
+							url: '/api/_file/GetFile/' + element,
+							thumbUrl: '/api/_file/GetFile/' + element,
+						})
 					})
+				}
+			} else {
+				this.fileList.forEach((node) => {
+					if (node.url == undefined) {
+						node.url = '/api/_file/GetFile/' + node.response.Id
+						node.name = node.response.Id
+					}
 				})
 			}
 		},

@@ -145,10 +145,10 @@ export default {
 			})
 		},
 		inited(data) {
-			this.moduleSelect(data.ModuleName)
+			this.moduleSelect(data.res.SelectedModule)
 		},
 		beforeSubmit(payload, callback) {
-			payload.SelectedModule=payload.Entity.ModuleName
+			payload.SelectedModule = payload.Entity.ModuleName
 			callback(payload)
 		},
 		moduleSelect(value) {

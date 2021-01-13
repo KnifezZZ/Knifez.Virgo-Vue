@@ -1,13 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher
-				:collapse.sync="collapse"
-				:events="events"
-				:fields="queryFields"
-				@search="querySearch"
-			>
-			</v-searcher>
+			<v-searcher :collapse.sync="collapse" :events="events" :fields="queryFields" @search="querySearch"> </v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
@@ -20,6 +14,9 @@
 				bordered
 			>
 				<template #toolbar> </template>
+				<template #PhotoId="{ record }">
+					<v-img :src="record.PhotoId" />
+				</template>
 				<template #IsValid="{ record }">
 					<a-switch v-model:checked="record.IsValid" disabled />
 				</template>
@@ -35,7 +32,7 @@ import VTable from '@/components/page/v-table/index'
 import apiEvents from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
-import { loadJson } from '@/api/baseCURD.js'
+// import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkuser',
 	components: { VSearcher, VTable, DialogForm },
@@ -47,6 +44,7 @@ export default {
 			},
 			columns: [
 				{ key: 'ITCode', title: '账户' },
+				{ key: 'PhotoId', title: '头像', isSlot: true },
 				{ key: 'Name', title: '姓名' },
 				{ key: 'Gender', title: '性别' },
 				{ key: 'RoleName_view', title: '角色' },

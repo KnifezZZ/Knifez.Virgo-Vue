@@ -70,6 +70,7 @@
 											:limit="item.props.limit"
 											:files="formData[item.key]"
 											@bindValue="bindFile($event, item)"
+											@remove="removeFile($event, item)"
 										></v-upload>
 									</template>
 									<template v-else-if="item.type === 'switch'">
@@ -121,7 +122,8 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { closeOnDialog, closeOnTab } from '@/utils/openPage'
 import { message } from 'ant-design-vue'
-import { getTreeNode } from '../../../utils/tool'
+import { getTreeNode } from '@/utils/tool'
+import { deleteFile } from '@/api/baseApi'
 import VUpload from '@c/v-upload/index'
 export default {
 	name: 'VForm',
@@ -183,15 +185,23 @@ export default {
 				showInfo = getTreeNode(item.props.items, 'ParentId', 'Id', this.formData[item.key]).Text
 			}
 			if (item.type === 'upload') {
-				return '<img class="form-pic" src="/api/_file/getfile/' + this.formData[item.key] + '"/>'
+				return '<v-img :height="100" src="' + this.formData[item.key] + '"/>'
 			}
 			return showInfo
 		},
 		bindFile(res, item) {
 			if (item.props.limit > 1) {
-				debugger
+				this.formData[item.key] += res.id + ','
 			} else {
 				this.formData[item.key] = res.Id
+			}
+		},
+		removeFile(id, item) {
+			this.removeFiles.push(id)
+			if (item.props.limit > 1) {
+				this.formData[item.key] = this.formData[item.key].replace(id + ',', '')
+			} else {
+				this.formData[item.key] = null
 			}
 		},
 	},
@@ -202,6 +212,7 @@ export default {
 		let formStatus = ref(dialogConfig.status)
 		let formData = ref({})
 		let formFields = ref(props.fields)
+		let removeFiles = ref([])
 		//兼容非弹窗展示
 		if (!dialogConfig.useDialog) {
 			formStatus.value = router.currentRoute.value.params.status
@@ -251,7 +262,7 @@ export default {
 							})
 						}
 						formData.value = data
-						inited()
+						inited(res)
 					})
 				}
 			} else {
@@ -260,11 +271,16 @@ export default {
 			}
 		}
 		//初始化加载后执行事件
-		const inited = () => {
-			context.emit('inited', formData.value)
+		const inited = (res) => {
+			context.emit('inited', { formData: formData.value, res: res })
 		}
 		//关闭弹窗或Tab页
 		const doClose = () => {
+			if (removeFiles.value.length > 0) {
+				removeFiles.value.forEach((element) => {
+					deleteFile(element)
+				})
+			}
 			if (dialogConfig.useDialog) {
 				closeOnDialog()
 			} else {
@@ -288,6 +304,7 @@ export default {
 			formStatus,
 			formData,
 			formFields,
+			removeFiles,
 			doInit,
 			doInitData,
 			inited,
@@ -306,8 +323,5 @@ export default {
 	.ant-form-item-label {
 		min-width: 100px;
 	}
-}
-.form-pic{
-	height: 100px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<div class="right-menu">
 		<a-dropdown>
-			<a-avatar shape="square" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"> </a-avatar>
+			<a-avatar shape="square" :src="avatar"> </a-avatar>
 			<template #overlay>
 				<a-menu class="user-drop">
 					<a-menu-item key="0" @click="password">
@@ -32,6 +32,8 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import VirgoProduce from './produce/index'
 import Password from './password/index'
+import { readFileApi } from '@/configs'
+import { ref } from 'vue'
 export default {
 	name: 'VHeader',
 	components: {
@@ -58,11 +60,14 @@ export default {
 	setup() {
 		const router = useRouter()
 		const store = useStore()
+		let avatar = ref('https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png')
+		avatar = readFileApi + store.getters['user/info'].PhotoId
+
 		const logOut = () => {
 			store.dispatch('user/doLogOut')
 			router.push(`/login?redirect=${router.currentRoute.value.path}`)
 		}
-		return { logOut }
+		return { logOut, avatar }
 	},
 }
 </script>

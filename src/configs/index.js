@@ -47,8 +47,9 @@ const configs = {
 
 	fileUploadOptions: {
 		UploadLimit: 1024 * 300, //300kb
-		UploadImageType: ['image/jpg','image/jpeg'],
+		UploadImageType: ['image/jpg', 'image/jpeg'],
 	},
+	readFileApi: '/api/_file/getFile/',
 }
 
 module.exports = Object.assign({}, configs)

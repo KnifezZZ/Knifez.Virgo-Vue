@@ -25,7 +25,10 @@ export function getFileModel(id) {
 
 export function deleteFile(id) {
 	return request({
-		url: reqPath + '/_file/DeleteFile/' + id,
-		method: 'get',
+		url: reqPath + '/_file/DeletedFile',
+		method: 'delete',
+		data: {
+			id: id,
+		},
 	})
 }
