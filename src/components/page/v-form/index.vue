@@ -5,14 +5,28 @@
 				<template v-for="item in formFields.filter((x) => !x.hidden)">
 					<template v-if="formStatus === 'detail'">
 						<a-col :span="item.span ? item.span : 24" :key="item.key">
-							<a-form-item
-								:label-col="{ span: item.span ? 48 / item.span : 2 }"
-								:wrapper-col="{ span: 24 - (item.span ? 48 / item.span : 4) }"
-								:label="item.title"
-								:name="item.key"
-							>
-								<p v-html="showDetail(item)"></p>
-							</a-form-item>
+							<template v-if="item.isSlot">
+								<a-form-item
+									:label-col="{ span: item.span ? 48 / item.span : 2 }"
+									:wrapper-col="{ span: 24 - (item.span ? 48 / item.span : 4) }"
+									:label="item.title"
+									:name="item.key"
+								>
+									<template v-slot[`index`]>
+										<slot :name="item.key" v-bind="{ record: formData, disabled: true }" />
+									</template>
+								</a-form-item>
+							</template>
+							<template v-else>
+								<a-form-item
+									:label-col="{ span: item.span ? 48 / item.span : 2 }"
+									:wrapper-col="{ span: 24 - (item.span ? 48 / item.span : 4) }"
+									:label="item.title"
+									:name="item.key"
+								>
+									<p v-html="showDetail(item)"></p>
+								</a-form-item>
+							</template>
 						</a-col>
 					</template>
 					<template v-else>
@@ -125,6 +139,7 @@ import { message } from 'ant-design-vue'
 import { getTreeNode } from '@/utils/tool'
 import { deleteFile } from '@/api/baseApi'
 import VUpload from '@c/v-upload/index'
+import { isArray } from '../../../utils/validate'
 export default {
 	name: 'VForm',
 	components: {
@@ -150,7 +165,9 @@ export default {
 				this.formFields.forEach((element) => {
 					if (element.key.startsWith('Selected') && element.key.includes('IDs')) {
 						payload[element.key] = this.formData[element.key]
-						// delete this.formData[element.key]
+					}
+					if (!element.isInclude && element.isInclude !== undefined) {
+						delete this.formData[element.key]
 					}
 				})
 				payload.Entity = this.formData
@@ -264,6 +281,8 @@ export default {
 						formData.value = data
 						inited(res)
 					})
+				} else {
+					inited({ formData: {}, res: {} })
 				}
 			} else {
 				formData.value = re.formData
@@ -275,8 +294,9 @@ export default {
 			context.emit('inited', { formData: formData.value, res: res })
 		}
 		//关闭弹窗或Tab页
-		const doClose = () => {
+		const doClose = (res) => {
 			if (removeFiles.value.length > 0) {
+				//提交后删除附件表关联附件
 				removeFiles.value.forEach((element) => {
 					deleteFile(element)
 				})
@@ -286,7 +306,7 @@ export default {
 			} else {
 				closeOnTab()
 			}
-			closed()
+			closed(res)
 		}
 		//关闭页面后执行事件
 		const closed = (res) => {

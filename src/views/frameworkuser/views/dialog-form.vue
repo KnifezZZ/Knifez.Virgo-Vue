@@ -89,6 +89,7 @@ export default {
 					title: '角色组',
 					key: 'SelectedRolesIDs',
 					type: 'select',
+					isInclude: false,
 					props: {
 						mode: 'multiple',
 						items: [],
@@ -100,6 +101,7 @@ export default {
 					title: '用户组',
 					key: 'SelectedGroupIDs',
 					type: 'select',
+					isInclude: false,
 					props: {
 						mode: 'multiple',
 						items: [],

@@ -14,6 +14,19 @@ import {
 	bImported,
 } from '@/api/baseCURD'
 const apiEvents = {
+	getPageActions(id) {
+		return request({
+			url: reqPath + 'GetPageActions/' + id,
+			method: 'get',
+		})
+	},
+	editPrivilege(data) {
+		return request({
+			url: reqPath + 'EditPrivilege',
+			method: 'put',
+			data: data,
+		})
+	},
 	// 列表查询
 	search(data) {
 		return bSearch(reqPath, data)
@@ -36,7 +49,7 @@ const apiEvents = {
 	},
 	//导出excel
 	exportExcel(data) {
-		return bExportExcel(reqPath,data)
+		return bExportExcel(reqPath, data)
 	},
 	exportExcelByIds(data) {
 		return bExportExcelByIds(reqPath, data)

@@ -10,36 +10,34 @@
 			@inited="inited($event)"
 			@beforeSubmit="beforeSubmit"
 		>
-			<template #ICon="{record}">
-				<a-input v-model:value="record.ICon">
+			<template #ICon="{record, disabled}">
+				<a-input v-model:value="record.ICon" :disabled="disabled">
 					<template #addonAfter> <v-icon :icon="record.ICon"></v-icon> </template>
 				</a-input>
 			</template>
-			<template #ModuleName="{record}">
+			<template #ModuleName="{record, disabled}">
 				<a-select
 					placeholder="请选择"
 					v-model:value="record.ModuleName"
 					@select="moduleSelect"
 					allowClear
 					style="width: 100%"
+					:disabled="disabled"
 				>
 					<a-select-option v-for="option in modules" :key="option" :value="option.Value">
 						{{ option.Text }}
 					</a-select-option>
 				</a-select>
 			</template>
-			<template #SelectedActionIDs="{record}">
-				<a-select
-					mode="multiple"
-					placeholder="请选择"
-					v-model:value="record.SelectedActionIDs"
-					allowClear
-					style="width: 100%"
+			<template #SelectedActionIDs="{record, disabled}">
+				<v-checkbox-group
+					:canCheckedAll="true"
+					:checkedOptions="record.SelectedActionIDs"
+					:options="moduleActions"
+					@change="onChange($event, record)"
+					:disabled="disabled"
 				>
-					<a-select-option v-for="option in moduleActions" :key="option" :value="option.Value">
-						{{ option.Text }}
-					</a-select-option>
-				</a-select>
+				</v-checkbox-group>
 			</template>
 		</v-form>
 	</v-form-dialog>
@@ -49,11 +47,14 @@
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
 import apiEvents from '../api/index'
+import { isArray } from '../../../utils/validate'
+import VCheckboxGroup from '@c/v-checkbox-group/index'
 export default {
 	name: 'frameworkmenu-dialog',
 	components: {
 		VForm,
 		VFormDialog,
+		VCheckboxGroup,
 	},
 	data() {
 		return {
@@ -133,6 +134,7 @@ export default {
 			},
 			modules: [],
 			moduleActions: [],
+			currentModule: '',
 		}
 	},
 	methods: {
@@ -148,15 +150,20 @@ export default {
 			this.moduleSelect(data.res.SelectedModule)
 		},
 		beforeSubmit(payload, callback) {
-			payload.SelectedModule = payload.Entity.ModuleName
+			payload.SelectedModule = this.currentModule
 			callback(payload)
 		},
 		moduleSelect(value) {
-			console.log(value)
+			this.currentModule = value
 			if (value !== '' && value !== null) {
 				apiEvents.getActionsByName({ ModelName: value }).then((res) => {
 					this.moduleActions = res
 				})
+			}
+		},
+		onChange(checkedList, record) {
+			if (isArray(checkedList)) {
+				record.SelectedActionIDs = checkedList
 			}
 		},
 	},
