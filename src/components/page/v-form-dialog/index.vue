@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<template v-if="useDialog">
-			<a-modal width="700px" :destroyOnClose="true" v-model:visible="dialogShow" :title="title" :footer="false">
+			<a-modal :width="width" :destroyOnClose="true" v-model:visible="dialogShow" :title="title" :footer="false">
 				<slot />
 			</a-modal>
 		</template>
@@ -18,6 +18,12 @@ export default {
 	props: {
 		useDialog: {
 			type: Boolean,
+		},
+		width: {
+			type: String,
+			default: function() {
+				return '700px'
+			},
 		},
 	},
 	setup(props) {
@@ -47,4 +53,3 @@ export default {
 	},
 }
 </script>
-

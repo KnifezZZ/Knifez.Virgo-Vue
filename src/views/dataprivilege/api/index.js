@@ -14,6 +14,33 @@ import {
 	bImported,
 } from '@/api/baseCURD'
 const apiEvents = {
+	// 用户组
+	getUserGroups(data) {
+		return request({
+			url: reqPath + 'GetUserGroups',
+			method: 'get',
+			dataType: 'array',
+			data: data,
+		})
+	},
+	// 权限名称
+	getPrivileges(data) {
+		return request({
+			url: reqPath + 'GetPrivileges',
+			method: 'get',
+			dataType: 'array',
+			data: data,
+		})
+	},
+	// 角色
+	getPrivilegeByTableName(data) {
+		return request({
+			url: reqPath + 'GetPrivilegeByTableName',
+			method: 'get',
+			dataType: 'array',
+			data: data,
+		})
+	},
 	// 列表查询
 	search(data) {
 		return bSearch(reqPath, data)
@@ -36,7 +63,7 @@ const apiEvents = {
 	},
 	//导出excel
 	exportExcel(data) {
-		return bExportExcel(reqPath,data)
+		return bExportExcel(reqPath, data)
 	},
 	exportExcelByIds(data) {
 		return bExportExcelByIds(reqPath, data)

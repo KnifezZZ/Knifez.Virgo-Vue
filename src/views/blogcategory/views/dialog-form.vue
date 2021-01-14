@@ -23,27 +23,27 @@ export default {
 				{
 					title: '类别名称',
 					key: 'Name',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '类别描述',
 					key: 'Description',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '图标',
 					key: 'Icon',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '静态地址',
 					key: 'Url',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '排序',
 					key: 'Sort',
-					type: 'input'
+					type: 'input',
 				},
 				{
 					title: '父目录',
@@ -52,7 +52,7 @@ export default {
 					props: {
 						items: [],
 						loadData: apiEvents.getBlogCategoryList,
-					}
+					},
 				},
 				{
 					key: 'ID',
@@ -66,10 +66,11 @@ export default {
 		}
 	},
 	methods: {
-		closed() {
-			this.$emit('reSearch')
+		closed(res) {
+			if (res) {
+				this.$emit('reSearch')
+			}
 		},
 	},
 }
 </script>
-

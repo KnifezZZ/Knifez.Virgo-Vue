@@ -89,7 +89,9 @@ export default {
 			allOptions.value = []
 		}
 		indeterminate = !!checkedList.length && checkedList.length < allOptions.length
-		selectAll = checkedList.length === allOptions.length
+		if (checkedList.length > 0) {
+			selectAll = checkedList.length === allOptions.length
+		}
 		return { checkedList, allOptions, selectAll, indeterminate }
 	},
 }

@@ -19,7 +19,7 @@
 					<v-icon :icon="text"></v-icon>
 				</template>
 			</v-table>
-			<dialog-form @reSearch="querySearch" :fields="fields"></dialog-form>
+			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
 	</a-row>
 </template>

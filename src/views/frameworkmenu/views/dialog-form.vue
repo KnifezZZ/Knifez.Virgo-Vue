@@ -82,6 +82,7 @@ export default {
 					key: 'SelectedActionIDs',
 					title: '动作',
 					isSlot: true,
+					isInclude: false,
 				},
 				{
 					key: 'PageName',

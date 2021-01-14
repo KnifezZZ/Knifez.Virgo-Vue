@@ -160,17 +160,15 @@ export default {
 		//提交
 		doSubmit() {
 			this.$refs.vform.validate().then(() => {
-				var payload = {}
+				var payload = { Entity: {} }
 				var middleIds = {}
 				this.formFields.forEach((element) => {
-					if (element.key.startsWith('Selected') && element.key.includes('IDs')) {
-						payload[element.key] = this.formData[element.key]
-					}
 					if (!element.isInclude && element.isInclude !== undefined) {
-						delete this.formData[element.key]
+						payload[element.key] = this.formData[element.key]
+					} else {
+						payload.Entity[element.key] = this.formData[element.key]
 					}
 				})
-				payload.Entity = this.formData
 				let res = this.beforeSubmit(payload)
 				if (res === false) {
 					return false
@@ -341,7 +339,7 @@ export default {
 <style lang="less">
 .vForm {
 	.ant-form-item-label {
-		min-width: 100px;
+		min-width: 80px;
 	}
 }
 </style>

@@ -1,13 +1,7 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher
-				:collapse.sync="collapse"
-				:events="events"
-				:fields="queryFields"
-				@search="querySearch"
-			>
-			</v-searcher>
+			<v-searcher :collapse.sync="collapse" :events="events" :fields="queryFields" @search="querySearch"> </v-searcher>
 		</a-col>
 		<a-col :span="24">
 			<v-table
@@ -19,10 +13,20 @@
 				:useToolBar="true"
 				bordered
 			>
-				<template #toolbar> </template>
-				<!-- <template #IsValid="{ record }">
-					<a-switch v-model:checked="record.IsValid" disabled />
-				</template> -->
+				<template #toolbar>
+					<a-button
+						v-if="actions.includes('delete')"
+						:disabled="selectData.length === 0"
+						type="danger"
+						@click="doDelete(null)"
+					>
+						<v-icon icon="delete-bin"></v-icon> 批量删除
+					</a-button>
+				</template>
+				<template #ActionCol="{ }">
+					<a-button type="link">查看</a-button>
+					<a-button type="link">编辑</a-button>
+				</template>
 			</v-table>
 			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
@@ -50,22 +54,39 @@ export default {
 				{ key: 'RelateIDs', title: '权限' },
 				{
 					title: '操作',
-					isOperate: true,
+					key: 'ActionCol',
+					isSlot: true,
 					actions: ['detail', 'edit', 'delete'],
 				},
 			],
-			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
+			actions: ['add'],
 			events: apiEvents,
 			queryFields: [
 				{
 					title: '权限名称',
 					key: 'TableName',
-					type: 'input',
+					type: 'select',
+					props: {
+						items: [],
+						loadData: apiEvents.getPrivileges,
+					},
 				},
 				{
-					title: '授权对象',
-					key: 'Name',
-					type: 'input',
+					title: '权限类型',
+					key: 'DpType',
+					type: 'radio',
+					props: {
+						items: [
+							{
+								Text: '用户组权限',
+								Value: 0,
+							},
+							{
+								Text: '用户权限',
+								Value: 1,
+							},
+						],
+					},
 				},
 			],
 			queryForm: {},
@@ -80,6 +101,9 @@ export default {
 				this.$refs.vtable.doSearch(true)
 			})
 		},
+		doDelete(item){
+			debugger
+		}
 	},
 }
 </script>
