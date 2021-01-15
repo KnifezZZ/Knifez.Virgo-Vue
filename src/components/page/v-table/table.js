@@ -7,6 +7,7 @@ import { notification, Modal } from 'ant-design-vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
 import { useStore } from 'vuex'
+import request from '@/utils/request'
 export default function compTable(props, context) {
 	const router = useRouter()
 	const store = useStore()
@@ -18,7 +19,6 @@ export default function compTable(props, context) {
 	const tableData = ref([])
 	//分页配置
 	const pagination = ref(props.pagination)
-
 	const queryPageParams = (params) => {
 		if (pagination.value) {
 			params.Page = pagination.value.currentPage
@@ -59,8 +59,10 @@ export default function compTable(props, context) {
 				delete params[key]
 			}
 		}
-		props.events
-			.search(params)
+		request({
+			...props.events.Search,
+			data: params,
+		})
 			.then((repData) => {
 				if (pagination.value.position) {
 					pagination.value.total = repData.Count || 0
@@ -102,7 +104,10 @@ export default function compTable(props, context) {
 		//单条删除
 		if (record !== null) {
 			ids = [record.ID]
-			props.events.batchDelete(ids).then((res) => {
+			request({
+				...props.events.BatchDelete,
+				data:ids
+			}).then((res) => {
 				doSearch(false)
 			})
 		} else {
@@ -111,7 +116,10 @@ export default function compTable(props, context) {
 				icon: createVNode(ExclamationCircleOutlined),
 				onOk() {
 					return new Promise((resolve, reject) => {
-						props.events.batchDelete(ids).then((res) => {
+						request({
+							...props.events.BatchDelete,
+							data:ids
+						}).then((res) => {
 							doSearch(false)
 							resolve(true)
 						})
@@ -171,7 +179,11 @@ export default function compTable(props, context) {
 				isAsc: null,
 			}
 			params = queryPageParams(params)
-			props.events.exportExcel(params).then((res) => {
+
+			request({
+				...props.events.ExportExcel,
+				data:params
+			}).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')
 			})
@@ -180,7 +192,10 @@ export default function compTable(props, context) {
 			const parameters = selectData.value.map((item) => {
 				return item.ID
 			})
-			props.events.exportExcelByIds(parameters).then((res) => {
+			request({
+				...props.events.ExportExcelByIds,
+				data:parameters
+			}).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')
 			})

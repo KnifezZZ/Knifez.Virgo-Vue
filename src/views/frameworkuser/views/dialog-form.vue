@@ -11,7 +11,8 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import apiEvents from '../api/index'
+import actions from '../api/index'
+import request from '@/utils/request'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { GenderEnumTypes } from '@/configs/enums'
@@ -23,7 +24,7 @@ export default {
 	},
 	data() {
 		return {
-			events: apiEvents,
+			events: actions,
 			fields: [
 				{
 					key: 'ID',
@@ -93,7 +94,7 @@ export default {
 					props: {
 						mode: 'multiple',
 						items: [],
-						loadData: apiEvents.GetFrameworkRoles,
+						loadData: actions.GetFrameworkRoles,
 					},
 					span: 12,
 				},
@@ -105,7 +106,7 @@ export default {
 					props: {
 						mode: 'multiple',
 						items: [],
-						loadData: apiEvents.GetFrameworkGroups,
+						loadData: actions.GetFrameworkGroups,
 					},
 					span: 8,
 				},

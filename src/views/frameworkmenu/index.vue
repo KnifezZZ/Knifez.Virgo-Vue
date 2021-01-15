@@ -27,7 +27,7 @@
 <script>
 import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
-import apiEvents from './api/index'
+import actions from './api/index'
 import { ref, onMounted, watch } from 'vue'
 export default {
 	name: 'frameworkMenu',
@@ -49,7 +49,7 @@ export default {
 				},
 			],
 			actions: ['add', 'edit', 'detail', 'delete'],
-			events: apiEvents,
+			events: actions,
 			queryForm: {
 				PageName: '',
 			},

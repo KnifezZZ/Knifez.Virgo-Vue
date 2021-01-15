@@ -27,7 +27,8 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import apiEvents from '../api/index'
+import actions from '../api/index'
+import request from '@/utils/request'
 import VCheckboxGroup from '@c/v-checkbox-group/index'
 import { isArray } from '../../../utils/validate'
 export default {
@@ -39,7 +40,7 @@ export default {
 	},
 	data() {
 		return {
-			events: apiEvents,
+			events: actions,
 			fields: [
 				{
 					key: 'ID',
@@ -76,7 +77,11 @@ export default {
 	},
 	methods: {
 		inited(data) {
-			apiEvents.getPageActions(data.formData.ID).then((res) => {
+
+			request({
+				...actions.GetPageActions,
+				data: { id: data.formData.ID },
+			}).then((res) => {
 				this.pages = res.Pages
 			})
 		},
@@ -90,7 +95,10 @@ export default {
 						}
 					}
 				})
-				apiEvents.editPrivilege({ Pages: selectPages, Entity: data }).then((res) => {})
+				request({
+					...actions.EditPrivilege,
+					data: { Pages: selectPages, Entity: data },
+				}).then((res) => {})
 				this.$emit('reSearch')
 			}
 		},

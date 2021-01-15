@@ -1,64 +1,60 @@
-import request from '@/utils/request'
 import config from '@/configs/index'
 import contentType from '@/configs/content-type'
 const reqPath = config.headerApi + '/_FrameworkUserBase/'
-import {
-	bSearch,
-	bBatchDelete,
-	bAdd,
-	bEdit,
-	bDetail,
-	bExportExcel,
-	bExportExcelByIds,
-	bGetExcelTemplate,
-	bImported,
-} from '@/api/baseCURD'
-const apiEvents = {
+
+const actions = {
 	// 列表查询
-	search(data) {
-		return bSearch(reqPath, data)
+	Search: {
+		url: reqPath + 'Search',
+		method: 'post',
 	},
 	// 批量删除
-	batchDelete(data) {
-		return bBatchDelete(reqPath, data)
+	BatchDelete: {
+		url: reqPath + 'BatchDelete',
+		method: 'post',
 	},
-	// 新增
-	add(data) {
-		return bAdd(reqPath, data)
+	Add: {
+		url: reqPath + 'Add',
+		method: 'post',
 	},
 	// 修改
-	edit(data) {
-		return bEdit(reqPath, data)
+	Edit: {
+		url: reqPath + 'Edit',
+		method: 'put',
 	},
 	// 详情
-	detail(id) {
-		return bDetail(reqPath, id)
+	Detail: {
+		url: reqPath + '{id}',
+		method: 'get',
 	},
 	//导出excel
-	exportExcel(data) {
-		return bExportExcel(reqPath,data)
+	ExportExcel: {
+		url: reqPath + 'ExportExcel',
+		method: 'post',
+		contentType: contentType.stream,
 	},
-	exportExcelByIds(data) {
-		return bExportExcelByIds(reqPath, data)
+	ExportExcelByIds: {
+		url: reqPath + 'ExportExcelByIds',
+		method: 'post',
+		contentType: contentType.stream,
 	},
-	getExcelTemplate(data) {
-		return bGetExcelTemplate(reqPath, data)
+	GetExcelTemplate: {
+		url: reqPath + 'GetExcelTemplate',
+		method: 'get',
+		contentType: contentType.stream,
 	},
 	//导入
-	imported(data) {
-		return bImported(reqPath, data)
+	Imported: {
+		url: reqPath + 'Import',
+		method: 'post',
 	},
-	GetFrameworkRoles() {
-		return request({
-			url: reqPath + 'GetFrameworkRoles',
-			method: 'get',
-		})
+	GetFrameworkRoles: {
+		url: reqPath + 'GetFrameworkRoles',
+		method: 'get',
 	},
-	GetFrameworkGroups() {
-		return request({
-			url: reqPath + 'GetFrameworkGroups',
-			method: 'get',
-		})
+	GetFrameworkGroups: {
+		url: reqPath + 'GetFrameworkGroups',
+		method: 'get',
 	},
 }
-export default apiEvents
+export default actions

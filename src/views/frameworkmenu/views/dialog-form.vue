@@ -46,7 +46,8 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import apiEvents from '../api/index'
+import actions from '../api/index'
+import request from '@/utils/request'
 import { isArray } from '../../../utils/validate'
 import VCheckboxGroup from '@c/v-checkbox-group/index'
 export default {
@@ -58,7 +59,7 @@ export default {
 	},
 	data() {
 		return {
-			events: apiEvents,
+			events: actions,
 			fields: [
 				{
 					key: 'ID',
@@ -96,7 +97,7 @@ export default {
 					type: 'select',
 					props: {
 						items: [],
-						loadData: apiEvents.getFolders,
+						loadData: actions.GetFolders,
 					},
 					span: 8,
 				},
@@ -143,7 +144,9 @@ export default {
 			this.$emit('reSearch')
 		},
 		doInit() {
-			apiEvents.getModules().then((res) => {
+			request({
+				...actions.GetModules,
+			}).then((res) => {
 				this.modules = res
 			})
 		},
@@ -157,7 +160,10 @@ export default {
 		moduleSelect(value) {
 			this.currentModule = value
 			if (value !== '' && value !== null) {
-				apiEvents.getActionsByName({ ModelName: value }).then((res) => {
+				request({
+					...actions.GetActionsByName,
+					data: { ModelName: value },
+				}).then((res) => {
 					this.moduleActions = res
 				})
 			}

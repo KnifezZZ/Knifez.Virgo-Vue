@@ -17,7 +17,7 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import apiEvents from '../api/index'
+import actions from '../api/index'
 import { onMounted, ref } from 'vue'
 
 export default {
@@ -28,7 +28,7 @@ export default {
 	},
 	data() {
 		return {
-			events: apiEvents,
+			events: actions,
 			isGroup: true,
 			groupFileds: {},
 			fields: [
@@ -38,7 +38,7 @@ export default {
 					type: 'select',
 					props: {
 						items: [],
-						loadData: apiEvents.getUserGroups,
+						loadData: actions.GetUserGroups,
 					},
 				},
 				{
@@ -47,7 +47,7 @@ export default {
 					type: 'select',
 					props: {
 						items: [],
-						loadData: apiEvents.getPrivileges,
+						loadData: actions.GetPrivileges,
 					},
 				},
 				{
@@ -63,7 +63,7 @@ export default {
 					isInclude: false,
 					props: {
 						items: [],
-						loadData: apiEvents.getPrivilegeByTableName,
+						loadData: actions.GetPrivilegeByTableName,
 					},
 				},
 				{

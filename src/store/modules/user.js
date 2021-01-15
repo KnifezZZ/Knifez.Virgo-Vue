@@ -54,7 +54,6 @@ const actions = {
 			message.error(`验证失败，请重新登录...`)
 			return false
 		}
-		debugger
 		const { Id, ITCode, Name, PhotoId, Roles, Attributes } = res
 		commit('setRoles', Roles)
 		commit('setUserName', Name)

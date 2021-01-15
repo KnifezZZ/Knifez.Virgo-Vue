@@ -7,7 +7,7 @@
 <script>
 import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
-import apiEvents from '../api/index'
+import actions from '../api/index'
 import { onMounted, ref } from 'vue'
 
 export default {
@@ -18,7 +18,7 @@ export default {
 	},
 	data() {
 		return {
-			events: apiEvents,
+			events: actions,
 			fields: [
 				{
 					title: '类别名称',
@@ -51,7 +51,7 @@ export default {
 					type: 'treeSelect',
 					props: {
 						items: [],
-						loadData: apiEvents.getBlogCategoryList,
+						loadData: actions.GetBlogCategoryList,
 					},
 				},
 				{

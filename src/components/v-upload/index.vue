@@ -77,7 +77,6 @@ export default {
 			}
 		},
 		handleRemove(info) {
-			debugger
 			this.fileList.splice(this.fileList.indexOf(info), 1)
 			this.$emit('remove', info.name)
 		},

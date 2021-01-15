@@ -36,7 +36,7 @@
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import DialogForm from './views/dialog-form'
-import apiEvents from './api/index'
+import actions from './api/index'
 import { LogTypeEnum } from '@/configs/enums.js'
 export default {
 	name: 'actionLog',
@@ -68,7 +68,7 @@ export default {
 				},
 			],
 			actions: ['detail', 'delete', 'exported', 'imported'],
-			events: apiEvents,
+			events: actions,
 			queryFields: [
 				{
 					title: '操作账户',

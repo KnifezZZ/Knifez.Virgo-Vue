@@ -1,44 +1,52 @@
-import request from '@/utils/request'
 import config from '@/configs/index'
 import contentType from '@/configs/content-type'
-import {
-	bSearch,
-	bBatchDelete,
-	bEdit,
-	bDetail,
-	bExportExcel,
-	bExportExcelByIds,
-	bGetExcelTemplate,
-	bImported,
-} from '@/api/baseCURD'
 
 const reqPath = config.headerApi + '/_ActionLog/'
-const apiEvents = {
+const actions = {
 	// 列表查询
-	search: (data) => {
-		return bSearch(reqPath, data)
+	Search: {
+		url: reqPath + 'Search',
+		method: 'post',
 	},
 	// 批量删除
-	batchDelete: (data) => {
-		return bBatchDelete(reqPath, data)
+	BatchDelete: {
+		url: reqPath + 'BatchDelete',
+		method: 'post',
+	},
+	Add: {
+		url: reqPath + 'Add',
+		method: 'post',
+	},
+	// 修改
+	Edit: {
+		url: reqPath + 'Edit',
+		method: 'put',
 	},
 	// 详情
-	detail: (id) => {
-		return bDetail(reqPath, id)
+	Detail: {
+		url: reqPath + '{id}',
+		method: 'get',
 	},
 	//导出excel
-	exportExcel: (data) => {
-		return bExportExcel(reqPath, data)
+	ExportExcel: {
+		url: reqPath + 'ExportExcel',
+		method: 'post',
+		contentType: contentType.stream,
 	},
-	exportExcelByIds: (data) => {
-		return bExportExcelByIds(reqPath, data)
+	ExportExcelByIds: {
+		url: reqPath + 'ExportExcelByIds',
+		method: 'post',
+		contentType: contentType.stream,
 	},
-	getExcelTemplate: (data) => {
-		return bGetExcelTemplate(reqPath, data)
+	GetExcelTemplate: {
+		url: reqPath + 'GetExcelTemplate',
+		method: 'get',
+		contentType: contentType.stream,
 	},
 	//导入
-	imported: (data) => {
-		return bImported(reqPath, data)
+	Imported: {
+		url: reqPath + 'Import',
+		method: 'post',
 	},
 }
-export default apiEvents
+export default actions

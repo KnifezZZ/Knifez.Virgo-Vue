@@ -18,7 +18,7 @@
 				:events="events"
 				:useToolBar="true"
 				:useTree="true"
-				:pagination="false"				
+				:pagination="false"
 				bordered
 			>
 				<template #toolbar> </template>
@@ -34,7 +34,7 @@
 <script>
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
-import apiEvents from './api/index'
+import actions from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
 
@@ -61,7 +61,7 @@ export default {
 				},
 			],
 			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
-			events: apiEvents,
+			events: actions,
 			queryFields: [
 				{
 					title: '类别描述',

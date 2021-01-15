@@ -66,7 +66,9 @@ class requestBase {
 	 */
 	paramTemplate(url, param) {
 		if (typeof param === 'object' && /{([\s\S]+?)}/g.test(url)) {
-			url = url.template({ interpolate: /{([\s\S]+?)}/g })(param)
+			Object.keys(param).forEach((element) => {
+				url = url.replace('{' + element + '}', param[element])
+			})
 		}
 		return url
 	}

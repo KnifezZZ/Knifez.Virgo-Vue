@@ -131,6 +131,7 @@
 </template>
 
 <script>
+import request from '@/utils/request'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -177,12 +178,18 @@ export default {
 					payload = res
 				}
 				if (this.formStatus == 'add') {
-					this.events.add(payload).then((res) => {
+					request({
+						...this.events.Add,
+						data: payload,
+					}).then((res) => {
 						this.doClose(res)
 					})
 				}
 				if (this.formStatus == 'edit') {
-					this.events.edit(payload).then((res) => {
+					request({
+						...this.events.Edit,
+						data: payload,
+					}).then((res) => {
 						this.doClose(res)
 					})
 				}
@@ -244,7 +251,9 @@ export default {
 			}
 			if (['select', 'treeSelect'].includes(item.type)) {
 				if (item.props.items.length === 0) {
-					item.props.loadData().then((res) => {
+					request({
+						...item.props.loadData,
+					}).then((res) => {
 						item.props.items = res
 					})
 				}
@@ -265,7 +274,11 @@ export default {
 			if (!re) {
 				// 非添加窗口加载页面数据
 				if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
-					props.events.detail(dialogConfig.id).then((res) => {
+					debugger
+					request({
+						...props.events.Detail,
+						data: { id: dialogConfig.id },
+					}).then((res) => {
 						let data = {}
 						if (formFields.value !== undefined) {
 							formFields.value.forEach((item) => {

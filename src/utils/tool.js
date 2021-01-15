@@ -1,3 +1,6 @@
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+
 // table data转tree格式
 export function getTreeData(list, parentCol, idCol) {
 	const getChildren = (pid, children = []) => {
@@ -39,3 +42,37 @@ export function getTreeNode(tree, parentCol, idCol, nodeValue) {
 	let node = getNode(tree)
 	return node
 }
+
+export function canAction(action) {
+	debugger
+	const router = useRouter()
+	const store = useStore()
+	const allActions = store.getters['user/actionList']
+	if (allActions.includes(action)) {
+		return true
+	}
+	return false
+}
+
+
+// 加載json配置文件
+// export function loadJson(reqPath) {
+// 	let domain = localStorage.getItem('domain')
+// 	if (domain === null) domain = 'default'
+// 	return new Promise((resolve, reject) => {
+
+// 		axios({
+// 			method: 'get',
+// 			url: `static/configs/${domain}/${reqPath}.json`,
+// 			dataType: 'json',
+// 			crossDomain: true,
+// 			cache: false,
+// 		})
+// 			.then((res) => {
+// 				resolve(res.data)
+// 			})
+// 			.catch((error) => {
+// 				reject(error)
+// 			})
+// 	})
+// }
