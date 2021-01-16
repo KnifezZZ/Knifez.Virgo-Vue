@@ -1,24 +1,10 @@
 <template>
 	<a-row :gutter="[16, 16]">
 		<a-col :span="24">
-			<v-searcher
-				:collapse.sync="collapse"
-				:events="events"
-				:fields="queryFields"
-				@search="querySearch"
-			>
-			</v-searcher>
+			<v-searcher :collapse.sync="collapse" :events="events" :fields="queryFields" @search="querySearch"> </v-searcher>
 		</a-col>
 		<a-col :span="24">
-			<v-table
-				ref="vtable"
-				:form-items="queryForm"
-				:useToolBar="true"
-				:columns="columns"
-				:actions="actions"
-				:events="events"
-				bordered
-			>
+			<v-table ref="vtable" :form-items="queryForm" :useToolBar="true" :columns="columns" :events="events" bordered>
 				<template #toolbar> </template>
 				<template #LogType="{text}">
 					<a-tag :color="text == 1 ? 'red' : 'gray'">{{ logTypes[text].Text }}</a-tag>
@@ -64,10 +50,9 @@ export default {
 				{
 					title: '操作',
 					isOperate: true,
-					actions: ['detail', 'delete'],
+					actions: { Detail: actions.Detail, BatchDelete: actions.BatchDelete },
 				},
 			],
-			actions: ['detail', 'delete', 'exported', 'imported'],
 			events: actions,
 			queryFields: [
 				{

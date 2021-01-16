@@ -9,7 +9,6 @@
 				:form-items="queryForm"
 				:useToolBar="true"
 				:columns="columns"
-				:actions="actions"
 				:events="events"
 				bordered
 			>
@@ -32,7 +31,6 @@ import VTable from '@/components/page/v-table/index'
 import actions from './api/index'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
-// import { loadJson } from '@/api/baseCURD.js'
 export default {
 	name: 'frameworkuser',
 	components: { VSearcher, VTable, DialogForm },
@@ -53,10 +51,9 @@ export default {
 				{
 					title: '操作',
 					isOperate: true,
-					actions: ['detail', 'edit', 'delete'],
+					actions: { Detail: actions.Detail,Edit: actions.Edit, Delete: actions.Delete },
 				},
 			],
-			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: actions,
 			queryFields: [
 				{

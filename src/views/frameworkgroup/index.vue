@@ -14,7 +14,6 @@
 				ref="vtable"
 				:form-items="queryForm"
 				:columns="columns"
-				:actions="actions"
 				:events="events"
 				:useToolBar="true"
 				bordered
@@ -48,10 +47,9 @@ export default {
 				{
 					title: '操作',
 					isOperate: true,
-					actions: ['detail', 'edit', 'delete'],
+					actions: { Detail: actions.Detail,Edit: actions.Edit, Delete: actions.Delete },
 				},
 			],
-			actions: ['add', 'edit', 'detail', 'delete', 'exported', 'imported'],
 			events: actions,
 			queryFields: [
 				{

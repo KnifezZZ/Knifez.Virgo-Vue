@@ -1,20 +1,18 @@
 <template>
 	<a-card>
 		<div class="v-toolbar" v-if="useToolBar">
-			<slot name="toolbar" />
-			<a-button v-if="actions.includes('add')" type="primary" @click="doAdd">
-				<v-icon icon="add"></v-icon> 添加
-			</a-button>
+			<slot name="toolbar" v-bind:selectData="selectData" />
+			<a-button v-permission="events.Add" type="primary" @click="doAdd"> <v-icon icon="add"></v-icon> 添加 </a-button>
 			<a-button
-				v-if="actions.includes('delete')"
+				v-permission="events.BatchDelete"
 				:disabled="selectData.length === 0"
 				type="danger"
 				@click="doDelete(null)"
 			>
 				<v-icon icon="delete-bin"></v-icon> 批量删除
 			</a-button>
-			<a-button v-if="actions.includes('imported')" @click="doImport">导入</a-button>
-			<a-dropdown v-if="actions.includes('exported')">
+			<a-button v-permission="events.Imported" @click="doImport">导入</a-button>
+			<a-dropdown v-permission="events.ExportExcel">
 				<template #overlay>
 					<a-menu @click="handleExportClick">
 						<a-menu-item key="exportAll">导出全部 </a-menu-item>
@@ -44,10 +42,10 @@
 				<template v-else-if="item.isOperate">
 					<a-table-column :data-index="item.key" :title="item.title" :key="item.key">
 						<template v-slot[`index`]="{ text, record }">
-							<a-button v-if="item.actions.includes('detail')" @click="doView(record)" type="link">查看</a-button>
-							<a-button v-if="item.actions.includes('edit')" @click="doEdit(record)" type="link">修改</a-button>
+							<a-button v-permission="item.actions.Detail" @click="doView(record)" type="link">查看</a-button>
+							<a-button v-permission="item.actions.Edit" @click="doEdit(record)" type="link">修改</a-button>
 							<a-popconfirm placement="topRight" title="确定要删除吗?" @confirm="doDelete(record)">
-								<a-button v-if="item.actions.includes('delete')" type="link">删除</a-button>
+								<a-button v-permission="item.actions.Delete" type="link">删除</a-button>
 							</a-popconfirm>
 						</template>
 					</a-table-column>
@@ -101,7 +99,6 @@ export default {
 					pageSizeOptions: ['10', '20', '30', '50', '100'],
 					currentPage: 1,
 					pageSize: 20,
-					events: {},
 				}
 			},
 		},

@@ -99,6 +99,7 @@ import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { fileUploadOptions } from '@/configs/index'
 import { getTreeData } from '@/utils/tool'
+import _request from '../../../utils/request'
 export default {
 	name: 'VSearcher',
 	props: {
@@ -132,7 +133,9 @@ export default {
 			}
 			if (['select', 'treeSelect'].includes(item.type)) {
 				if (item.props.items.length === 0) {
-					item.props.loadData().then((res) => {
+					_request({
+						...item.props.loadData,
+					}).then((res) => {
 						item.props.items = res
 					})
 				}

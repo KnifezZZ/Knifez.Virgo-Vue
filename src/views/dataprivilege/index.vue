@@ -4,18 +4,10 @@
 			<v-searcher :collapse.sync="collapse" :events="events" :fields="queryFields" @search="querySearch"> </v-searcher>
 		</a-col>
 		<a-col :span="24">
-			<v-table
-				ref="vtable"
-				:form-items="queryForm"
-				:columns="columns"
-				:actions="actions"
-				:events="events"
-				:useToolBar="true"
-				bordered
-			>
-				<template #toolbar>
+			<v-table ref="vtable" :form-items="queryForm" :columns="columns" :events="events" :useToolBar="true" bordered>
+				<template #toolbar="{selectData}">
 					<a-button
-						v-if="actions.includes('delete')"
+						v-permission="events.BatchDelete"
 						:disabled="selectData.length === 0"
 						type="danger"
 						@click="doDelete(null)"
@@ -24,8 +16,8 @@
 					</a-button>
 				</template>
 				<template #ActionCol="{ }">
-					<a-button type="link">查看</a-button>
-					<a-button type="link">编辑</a-button>
+					<a-button v-permission="events.Detail" type="link">查看</a-button>
+					<a-button v-permission="events.Edit" type="link">编辑</a-button>
 				</template>
 			</v-table>
 			<dialog-form @reSearch="querySearch"></dialog-form>
@@ -56,10 +48,8 @@ export default {
 					title: '操作',
 					key: 'ActionCol',
 					isSlot: true,
-					actions: ['detail', 'edit', 'delete'],
 				},
 			],
-			actions: ['add'],
 			events: actions,
 			queryFields: [
 				{
@@ -101,9 +91,9 @@ export default {
 				this.$refs.vtable.doSearch(true)
 			})
 		},
-		doDelete(item){
+		doDelete(item) {
 			debugger
-		}
+		},
 	},
 }
 </script>

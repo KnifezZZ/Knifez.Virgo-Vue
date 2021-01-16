@@ -39,26 +39,26 @@ const actions = {
 		url: reqPath + '{id}',
 		method: 'get',
 	},
-	//导出excel
-	ExportExcel: {
-		url: reqPath + 'ExportExcel',
-		method: 'post',
-		contentType: contentType.stream,
-	},
-	ExportExcelByIds: {
-		url: reqPath + 'ExportExcelByIds',
-		method: 'post',
-		contentType: contentType.stream,
-	},
-	GetExcelTemplate: {
-		url: reqPath + 'GetExcelTemplate',
-		method: 'get',
-		contentType: contentType.stream,
-	},
-	//导入
-	Imported: {
-		url: reqPath + 'Import',
-		method: 'post',
-	},
+	// //导出excel
+	// ExportExcel: {
+	// 	url: reqPath + 'ExportExcel',
+	// 	method: 'post',
+	// 	contentType: contentType.stream,
+	// },
+	// ExportExcelByIds: {
+	// 	url: reqPath + 'ExportExcelByIds',
+	// 	method: 'post',
+	// 	contentType: contentType.stream,
+	// },
+	// GetExcelTemplate: {
+	// 	url: reqPath + 'GetExcelTemplate',
+	// 	method: 'get',
+	// 	contentType: contentType.stream,
+	// },
+	// //导入
+	// Imported: {
+	// 	url: reqPath + 'Import',
+	// 	method: 'post',
+	// },
 }
 export default actions

@@ -42,8 +42,10 @@ export default {
 		}
 	},
 	methods: {
-		closed() {
-			this.$emit('reSearch')
+		closed(res) {
+			if (res) {
+				this.$emit('reSearch')
+			}
 		},
 	},
 }

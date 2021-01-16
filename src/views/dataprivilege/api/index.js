@@ -31,6 +31,10 @@ const actions = {
 		url: reqPath + 'BatchDelete',
 		method: 'post',
 	},
+	Delete: {
+		url: reqPath + 'Delete',
+		method: 'post',
+	},
 	// 新增
 	Add: {
 		url: reqPath + 'Add',
