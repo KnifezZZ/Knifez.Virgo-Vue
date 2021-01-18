@@ -1,11 +1,9 @@
-import { useRouter } from 'vue-router'
 import store from '@/store'
 import { isArray } from './validate'
 export default (Vue) => {
 	Vue.directive('permission', {
 		mounted(el, { value }, vNode) {
 			const allActions = store.getters['user/actionList']
-			debugger
 			let hasPermission = false
 			if (value === undefined) {
 				hasPermission = false

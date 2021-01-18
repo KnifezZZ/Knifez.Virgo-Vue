@@ -106,7 +106,7 @@ export default function compTable(props, context) {
 			ids = [record.ID]
 			request({
 				...props.events.BatchDelete,
-				data:ids
+				data: ids,
 			}).then((res) => {
 				doSearch(false)
 			})
@@ -118,7 +118,7 @@ export default function compTable(props, context) {
 					return new Promise((resolve, reject) => {
 						request({
 							...props.events.BatchDelete,
-							data:ids
+							data: ids,
 						}).then((res) => {
 							doSearch(false)
 							resolve(true)
@@ -148,10 +148,19 @@ export default function compTable(props, context) {
 		if (status == 'detail') {
 			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
 		}
+		let pars = { id: record.ID, status }
+		let payload = {}
+		context.emit('openPage', { nextRoute, record, pars }, (res) => {
+			payload = res
+		})
+		if (payload != undefined) {
+			nextRoute = payload.nextRoute
+			pars = payload.pars
+		}
 		if (store.getters['app/openDialog'].useDialog) {
-			openOnDialog(nextRoute, { id: record.ID, status })
+			openOnDialog(nextRoute, pars)
 		} else {
-			openOnTab(nextRoute, { id: record.ID, status })
+			openOnTab(nextRoute, pars)
 		}
 	}
 
@@ -182,7 +191,7 @@ export default function compTable(props, context) {
 
 			request({
 				...props.events.ExportExcel,
-				data:params
+				data: params,
 			}).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')
@@ -194,7 +203,7 @@ export default function compTable(props, context) {
 			})
 			request({
 				...props.events.ExportExcelByIds,
-				data:parameters
+				data: parameters,
 			}).then((res) => {
 				createBlob(res)
 				notification.success('导出成功')

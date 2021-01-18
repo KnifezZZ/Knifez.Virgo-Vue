@@ -27,9 +27,10 @@ export function openOnDialog(next, params) {
 	store.commit('app/setOpenDialog', {
 		useDialog: true,
 		visible: true,
+		title: next.meta.title,
 		id: params.id,
 		status: params.status,
-		title: next.meta.title,
+		params: params,
 	})
 }
 

@@ -10,7 +10,15 @@
 				</a-radio>
 			</a-radio-group>
 		</a-card>
-		<v-form :fields="fields" :events="events" :rules="rules" @closed="closed" @beforeSubmit="beforeSubmit"> </v-form>
+		<v-form
+			:fields="fields"
+			:events="events"
+			:rules="rules"
+			@doInit="initData"
+			@closed="closed"
+			@beforeSubmit="beforeSubmit"
+		>
+		</v-form>
 	</v-form-dialog>
 </template>
 
@@ -19,6 +27,8 @@ import VFormDialog from '@/components/page/v-form-dialog'
 import VForm from '@/components/page/v-form'
 import actions from '../api/index'
 import { onMounted, ref } from 'vue'
+import router from '../../../router'
+import _request from '../../../utils/request'
 
 export default {
 	name: 'dataprivilege-dialog',
@@ -29,9 +39,21 @@ export default {
 	data() {
 		return {
 			events: actions,
-			isGroup: true,
+			isGroup: 0,
 			groupFileds: {},
 			fields: [
+				// {
+				// 	title: '权限类型',
+				// 	key: 'DpType',
+				// 	type: 'radio',
+				// 	props: {
+				// 		items: [
+				// 			{ Text: '用户组', Value: 0 },
+				// 			{ Text: '用户', Value: 1 },
+				// 		],
+				// 	},
+				// 	isInclude: false,
+				// },
 				{
 					title: '用户组',
 					key: 'GroupId',
@@ -89,12 +111,33 @@ export default {
 				})
 			}
 		},
+	},
+	methods: {
 		beforeSubmit(payload, callback) {
 			payload.DpType = this.isGroup
 			callback(payload)
 		},
-	},
-	methods: {
+		async initData(payload, callback) {
+			let res = await _request({
+				...actions.Detail,
+				data: payload.params,
+			})
+			if (payload.formStatus != 'Add') {
+				this.isGroup = res.DpType
+				let data = {}
+				if (payload.fields !== undefined) {
+					payload.fields.forEach((item) => {
+						let fieldValue = res.Entity[item.key]
+						if (res[item.key] !== undefined) {
+							fieldValue = res[item.key]
+						}
+						data[item.key] = fieldValue
+					})
+				}
+				payload.formData = data
+			}
+			callback(payload)
+		},
 		closed(res) {
 			if (res) {
 				this.$emit('reSearch')

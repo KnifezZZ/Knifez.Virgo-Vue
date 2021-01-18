@@ -47,7 +47,7 @@ const actions = {
 	},
 	// 详情
 	Detail: {
-		url: reqPath + '{id}',
+		url: reqPath + 'Get',
 		method: 'get',
 	},
 	//导出excel

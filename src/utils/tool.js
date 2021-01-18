@@ -43,18 +43,6 @@ export function getTreeNode(tree, parentCol, idCol, nodeValue) {
 	return node
 }
 
-export function canAction(action) {
-	debugger
-	const router = useRouter()
-	const store = useStore()
-	const allActions = store.getters['user/actionList']
-	if (allActions.includes(action)) {
-		return true
-	}
-	return false
-}
-
-
 // 加載json配置文件
 // export function loadJson(reqPath) {
 // 	let domain = localStorage.getItem('domain')

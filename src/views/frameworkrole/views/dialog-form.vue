@@ -87,7 +87,6 @@ export default {
 		},
 		closed(data) {
 			if (data) {
-				debugger
 				let selectPages = this.pages.filter((ele) => {
 					if (ele.Actions.length > 0) {
 						return {

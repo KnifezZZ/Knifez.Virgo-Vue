@@ -4,21 +4,16 @@
 			<v-searcher :collapse.sync="collapse" :events="events" :fields="queryFields" @search="querySearch"> </v-searcher>
 		</a-col>
 		<a-col :span="24">
-			<v-table ref="vtable" :form-items="queryForm" :columns="columns" :events="events" :useToolBar="true" bordered>
-				<template #toolbar="{selectData}">
-					<a-button
-						v-permission="events.BatchDelete"
-						:disabled="selectData.length === 0"
-						type="danger"
-						@click="doDelete(null)"
-					>
-						<v-icon icon="delete-bin"></v-icon> 批量删除
-					</a-button>
-				</template>
-				<template #ActionCol="{ }">
-					<a-button v-permission="events.Detail" type="link">查看</a-button>
-					<a-button v-permission="events.Edit" type="link">编辑</a-button>
-				</template>
+			<v-table
+				ref="vtable"
+				:form-items="queryForm"
+				:columns="columns"
+				:events="events"
+				:useToolBar="true"
+				@openPage="openPage"
+				bordered
+			>
+				<template #toolbar> </template>
 			</v-table>
 			<dialog-form @reSearch="querySearch"></dialog-form>
 		</a-col>
@@ -29,8 +24,12 @@
 import VSearcher from '@/components/page/v-searcher/index'
 import VTable from '@/components/page/v-table/index'
 import actions from './api/index'
+import router from '@/router'
+import store from '@/store'
+import { openOnTab, openOnDialog } from '@/utils/openPage'
 import { ref, onMounted, watch } from 'vue'
 import DialogForm from './views/dialog-form'
+import _request from '../../utils/request'
 export default {
 	name: 'dataPrivilege',
 	components: { VSearcher, VTable, DialogForm },
@@ -46,8 +45,8 @@ export default {
 				{ key: 'RelateIDs', title: '权限' },
 				{
 					title: '操作',
-					key: 'ActionCol',
-					isSlot: true,
+					isOperate: true,
+					actions: { Detail: actions.Detail, Edit: actions.Edit, Delete: actions.Delete },
 				},
 			],
 			events: actions,
@@ -83,6 +82,13 @@ export default {
 		}
 	},
 	methods: {
+		openPage(info, callback) {
+			info.pars.TargetId = info.record.TargetId
+			info.pars.TableName = info.record.TableName
+			info.pars.DpType = info.record.DpType
+			info.pars.Id = undefined
+			callback(info)
+		},
 		querySearch(info) {
 			new Promise((resolve, reject) => {
 				this.queryForm = info
@@ -94,6 +100,18 @@ export default {
 		doDelete(item) {
 			debugger
 		},
+	},
+	mounted() {
+		this.$refs.vtable.doDelete = (palyoad) => {
+			_request({
+				...actions.Delete,
+				data: {
+					ModelName: palyoad.TableName,
+					Id: palyoad.DpType == 0 ? palyoad.GroupId : palyoad.UserId,
+					Type: palyoad.DpType,
+				},
+			}).then((res) => {})
+		}
 	},
 }
 </script>

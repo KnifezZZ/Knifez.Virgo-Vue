@@ -140,6 +140,7 @@ import { message } from 'ant-design-vue'
 import { getTreeNode } from '@/utils/tool'
 import { deleteFile } from '@/api/baseApi'
 import VUpload from '@c/v-upload/index'
+import config from '@/configs/index'
 import { isArray } from '../../../utils/validate'
 export default {
 	name: 'VForm',
@@ -197,6 +198,9 @@ export default {
 		},
 		showDetail(item) {
 			let showInfo = this.formData[item.key]
+			if (showInfo == undefined) {
+				return ''
+			}
 			if (['radio', 'select'].includes(item.type)) {
 				var tmpRadio = item.props.items.find((x) => x.Value == this.formData[item.key])
 				if (tmpRadio) {
@@ -207,7 +211,14 @@ export default {
 				showInfo = getTreeNode(item.props.items, 'ParentId', 'Id', this.formData[item.key]).Text
 			}
 			if (item.type === 'upload') {
-				return '<v-img :height="100" src="' + this.formData[item.key] + '"/>'
+				showInfo = '<img height="80" src="' + config.readFileApi + this.formData[item.key] + '"/>'
+				let info = this.formData[item.key]
+				if (info.indexOf(',') > -1) {
+					showInfo = ''
+					info.split(',').forEach((ele) => {
+						showInfo += '<img height="80" src="' + config.readFileApi + this.formData[item.key] + '"/>'
+					})
+				}
 			}
 			return showInfo
 		},
@@ -239,6 +250,7 @@ export default {
 		if (!dialogConfig.useDialog) {
 			formStatus.value = router.currentRoute.value.params.status
 			dialogConfig.id = router.currentRoute.value.params.id
+			dialogConfig.params = router.currentRoute.value.params
 		}
 
 		formFields.value.forEach((item) => {
@@ -262,43 +274,35 @@ export default {
 
 		//自定义处理fields和formdata
 		const doInit = () => {
-			let initData = ''
-			context.emit('doInit', { formStatus, id: dialogConfig.id, fields: formFields.value }, (res) => {
-				initData = res
-			})
-			return initData
-		}
-		//页面初始化
-		const doInitData = () => {
-			let re = doInit()
-			if (!re) {
-				// 非添加窗口加载页面数据
-				if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
-					debugger
-					request({
-						...props.events.Detail,
-						data: { id: dialogConfig.id },
-					}).then((res) => {
-						let data = {}
-						if (formFields.value !== undefined) {
-							formFields.value.forEach((item) => {
-								let fieldValue = res.Entity[item.key]
-								if (res[item.key] !== undefined) {
-									fieldValue = res[item.key]
-								}
-								data[item.key] = fieldValue
-							})
-						}
-						formData.value = data
-						inited(res)
-					})
+			context.emit('doInit', { formStatus, params: dialogConfig.params, fields: formFields.value }, (re) => {
+				if (!re) {
+					// 非添加窗口加载页面数据
+					if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
+						request({
+							...props.events.Detail,
+							data: { id: dialogConfig.id },
+						}).then((res) => {
+							let data = {}
+							if (formFields.value !== undefined) {
+								formFields.value.forEach((item) => {
+									let fieldValue = res.Entity[item.key]
+									if (res[item.key] !== undefined) {
+										fieldValue = res[item.key]
+									}
+									data[item.key] = fieldValue
+								})
+							}
+							formData.value = data
+							inited(res)
+						})
+					} else {
+						inited({ formData: {}, res: {} })
+					}
 				} else {
-					inited({ formData: {}, res: {} })
+					formData.value = re.formData
+					formFields.value = re.fields
 				}
-			} else {
-				formData.value = re.formData
-				formFields.value = re.formFields
-			}
+			})
 		}
 		//初始化加载后执行事件
 		const inited = (res) => {
@@ -337,7 +341,6 @@ export default {
 			formFields,
 			removeFiles,
 			doInit,
-			doInitData,
 			inited,
 			beforeSubmit,
 			doClose,
@@ -345,7 +348,7 @@ export default {
 		}
 	},
 	created() {
-		this.doInitData()
+		this.doInit()
 	},
 }
 </script>
