@@ -149,7 +149,7 @@ export default function compTable(props, context) {
 			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
 		}
 		let pars = { id: record.ID, status }
-		let payload = {}
+		let payload = undefined
 		context.emit('openPage', { nextRoute, record, pars }, (res) => {
 			payload = res
 		})

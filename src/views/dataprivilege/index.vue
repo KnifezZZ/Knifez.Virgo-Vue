@@ -107,7 +107,7 @@ export default {
 				...actions.Delete,
 				data: {
 					ModelName: palyoad.TableName,
-					Id: palyoad.DpType == 0 ? palyoad.GroupId : palyoad.UserId,
+					Id: palyoad.TargetId,
 					Type: palyoad.DpType,
 				},
 			}).then((res) => {})

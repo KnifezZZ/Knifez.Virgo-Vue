@@ -273,36 +273,36 @@ export default {
 		})
 
 		//自定义处理fields和formdata
-		const doInit = () => {
-			context.emit('doInit', { formStatus, params: dialogConfig.params, fields: formFields.value }, (re) => {
-				if (!re) {
-					// 非添加窗口加载页面数据
-					if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
-						request({
-							...props.events.Detail,
-							data: { id: dialogConfig.id },
-						}).then((res) => {
-							let data = {}
-							if (formFields.value !== undefined) {
-								formFields.value.forEach((item) => {
-									let fieldValue = res.Entity[item.key]
-									if (res[item.key] !== undefined) {
-										fieldValue = res[item.key]
-									}
-									data[item.key] = fieldValue
-								})
-							}
-							formData.value = data
-							inited(res)
-						})
-					} else {
-						inited({ formData: {}, res: {} })
-					}
+		const doInit = async () => {
+			var re = await context.emit('doInit', { formStatus, params: dialogConfig.params, fields: formFields.value })
+
+			if (!re) {
+				// 非添加窗口加载页面数据
+				if (formStatus.value !== 'add' && dialogConfig.id != undefined) {
+					request({
+						...props.events.Detail,
+						data: { id: dialogConfig.id },
+					}).then((res) => {
+						let data = {}
+						if (formFields.value !== undefined) {
+							formFields.value.forEach((item) => {
+								let fieldValue = res.Entity[item.key]
+								if (res[item.key] !== undefined) {
+									fieldValue = res[item.key]
+								}
+								data[item.key] = fieldValue
+							})
+						}
+						formData.value = data
+						inited(res)
+					})
 				} else {
-					formData.value = re.formData
-					formFields.value = re.fields
+					inited({ formData: {}, res: {} })
 				}
-			})
+			} else {
+				formData.value = re.formData
+				formFields.value = re.fields
+			}
 		}
 		//初始化加载后执行事件
 		const inited = (res) => {
