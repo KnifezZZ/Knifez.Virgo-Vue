@@ -10,6 +10,7 @@
 <script>
 import Veditor from '@/components/v-editor'
 export default {
+	name: 'dashBoard',
 	data() {
 		return {
 			entity: {
@@ -21,9 +22,7 @@ export default {
 		'v-editor': Veditor,
 	},
 	methods: {
-		save() {
-			
-		},
+		save() {},
 	},
 }
 </script>

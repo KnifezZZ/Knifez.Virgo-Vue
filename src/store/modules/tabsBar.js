@@ -1,10 +1,8 @@
 const state = {
 	visitedRoutes: [],
-	cachedViews: [],
 }
 const getters = {
 	visitedRoutes: (state) => state.visitedRoutes,
-	cachedViews: (state) => state.cachedViews,
 }
 const mutations = {
 	setVisitedRoute(state, route) {
@@ -24,16 +22,6 @@ const mutations = {
 		}
 		state.visitedRoutes.push(Object.assign({}, route))
 	},
-	addCachedView(state, route) {
-		let cachedPath = ''
-		if (route.path && route.path.startsWith('/')) {
-			cachedPath = route.path.substr(1)
-		}
-		if (state.cachedViews.includes(cachedPath)) return
-		if (!route.meta.noCache) {
-			state.cachedViews.push(cachedPath)
-		}
-	},
 	/**
 	 * @description 删除当前标签页
 	 * @param {*} state
@@ -45,15 +33,6 @@ const mutations = {
 			if (item.path === route.path) state.visitedRoutes.splice(index, 1)
 		})
 	},
-	delCachedView(state, route) {
-		for (const [i, v] of Object.entries(state.cachedViews)) {
-			const cachedPath = route.path ? route.path.substr(1) : route.name
-			if (v === cachedPath) {
-				state.cachedViews.splice(parseInt(i), 1)
-				break
-			}
-		}
-	},
 	/**
 	 * @description 删除当前标签页以外其它全部多标签页
 	 * @param {*} state
@@ -62,14 +41,6 @@ const mutations = {
 	 */
 	delOthersVisitedRoutes(state, route) {
 		state.visitedRoutes = state.visitedRoutes.filter((item) => item.meta.affix || item.path === route.path)
-	},
-	delOthersCachedView(state, route) {
-		for (const [i, v] of Object.entries(state.cachedViews)) {
-			if (v === route.name) {
-				state.cachedViews = state.cachedViews.slice(parseInt(i), parseInt(i) + 1)
-				break
-			}
-		}
 	},
 	/**
 	 * @description 删除当前标签页左边全部多标签页
@@ -106,9 +77,6 @@ const mutations = {
 	delAllVisitedRoutes(state) {
 		state.visitedRoutes = state.visitedRoutes.filter((item) => item.meta.affix)
 	},
-	delAllCachedView(state) {
-		state.cachedViews = []
-	},
 }
 const actions = {
 	/**
@@ -118,7 +86,6 @@ const actions = {
 	 */
 	addVisitedRoute({ commit }, route) {
 		commit('addVisitedRoute', route)
-		commit('addCachedView', route)
 	},
 	/**
 	 * @description 删除当前标签页
@@ -127,7 +94,6 @@ const actions = {
 	 */
 	delVisitedRoute({ commit }, route) {
 		commit('delVisitedRoute', route)
-		commit('delCachedView', route)
 	},
 	/**
 	 * @description 删除当前标签页以外其它全部多标签页
@@ -136,7 +102,6 @@ const actions = {
 	 */
 	delOthersVisitedRoutes({ commit }, route) {
 		commit('delOthersVisitedRoutes', route)
-		commit('delOthersCachedView', route)
 	},
 	/**
 	 * @description 删除当前标签页左边全部多标签页

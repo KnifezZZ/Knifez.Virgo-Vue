@@ -161,7 +161,7 @@ export default {
 		},
 		moduleSelect(value) {
 			this.currentModule = value
-			if (value !== '' && value !== null) {
+			if (value) {
 				request({
 					...actions.GetActionsByName,
 					data: { ModelName: value },

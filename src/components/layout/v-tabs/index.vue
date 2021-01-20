@@ -118,7 +118,7 @@ export default {
 		},
 		handleTabClick(tab) {
 			const route = this.visitedRoutes.filter((item) => item.path === tab)[0]
-			if (this.$route.fullPath !== route.fullPath) this.$router.push(route)
+			if (this.$route.fullPath !== route.fullPath) this.$router.push(route.path)
 		},
 		async handleTabRemove(fullPath) {
 			const view = this.visitedRoutes.find((item) => {
@@ -165,12 +165,12 @@ export default {
 		},
 		toLastTag() {
 			const latestView = this.visitedRoutes.slice(-1)[0]
-			if (latestView) this.$router.push(latestView)
+			if (latestView) this.$router.push(latestView.path)
 			else this.$router.push('/')
 		},
 		toThisTag() {
 			const view = this.visitedRoutes.find((item) => item.fullPath === this.$route.fullPath)
-			if (this.$route.path !== view.path) this.$router.push(view)
+			if (this.$route.path !== view.path) this.$router.push(view.path)
 			return view
 		},
 	},

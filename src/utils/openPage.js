@@ -19,7 +19,7 @@ export function openOnTab(next, params) {
 export function closeOnTab() {
 	store.commit('tabsBar/delVisitedRoute', router.currentRoute.value)
 	const latestView = store.getters['tabsBar/visitedRoutes'].slice(-1)[0]
-	if (latestView) router.push(latestView)
+	if (latestView) router.push(latestView.path)
 	else router.push('/')
 }
 

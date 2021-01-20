@@ -24,7 +24,7 @@
 				}"
 			>
 				<router-view v-slot="{ Component }">
-					<keep-alive :include="cachedViews">
+					<keep-alive>
 						<transition mode="out-in" name="fade-transform">
 							<component :is="Component" />
 						</transition>
@@ -58,11 +58,13 @@ export default {
 
 	computed: {
 		...mapGetters({
-			cachedViews: 'tabsBar/cachedViews',
 			collapse: 'settings/collapse',
 			routes: 'routes/routes',
 			device: 'settings/device',
 		}),
+		key() {
+			return this.$route.path
+		},
 	},
 	methods: {
 		...mapActions({}),
@@ -110,6 +112,31 @@ export default {
 	.main-layout {
 		height: 100vh;
 		overflow: auto;
+	}
+
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity 0.28s;
+	}
+
+	.fade-enter,
+	.fade-leave-active {
+		opacity: 0;
+	}
+
+	.fade-transform-leave-active,
+	.fade-transform-enter-active {
+		transition: all 0.25s;
+	}
+
+	.fade-transform-enter {
+		opacity: 0;
+		transform: translateX(-20px);
+	}
+
+	.fade-transform-leave-to {
+		opacity: 0;
+		transform: translateX(20px);
 	}
 }
 </style>

@@ -136,17 +136,17 @@ export default function compTable(props, context) {
 			name: newRouter,
 			component: () => import(`@/views${router.currentRoute.value.path}/views/dialog-form.vue`),
 			meta: {
-				title: router.currentRoute.value.name + '-编辑',
+				title: router.currentRoute.value.meta.title + '-编辑',
 				hidden: true,
 				componentUrl: router.currentRoute.value.path + '/views/dialog-form.vue',
 				inLayout: true,
 			},
 		}
 		if (status == 'add') {
-			nextRoute.meta.title = router.currentRoute.value.name + '-添加'
+			nextRoute.meta.title = router.currentRoute.value.meta.title + '-添加'
 		}
 		if (status == 'detail') {
-			nextRoute.meta.title = router.currentRoute.value.name + '-查看'
+			nextRoute.meta.title = router.currentRoute.value.meta.title + '-查看'
 		}
 		let pars = { id: record.ID, status }
 		let payload = undefined

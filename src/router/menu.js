@@ -21,7 +21,7 @@ class Menu {
 		urlList.push('/' + url_index)
 		const routerItem = {
 			path: menuItem.Url || '/' + url_index,
-			name: menuItem.Text,
+			name: menuItem.Name,
 			component: Layout,
 			children: [],
 			meta: {

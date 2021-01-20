@@ -97,9 +97,6 @@ export default {
 				this.$refs.vtable.doSearch(true)
 			})
 		},
-		doDelete(item) {
-			debugger
-		},
 	},
 	mounted() {
 		this.$refs.vtable.doDelete = (palyoad) => {
