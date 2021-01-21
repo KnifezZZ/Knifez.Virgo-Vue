@@ -8,7 +8,7 @@
 						<v-icon icon="lock-password"></v-icon>
 						<span>密码修改</span>
 					</a-menu-item>
-					<a-menu-item key="dev-genpage" @click="genPage">
+					<a-menu-item v-if="isDev" key="dev-genpage" @click="genPage">
 						<v-icon icon="vuejs"></v-icon>
 						<span>生成代码</span>
 					</a-menu-item>
@@ -32,7 +32,7 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import VirgoProduce from './produce/index'
 import Password from './password/index'
-import { readFileApi } from '@/configs'
+import { readFileApi, development } from '@/configs'
 import { ref } from 'vue'
 export default {
 	name: 'VHeader',
@@ -44,6 +44,7 @@ export default {
 		return {
 			visible: false,
 			passwordVisible: false,
+			isDev: development,
 		}
 	},
 	methods: {
