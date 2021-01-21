@@ -32,7 +32,7 @@
 									allowClear
 									style="width: 100%"
 								>
-									<a-select-option v-for="option in item.props.items" :key="option" :value="option.Value">
+									<a-select-option v-for="option in item.props.items" :key="option.Value" :value="option.Value">
 										{{ option.Text }}
 									</a-select-option>
 								</a-select>
@@ -43,7 +43,7 @@
 									style="width: 100%"
 									:dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
 									:tree-data="item.props.items"
-									:replace-fields="{ children: 'children', title: 'Text', key: 'Value', value: 'Value' }"
+									:replace-fields="{ children: 'children', title: 'Text', key: 'Id', value: 'Id' }"
 									:tree-checkable="item.props.treeCheckable ? item.props.treeCheckable : false"
 									placeholder="请选择"
 								/>

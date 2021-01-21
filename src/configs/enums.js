@@ -12,10 +12,3 @@ export const StatusTypes = [
 	{ Text: '已发布', Value: 1 },
 	{ Text: '归档', Value: 2 },
 ];
-
-
-
-
-
-
-

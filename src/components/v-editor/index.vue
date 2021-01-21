@@ -5,6 +5,8 @@
 <script>
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
+import configs from '../../configs'
+import { nextTick } from 'vue'
 export default {
 	name: 'Veditor',
 	data() {
@@ -15,6 +17,9 @@ export default {
 	props: {
 		value: {
 			default: '',
+		},
+		disabled: {
+			default: false,
 		},
 		editor: {
 			type: String,
@@ -41,21 +46,32 @@ export default {
 			},
 		},
 	},
-	mounted() {
-		this.editorInstance = new Vditor(this.editor, {
-			mode: this.mode,
-			height: this.height,
-			outline: this.outline,
-			placeholder: 'enjoy write with markdown',
-			input: (value) => {
-				this.$emit('update:value', value)
-			},
-			cache: {
-				enable: false,
-			},
-			after: () => {
-				this.editorInstance.setValue(this.value)
-			},
+	watch: {
+		value(newValue, oldValue) {
+			if (oldValue == '') {
+				this.editorInstance.setValue(newValue)
+			}
+		},
+	},
+
+	created() {
+		let vm = this
+		vm.$nextTick(() => {
+			vm.editorInstance = new Vditor(vm.editor, {
+				mode: vm.mode,
+				height: vm.height,
+				outline: vm.outline,
+				placeholder: 'enjoy write with markdown',
+				upload: {
+					url: configs.headerApi + '/_file/Upload',
+				},
+				input: (value) => {
+					vm.$emit('update:value', value)
+				},
+				cache: {
+					enable: false,
+				},
+			})
 		})
 	},
 }
