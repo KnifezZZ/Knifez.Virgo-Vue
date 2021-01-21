@@ -45,6 +45,7 @@
 									:tree-data="item.props.items"
 									:replace-fields="{ children: 'children', title: 'Text', key: 'Id', value: 'Id' }"
 									:tree-checkable="item.props.treeCheckable ? item.props.treeCheckable : false"
+									allowClear
 									placeholder="请选择"
 								/>
 
