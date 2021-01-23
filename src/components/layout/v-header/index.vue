@@ -23,7 +23,10 @@
 		<a-modal width="80%" title="生成代码" v-model:visible="visible" :footer="null">
 			<virgo-produce></virgo-produce>
 		</a-modal>
-		<password :visible="passwordVisible" />
+
+		<a-modal title="密码修改" v-model:visible="passwordVisible" :footer="null">
+			<password @close="passwordVisible = false" />
+		</a-modal>
 	</div>
 </template>
 
