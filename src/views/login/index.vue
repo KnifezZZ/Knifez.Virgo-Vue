@@ -2,7 +2,7 @@
 	<div class="login-container">
 		<a-row>
 			<a-col :sm="0" :lg="6" :xl="9"></a-col>
-			<a-col :sm="24" :lg="12" :xl="6">
+			<a-col :sm="24" :lg="6" :xl="6">
 				<div class="login-container-form">
 					<div class="login-container-hello">hello!</div>
 					<div class="login-container-title">欢迎来到 {{ projectName }}-{{ version }}</div>
@@ -94,12 +94,11 @@ export default {
 	background-position: center;
 	background-size: cover;
 	&-form {
-		width: calc(100% - 40px);
+		width: 100%;
+		max-width: 500px;
 		height: 380px;
 		padding: 4vh;
 		margin-top: calc((100vh - 380px) / 2);
-		margin-right: 20px;
-		margin-left: 20px;
 		background: #fff;
 		background-size: 100% 100%;
 		border-radius: 10px;
@@ -127,7 +126,7 @@ export default {
 		height: 35px;
 	}
 	.ant-btn {
-		width: 365px;
+		width: 200px;
 		height: 45px;
 		border-radius: 99px;
 	}
